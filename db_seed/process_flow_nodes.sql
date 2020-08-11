@@ -1,0 +1,16 @@
+INSERT INTO `process_flow_nodes`(`id`, `process_id`, `name`, `privileges`, `type`) VALUES 
+(1, 2, 'Draft', '{\"roles\": [3,9]}', 'IO'),
+(2, 2, 'Request', '{\"roles\": [3]}', 'Process'),
+(3, 1, 'Checking', '{\"roles\": [4]}', 'Process'),
+(4, 1, 'Verification', '{\"roles\": [5]}', 'Process'),
+(5, 1, 'Processing', '{\"roles\": [6]}', 'Process'),
+(6, 1, 'Validation', '{\"roles\": [7]}', 'Process'),
+(7, 1, 'Approval', '{\"roles\": [8,5]}', 'Process'),
+(8, 2, 'Done', '{\"roles\": [3]}', 'End'),
+(9, 2, 'Return', '{\"roles\": [3]}', 'End'),
+(10, 2, 'Rejected', '{\"roles\": [3]}', 'End'),
+(11, 1, 'Filing', '{\"roles\": [10]}', 'Process'),
+(12, 3, 'BAST/BAPP', '{\"roles\": [11]}', 'IO'),
+(13, 3, 'Invoice Submition', '{\"roles\": [11]}', 'Process'),
+(14, 4, 'BAST/BAPP Approval', '{\"roles\": [3]}', 'Process'),
+(15, 4, 'Invoice Process', '{\"roles\": [3]}', 'Process');

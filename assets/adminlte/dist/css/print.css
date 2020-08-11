@@ -1,0 +1,21 @@
+.icheck-primary>input:first-child:checked+label::before {
+    background-color: #000000!important;
+    border-color: #000000!important;
+}
+
+#print_button {
+    display: none!important;
+}
+
+body {
+    -webkit-print-color-adjust: exact;
+}
+
+table {
+    page-break-inside: avoid;
+}
+
+table#doc_checklist td {
+    font-size: 11;
+    padding: 5px;
+}

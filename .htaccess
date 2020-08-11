@@ -1,0 +1,11 @@
+<IfModule mod_headers.c>
+	Header set X-Content-Type-Options nosniff
+	Header always append X-Frame-Options allow
+	Header set X-XSS-Protection "1; mode=block"
+	Header set Access-Control-Allow-Origin "*"
+</IfModule>
+Options -Indexes
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* index.php/$0 [PT,L]
