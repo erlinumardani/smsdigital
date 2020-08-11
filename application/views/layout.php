@@ -50,7 +50,7 @@
   <script src="{base_url}assets/pick/dist/vendors/jquery-validation/jquery.validate.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/jquery-validation/additional-methods.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/sweetalert2/sweetalert2.min.js"></script>
-	<script src="{base_url}assets/js/jquery.cookie.js"></script>
+  <script src="{base_url}assets/js/jquery.cookie.js"></script>
   <script src="{base_url}assets/js/custom_validation.js"></script>
   <script src="{base_url}assets/js/jquery.PrintArea.js"></script> 
   <!-- END: APP JS-->
@@ -60,10 +60,24 @@
   <script>
 
     $(window).on("load", function () {
-          // Animate loader off screen
-          $(".se-pre-con").fadeOut("slow");
-          ;
-      });
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");
+        ;
+    });
+
+    $(document).ready(function() {
+
+        $('.sidebarCollapse').on('click', function () {
+            $('body').toggleClass('compact-menu');
+            $('.sidebar').toggleClass('active');
+        });
+
+        $('.mobilesearch').on('click', function () {
+            $('.search-form').toggleClass('d-none');
+
+        });
+    });
+
 
   </script>
 
@@ -82,7 +96,7 @@
   <div class="site-width">
       <nav class="navbar navbar-expand-lg  p-0">
           <div class="navbar-header  h-100 h4 mb-0 align-self-center logo-bar text-left">  
-              <a href="index.html" class="horizontal-logo text-left">
+              <a href="#" class="horizontal-logo text-left">
                   <svg height="20pt" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512" width="20pt" xmlns="http://www.w3.org/2000/svg">
                   <g transform="matrix(.1 0 0 -.1 0 512)" fill="#1e3d73">
                   </g>
