@@ -51,7 +51,6 @@
   <script src="{base_url}assets/pick/dist/vendors/jquery-validation/additional-methods.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/sweetalert2/sweetalert2.min.js"></script>
   <script src="{base_url}assets/js/jquery.cookie.js"></script>
-  <script src="{base_url}assets/js/custom_validation.js"></script>
   <script src="{base_url}assets/js/jquery.PrintArea.js"></script> 
   <!-- END: APP JS-->
 
@@ -175,6 +174,6 @@
   <i class="icon-arrow-up"></i>
 </a>
 <!-- END: Back to top-->
-
+<script src="{base_url}assets/js/custom_validation.js"></script>
 </body>
 </html>

@@ -10,10 +10,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_forge         $dbforge
  * @property CI_DB_query_builder $db
  */
-class Migration_create_table_sms_transactions extends CI_Migration {
+class Migration_create_table_sms_curl_log extends CI_Migration {
 
 
-	protected $table = 'sms_transactions';
+	protected $table = 'sms_curl_log';
 
 
 	public function up()
@@ -23,29 +23,17 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				'type' => 'INT(11)',
 				'auto_increment' => TRUE
 			],
-			'type' => [
-				'type' => 'ENUM("Quick","Bulk","Schedule","File")',
-				'default' => "Quick"
-			],
-			'msisdn' => [
-				'type' => 'VARCHAR(50)'
-			],
-			'message'  => [
+			'uri' => [
 				'type' => 'TEXT'
 			],
-			'phone_book_id' => [
-				'type' => 'INT(11)',
+			'method'  => [
+				'type' => 'VARCHAR(50)'
 			],
-			'contact_id' => [
-				'type' => 'INT(11)',
+			'params'  => [
+				'type' => 'TEXT'
 			],
-			'schedule' => [
-				'type' => 'DATETIME',
-				'null' => TRUE
-			],
-			'status' => [
-				'type' => 'VARCHAR(50)',
-				'default' => "SENDING"
+			'response'  => [
+				'type' => 'TEXT'
 			],
 			'updated_by' => [
 				'type' => 'VARCHAR(20)',

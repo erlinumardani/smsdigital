@@ -63,7 +63,7 @@ class Migration_create_table_configs extends CI_Migration {
 			),
 			array(
 				'name' => "bg_login",
-				'value' => "assets/adminlte/dist/img/bg_login.png"
+				'value' => "assets/images/bg_login.jpg"
 			),
 			array(
 				'name' => "smtp_user",

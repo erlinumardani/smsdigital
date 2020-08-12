@@ -1,4 +1,4 @@
-$('input.form-control,textarea.form-control,select.form-control').bind('keyup blur', function () {
+$('input.form-control,textarea.form-control,select.form-control').bind('keyup blur', function() {
     var input_type = $(this).data('input_type');
 
     if (input_type == 'alphabet') {
@@ -17,6 +17,8 @@ $('input.form-control,textarea.form-control,select.form-control').bind('keyup bl
         custom_numeric_correction(this.id);
     } else if (input_type == 'username') {
         username_correction(this.id);
+    } else if (input_type == 'numeric_bulk') {
+        numeric_bulk_correction(this.id);
     }
 
     if ($(this).val() != '') {
@@ -24,8 +26,9 @@ $('input.form-control,textarea.form-control,select.form-control').bind('keyup bl
     }
 
 });
+
 function validation_to_form(data) {
-    Object.keys(data).forEach(function (key) {
+    Object.keys(data).forEach(function(key) {
         var val = data[key];
         $('[name="' + key + '"]').closest('.form-group').addClass('has-danger');
         var html = "<span class='help-block text-danger'>" + val + "</span>";
@@ -33,11 +36,12 @@ function validation_to_form(data) {
         $('[name="' + key + '"]').closest('.form-group').append(html);
     });
 }
+
 function mandatory_check(form_id) {
 
     var IR = 0;
 
-    $('form#' + form_id).find('input,select,textarea').each(function () {
+    $('form#' + form_id).find('input,select,textarea').each(function() {
 
         if ($(this).prop('required')) {
             //console.log(this.id);
@@ -127,4 +131,9 @@ function address_correction(id) {
 function date_correction(id) {
     var node = $('#' + id);
     node.val(node.val().replace(/[^0-9-/]/g, ''));
+}
+
+function numeric_bulk_correction(id) {
+    var node = $('#' + id);
+    node.val(node.val().replace(/[^0-9,]/g, ''));
 }
