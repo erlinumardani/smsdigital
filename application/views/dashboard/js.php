@@ -43,7 +43,7 @@
 <!-- END: Page Vendor JS-->
 
 <!-- START: Page JS-->
-<script src="<?=$base_url?>assets/pick/dist/js/home.script.js"></script>
+<!-- <script src="<?=$base_url?>assets/pick/dist/js/home.script.js"></script> -->
 <!-- END: Page JS-->
 
 <script>

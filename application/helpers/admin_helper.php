@@ -71,9 +71,16 @@ function get_menus(){
                         }else{
                             $url = base_url().$submenu->url;
                         }
+
+                        if(isset(explode("/",$submenu->url)[2])){
+                            $subid = '-'.explode("/",$submenu->url)[2];
+                        }else{
+                            $subid = '';
+                        }
+
                         $menus .= '
 
-                            <li id="'.explode("/",$submenu->url)[0].'">
+                            <li id="'.explode("/",$submenu->url)[0].$subid.'">
                                 <a href="'.$url.'">
                                 <i class="'.$submenu->icon.'"></i> '.$submenu->name.'</a>
                             </li>
@@ -91,8 +98,8 @@ function get_menus(){
                         <a href="#">
                         <i class="'.$menu->icon.'"></i> '.$menu->name.'</a>
                         <ul>
-                            <li>
-                                <a id="'.explode("/",$menu->url)[0].'" href="'.$url.'">
+                            <li id="'.explode("/",$menu->url)[0].'">
+                                <a href="'.$url.'">
                                 <i class="'.$menu->icon.'"></i> '.$menu->name.'</a>
                             </li>
                         </ul>

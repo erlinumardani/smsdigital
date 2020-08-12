@@ -16,6 +16,26 @@
 <script>
 $(document).ready(function() {
 
+    $('#client_group').prop('disabled',true);
+    $('#client_group').parent().parent().hide();
+
+    $('#contact_type').on('change',function() {
+      if(this.value == "Client Group"){
+        $('#client_group').prop('disabled',false);
+        $('#client_group').parent().parent().show();
+
+        $('#phonebook').prop('disabled',true);
+        $('#phonebook').parent().parent().hide();
+      }else{
+        $('#client_group').prop('disabled',true);
+        $('#client_group').parent().parent().hide();
+
+        $('#phonebook').prop('disabled',false);
+        $('#phonebook').parent().parent().show();
+      }
+    });
+  
+
     var datalist = $('#datalist').dataTable({ 
  
         "processing": true, 
@@ -100,8 +120,8 @@ $(document).ready(function() {
     });
 
     $('.menu').removeClass('active');
-    $('#<?=$this->uri->segment(1)?>').addClass('active');
-    $('#<?=$this->uri->segment(1)?>').parent().parent().parent('.has-treeview').addClass('menu-open');
+    $('#<?=$this->uri->segment(1).'-'.$this->uri->segment(3)?>').addClass('active');
+    $('#<?=$this->uri->segment(1).'-'.$this->uri->segment(3)?>').parent().parent().parent('.has-treeview').addClass('menu-open');
 
 } );
 

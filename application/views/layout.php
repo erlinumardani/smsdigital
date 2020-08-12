@@ -28,6 +28,8 @@
   <!-- END: Page CSS-->
 
   <!-- START: Custom CSS-->
+  <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/select2/css/select2.min.css"/>
+  <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/select2/css/select2-bootstrap.min.css"/>
   <link rel="stylesheet" href="{base_url}assets/pick/dist/css/main.css">
   <!-- END: Custom CSS-->
   <style  type="text/css">
@@ -47,6 +49,7 @@
 
   <!-- START: APP JS-->
   <!-- <script src="{base_url}assets/pick/dist/js/app.js"></script> -->
+  <script src="{base_url}assets/pick/dist/vendors/select2/js/select2.full.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/jquery-validation/jquery.validate.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/jquery-validation/additional-methods.min.js"></script>
   <script src="{base_url}assets/pick/dist/vendors/sweetalert2/sweetalert2.min.js"></script>
@@ -65,6 +68,8 @@
     });
 
     $(document).ready(function() {
+
+        $(".select2").select2();
 
         $('.sidebarCollapse').on('click', function () {
             $('body').toggleClass('compact-menu');
@@ -137,7 +142,7 @@
       <!-- START: Menu-->
       <ul id="side-menu menu" class="sidebar-menu">
           
-                  {menus}
+        {menus}
            
       </ul>
   </div>
@@ -146,15 +151,15 @@
 
 <!-- START: Main Content-->
 <main>
-  <div class="container-fluid site-width">
+  <div class="container-fluid site-width" style="padding-top:25px;">
       <!-- START: Breadcrumbs-->
-      <div class="row">
+      <!-- <div class="row">
           <div class="col-12  align-self-center">
               <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
-                  <div class="w-sm-100 mr-auto"><h4 class="mb-0">{content_title}</h4> <!-- <p>Welcome to liner admin panel</p> --></div>
+                  <div class="w-sm-100 mr-auto"><h4 class="mb-0">{content_title}</h4> <p>Simple Admin Panel</p></div>
               </div>
           </div>
-      </div>
+      </div> -->
       <!-- END: Breadcrumbs-->
       <!-- Main content -->
       {content}

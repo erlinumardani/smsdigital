@@ -10,10 +10,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @property CI_DB_forge         $dbforge
  * @property CI_DB_query_builder $db
  */
-class Migration_create_table_sms_transactions extends CI_Migration {
+class Migration_create_table_sms_templates extends CI_Migration {
 
 
-	protected $table = 'sms_transactions';
+	protected $table = 'sms_templates';
 
 
 	public function up()
@@ -23,29 +23,14 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				'type' => 'INT(11)',
 				'auto_increment' => TRUE
 			],
-			'type' => [
-				'type' => 'ENUM("Quick","Bulk","Schedule","File")',
-				'default' => "Quick"
+			'name'  => [
+				'type' => 'VARCHAR(50)'
 			],
-			'msisdn' => [
+			'from'  => [
 				'type' => 'VARCHAR(50)'
 			],
 			'message'  => [
 				'type' => 'TEXT'
-			],
-			'person_id' => [
-				'type' => 'INT(11)',
-			],
-			'contact_id' => [
-				'type' => 'INT(11)',
-			],
-			'schedule' => [
-				'type' => 'DATETIME',
-				'null' => TRUE
-			],
-			'status' => [
-				'type' => 'VARCHAR(50)',
-				'default' => "SENDING"
 			],
 			'updated_by' => [
 				'type' => 'VARCHAR(20)',
@@ -64,6 +49,16 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 		$this->dbforge->add_field($fields);
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table($this->table, TRUE);
+
+		//db seed
+		$data = array(
+			array(
+				'id'  		=> 1,
+				'from'  	=> "BPI",
+				'message'  	=> "SMS ini hanya untuk tes"
+			)
+		);
+		$this->db->insert_batch($this->table, $data);
 
 	}
 
