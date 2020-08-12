@@ -82,7 +82,7 @@ class Migration_create_table_menus extends CI_Migration {
 				'name'  	=> "Dashboard",
 				'url'  		=> "dashboard/data",
 				'icon'  	=> 'icon-chart',
-				'privileges'=> '[1, 2, 8]'
+				'privileges'=> '[1, 2, 3]'
 			),
 			array(
 				'id'  		=> 2,
@@ -163,6 +163,76 @@ class Migration_create_table_menus extends CI_Migration {
 				'url'  		=> "search/data/search",
 				'icon'  	=> 'search',
 				'privileges'=> '[1, 2, 8]'
+			),
+			array(
+				'id'  		=> 10,
+				'sequence'  => 10,
+				'type'  	=> "Main",
+				'main_id'  	=> NULL,
+				'name'  	=> "Bulk SMS",
+				'url'  		=> "#",
+				'icon'  	=> 'icon-envelope',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 11,
+				'sequence'  => 11,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "Send Quick SMS",
+				'url'  		=> "sms/data/quick",
+				'icon'  	=> 'icon-rocket',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 12,
+				'sequence'  => 12,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "Send Bulk SMS",
+				'url'  		=> "sms/data/bulk",
+				'icon'  	=> 'icon-paper-plane',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 13,
+				'sequence'  => 13,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "Send Schedule SMS",
+				'url'  		=> "sms/data/schedule",
+				'icon'  	=> 'icon-calendar',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 14,
+				'sequence'  => 14,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "Send SMS From File",
+				'url'  		=> "sms/data/file",
+				'icon'  	=> 'icon-paper-clip',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 15,
+				'sequence'  => 15,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "SMS History",
+				'url'  		=> "sms/data/history",
+				'icon'  	=> 'icon-clock',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
+				'id'  		=> 16,
+				'sequence'  => 16,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "SMS Otomatis",
+				'url'  		=> "sms/data/otomatis",
+				'icon'  	=> 'icon-loop',
+				'privileges'=> '[1, 2, 3]'
 			)
 		);
 		$this->db->insert_batch($this->table, $data);

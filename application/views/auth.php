@@ -78,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					success: function(data)
 					{
 						if(data.status=="success"){
-							document.location.href="{base_url}profile/data/update";
+							document.location.href="{base_url}dashboard/data";
 							if($('#remember').is(':checked')){
 								$.cookie("username", $('#username').val());
 								$.cookie("password", $('#password').val());
