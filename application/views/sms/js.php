@@ -35,8 +35,7 @@ $(document).ready(function() {
       }
     });
   
-
-    var datalist = $('#history_data').dataTable({ 
+    var history_data = $('#history_data').dataTable({ 
         dom:
             "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -82,9 +81,104 @@ $(document).ready(function() {
 
     });
 
-    $('#get_report').on('click',function() {
-        datalist.fnDestroy();
-        datalist = $('#history_data').dataTable({ 
+    $('#get_history').on('click',function() {
+        history_data.fnDestroy();
+        history_data = $('#history_data').dataTable({ 
+            dom:
+                "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            orderCellsTop: true,
+            fixedHeader: true,
+            buttons:[
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fas fa-clipboard"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Copy to Clipboard'
+                },
+                {
+                    extend:    'excelHtml5',
+                    text:      '<i class="fas fa-file-excel"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Export to Excel'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      '<i class="fas fa-file-csv"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Export to CSV'
+                }
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "processing": true, 
+            "serverSide": true, 
+            "scrollX": true,
+            "order": [], 
+            "ajax": {
+                "url": "<?=$base_url.$page?>/data/list",
+                "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>","startdate":$("#startdate").val(),"enddate":$("#enddate").val()},
+                "type": "POST"
+            },
+            "columnDefs": [
+                { 
+                    "targets": [ 0 ], 
+                    "orderable": false, 
+                }
+            ]
+
+        });
+    });
+
+    var otomatis_data = $('#otomatis_data').dataTable({ 
+        dom:
+            "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        orderCellsTop: true,
+        fixedHeader: true,
+        buttons:[
+            {
+                extend:    'copyHtml5',
+                text:      '<i class="fas fa-clipboard"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Copy to Clipboard'
+            },
+            {
+                extend:    'excelHtml5',
+                text:      '<i class="fas fa-file-excel"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Export to Excel'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      '<i class="fas fa-file-csv"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Export to CSV'
+            }
+        ],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "processing": true, 
+        "serverSide": true, 
+        "scrollX": true,
+        "order": [], 
+        "ajax": {
+            "url": "<?=$base_url.$page?>/data/otomatis_data",
+            "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>"},
+            "type": "POST"
+        },
+        "columnDefs": [
+            { 
+                "targets": [ 0 ], 
+                "orderable": false, 
+            }
+        ]
+
+    });
+
+    $('#get_otomatis').on('click',function() {
+        otomatis_data.fnDestroy();
+        otomatis_data = $('#otomatis_data').dataTable({ 
             dom:
                 "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
                 "<'row'<'col-sm-12'tr>>" +

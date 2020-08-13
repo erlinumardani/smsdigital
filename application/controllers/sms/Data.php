@@ -898,4 +898,58 @@ class Data extends CI_Controller {
         //output dalam format JSON
         echo json_encode($output);
 	}
+
+	function otomatis(){
+		
+		$content_data = array(
+			'base_url' => base_url(),
+			'csrf_token_name' => $this->security->get_csrf_token_name(),
+			'csrf_hash' => $this->security->get_csrf_hash(),
+			'form_title' => 'SMS Otomatis',
+			'page' => $this->uri->segment(1)
+		);
+		
+		page_view($this->title, 'otomatis', $content_data);
+	}
+
+	function otomatis_data(){
+
+		$table = 'sms_transactions'; //nama tabel dari database
+		$column_order = array(null, 'msisdn','message','schedule','created_at'); //field yang ada di table user
+		$column_search = array('msisdn','message','schedule','created_at'); //field yang diizin untuk pencarian 
+		$order = array('created_at' => 'asc'); // default order 
+		$filter = "schedule > now() and type = 'Schedule'";
+		$data = $this->input->post();
+		
+		$this->load->model('datatable_model');
+
+		if(isset($data['startdate']) && isset($data['enddate'])){
+			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59'";
+		}
+
+        $list = $this->datatable_model->get_datatables($table, $column_order, $column_search, $order, $filter);
+        $data = array();
+		$no = $_POST['start'];
+		
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->msisdn;
+            $row[] = $field->message;
+            $row[] = $field->schedule;
+            $row[] = $field->created_at;
+ 
+            $data[] = $row;
+        }
+ 
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->datatable_model->count_all($table),
+            "recordsFiltered" => $this->datatable_model->count_filtered($table, $column_order, $column_search, $order, $filter),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+	}
 }

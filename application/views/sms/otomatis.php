@@ -21,7 +21,7 @@
                             <input type="text" name="startdate" id="startdate" class="form-control datepicker" placeholder="Start Date">
                         </div>
                     </div>
-                    <a href="#" class="btn btn-primary" id="get_history"><i class="fas fa-clipboard"></i> Get Data</a>
+                    <a href="#" class="btn btn-primary" id="get_otomatis"><i class="fas fa-clipboard"></i> Get Data</a>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -38,7 +38,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="history_data" class="table table-bordered table-striped table-hover datatable nowrap">
+            <table id="otomatis_data" class="table table-bordered table-striped table-hover datatable nowrap">
             <thead class="thead-dark">
             <tr>
                 <th>No</th>
