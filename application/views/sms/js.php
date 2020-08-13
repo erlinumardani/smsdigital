@@ -116,7 +116,7 @@ $(document).ready(function() {
             "scrollX": true,
             "order": [], 
             "ajax": {
-                "url": "<?=$base_url.$page?>/data/list",
+                "url": "<?=$base_url.$page?>/data/history_data",
                 "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>","startdate":$("#startdate").val(),"enddate":$("#enddate").val()},
                 "type": "POST"
             },
@@ -211,7 +211,7 @@ $(document).ready(function() {
             "scrollX": true,
             "order": [], 
             "ajax": {
-                "url": "<?=$base_url.$page?>/data/list",
+                "url": "<?=$base_url.$page?>/data/otomatis_data",
                 "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>","startdate":$("#startdate").val(),"enddate":$("#enddate").val()},
                 "type": "POST"
             },
