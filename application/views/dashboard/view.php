@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body p-0">
                     <div class='p-4 align-self-center'>
-                        <h2><i class="icon-envelope"></i> <b>20,000</b> / 100,000</h2>
+                        <h2><i class="icon-envelope"></i> <b><?=$total_sms?></b> / <?=$limit?></h2>
                         <h6 class="card-liner-subtitle">Total SMS</h6>  
                     </div>
                     <div  class="barfiller" data-color="#1e3d73">
@@ -17,7 +17,7 @@
                                 <span class="tip-arrow"></span>
                             </span>
                         </div>
-                        <span class="fill" data-percentage="20"></span>
+                        <span class="fill" data-percentage="<?=$limit_persent?>"></span>
                     </div>                              
                 </div>
             </div>

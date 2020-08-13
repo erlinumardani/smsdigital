@@ -35,7 +35,7 @@ class Migration_create_table_users extends CI_Migration {
 				'null' => TRUE,
 				'default' => 1001
 			],
-			'vendor_code' => [
+			'sms_limit' => [
 				'type'   => 'INT(11)',
 				'null' => TRUE
 			],
