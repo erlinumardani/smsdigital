@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-body p-0">
                     <div class='p-4 align-self-center'>
-                        <h2><i class="icon-envelope-open"></i> 0</h2>
+                        <h2><i class="icon-envelope-open"></i> <?=$sms_otomatis?></h2>
                         <h6 class="card-liner-subtitle">SMS Otomatis</h6>  
                     </div>
                     <div  class="barfilleroff" data-color="#17a2b8">
@@ -44,7 +44,7 @@
             <div class="card">
                 <div class="card-body p-0">
                     <div class='p-4 align-self-center'>
-                        <h2><i class="icon-user"></i> 0</h2>
+                        <h2><i class="icon-user"></i> <?=$contacts?></h2>
                         <h6 class="card-liner-subtitle">Contacts</h6>  
                     </div>
                     <div  class="barfilleroff" data-color="#1ee0ac">

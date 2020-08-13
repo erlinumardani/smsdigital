@@ -28,21 +28,34 @@ class Data extends CI_Controller {
 			redirect('auth');
 		}
 		$this->title = 'Dashboard';
+		$this->role_id = $this->session->userdata('role_id');
     }
     
 	function index()
 	{
 
-		$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
-		$total_sms = $this->db->select('count(id) as total')->get_where('sms_transactions',array('updated_by'=>$this->session->userdata('user_id')))->row()->total;
-		//$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions',array('updated_by'=>$this->session->userdata('user_id')))->row()->total;
+		if($this->role_id=="3"){
+			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
+			$total_sms = $this->db->select('count(id) as total')->get_where('sms_transactions',array('updated_by'=>$this->session->userdata('user_id')))->row()->total;
+			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
+			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+			$limit_persent = number_format($total_sms/$limit * 100);
+		}else{
+			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
+			$total_sms = $this->db->select('count(id) as total')->get('sms_transactions')->row()->total;
+			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
+			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+			$limit_persent = 0;
+		}
 
 		$content_data = array(
 			'base_url' => base_url(),
 			'page' => $this->uri->segment(1),
 			'limit' => number_format($limit),
 			'total_sms' => number_format($total_sms),
-			'limit_persent' => number_format($total_sms)/number_format($limit) * 100
+			'limit_persent' => $limit_persent,
+			'sms_otomatis' => $sms_otomatis,
+			'contacts' => $contacts
 		);
 		
 		page_view($this->title, 'view', $content_data);
