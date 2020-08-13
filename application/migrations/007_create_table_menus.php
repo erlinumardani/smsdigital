@@ -225,15 +225,85 @@ class Migration_create_table_menus extends CI_Migration {
 				'privileges'=> '[1, 2, 3]'
 			),
 			array(
-				'id'  		=> 16,
-				'sequence'  => 16,
+				'id'  		=> 17,
+				'sequence'  => 1,
+				'type'  	=> "Main",
+				'main_id'  	=> 0,
+				'name'  	=> "Clients",
+				'url'  		=> "#",
+				'icon'  	=> 'icon-people',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 18,
+				'sequence'  => 2,
 				'type'  	=> "Sub",
-				'main_id'  	=> 10,
-				'name'  	=> "SMS Otomatis",
-				'url'  		=> "sms/data/otomatis",
+				'main_id'  	=> 17,
+				'name'  	=> "Groups",
+				'url'  		=> "groups/data",
+				'icon'  	=> 'icon-people',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 19,
+				'sequence'  => 3,
+				'type'  	=> "Sub",
+				'main_id'  	=> 17,
+				'name'  	=> "All Clients",
+				'url'  		=> "clients/data",
+				'icon'  	=> 'icon-user',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 20,
+				'sequence'  => 4,
+				'type'  	=> "Main",
+				'main_id'  	=> 0,
+				'name'  	=> "Contacts",
+				'url'  		=> "#",
+				'icon'  	=> 'icon-notebook',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 21,
+				'sequence'  => 5,
+				'type'  	=> "Sub",
+				'main_id'  	=> 20,
+				'name'  	=> "Phonebooks",
+				'url'  		=> "phonebooks/data",
+				'icon'  	=> 'icon-notebook',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 22,
+				'sequence'  => 6,
+				'type'  	=> "Sub",
+				'main_id'  	=> 20,
+				'name'  	=> "Contacts",
+				'url'  		=> "contacts/data",
 				'icon'  	=> 'icon-loop',
-				'privileges'=> '[1, 2, 3]'
-			)
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 23,
+				'sequence'  => 7,
+				'type'  	=> "Sub",
+				'main_id'  	=> 20,
+				'name'  	=> "Blacklist",
+				'url'  		=> "blacklist/data",
+				'icon'  	=> 'icon-shield',
+				'privileges'=> '[1, 2]'
+			),
+			array(
+				'id'  		=> 24,
+				'sequence'  => 8,
+				'type'  	=> "Sub",
+				'main_id'  	=> 20,
+				'name'  	=> "Spam Words",
+				'url'  		=> "spamwords/data",
+				'icon'  	=> 'icon-speech',
+				'privileges'=> '[1, 2]'
+			),
 		);
 		$this->db->insert_batch($this->table, $data);
 	}
