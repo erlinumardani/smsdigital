@@ -99,6 +99,7 @@ class Migration_create_table_users extends CI_Migration {
 				`b`.`person_id`,
 				`b`.`username`,
 				`b`.`role_id`,
+				`b`.`group_id`,
 				`c`.`name` AS `role_name`,
 				a.*
 			FROM
