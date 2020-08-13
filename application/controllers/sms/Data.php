@@ -285,6 +285,172 @@ class Data extends CI_Controller {
 
 	}
 
+	function schedule()
+	{
+		
+		$content_data = array(
+			'form_title'=>'Send Bulk SMS',
+			'base_url' => base_url(),
+			'page' => $this->uri->segment(1),
+			'csrf_token_name' => $this->security->get_csrf_token_name(),
+			'csrf_hash' => $this->security->get_csrf_hash()
+		);
+
+		$sms_templates = dropdown_render($this->db->select('id,name')->get('sms_templates')->result_array(),null);
+		$phonebooks = dropdown_render($this->db->select('id,name')->get('sms_phonebooks')->result_array(),null);
+		$groups = dropdown_render($this->db->select('id,name')->get('groups')->result_array(),null);
+		unset($phonebooks[""]);
+		unset($groups[""]);
+
+		$fieldset = array(
+			array(
+				'name'=>'template',
+				'label'=>'SMS Template',
+				'type'=>'select',
+				'class'=>'',
+				'icon'=>'fa-layer-group',
+				'custom_attributes'=>array(
+				),
+				'options'=>$sms_templates,
+				'default_options'=>''
+			),
+			array(
+				'name'=>'contact_type',
+				'label'=>'Contact Type',
+				'type'=>'select',
+				'class'=>'',
+				'icon'=>'fa-layer-group',
+				'custom_attributes'=>array(
+				),
+				'options'=>array('Phone Book'=>'Phone Book','Client Group'=>'Client Group'),
+				'default_options'=>'Phone Book'
+			),
+			array(
+				'name'=>'phonebook',
+				'label'=>'Phone Books',
+				'type'=>'select',
+				'class'=>'select2',
+				'icon'=>'fa-address-book',
+				'custom_attributes'=>array(
+					"multiple"=>"multiple",
+				),
+				'options'=>$phonebooks,
+				'default_options'=>''
+			),
+			array(
+				'name'=>'client_group',
+				'label'=>'Client Group',
+				'type'=>'select',
+				'class'=>'select2',
+				'icon'=>'fa-users',
+				'custom_attributes'=>array(
+					"multiple"=>"multiple",
+				),
+				'options'=>$groups,
+				'default_options'=>''
+			),
+			array(
+				'name'=>'schedule',
+				'label'=>'Schedule',
+				'type'=>'text',
+				'class'=>'datetimepicker',
+				'icon'=>'fa-calendar',
+				'custom_attributes'=>array(
+					"placeholder"=>"Y-m-d H:i:s",
+				)
+			),
+			/* array(
+				'name'=>'msisdn',
+				'label'=>'Extra Receipents',
+				'type'=>'text',
+				'class'=>'',
+				'icon'=>'fa-users',
+				'rules'=>array("required"=>FALSE),
+				'custom_attributes'=>array(
+					"placeholder"=>"Use Comma(,) As Separator EX. 8801721900000,8801721900001",
+					'data-input_type' => 'numeric_bulk'),
+				'default_options'=>''
+			),
+			array(
+				'name'=>'Extra Message',
+				'type'=>'textarea',
+				'class'=>'',
+				'icon'=>'fa-align-left',
+				'rules'=>array("required"=>FALSE),
+				'custom_attributes'=>array("placeholder"=>"Message (max 160 character)","maxlength"=>"160")
+			), */
+			array(
+				'name'=>'type',
+				'type'=>'hidden',
+				'class'=>'',
+				'icon'=>'',
+				'custom_attributes'=>array("value"=>"Schedule")
+			)
+		);
+
+		$content_data['form'] = form_render('initiate_form', $fieldset, FALSE);
+        page_view($this->title, 'schedule', $content_data);
+	}
+
+	function schedule_insert($data){
+
+		if($data['contact_type']=="Phone Book"){
+			$msisdn_list = $this->db->select('id,phone')->get_where('sms_contacts',array('phonebook_id'=>$data["phonebook"]))->result_array();
+		}else{
+			$msisdn_list = $this->db->select('b.id as id,b.phone as phone')
+			->from('users a')
+			->join('persons b','b.id = a.person_id','left')
+			->where('a.group_id', $data['client_group'])
+			->get()->result_array();
+		}
+
+		$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
+		$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
+
+		$i = 0;
+		foreach ($msisdn_list as $msisdn) {
+
+			if(substr($msisdn['phone'],0,1) == "0"){
+				$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
+			}
+
+			$data_api['message'][$i]['content'] = $message; 
+			$data_api['message'][$i]['phone'] = $msisdn['phone']; 
+			$data_api['message'][$i]['schedule'] = $data['schedule']; 
+			$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+			$i++;
+			$max_id++;
+		}
+
+		if($this->api_sendsms($data_api)->success==true){
+
+			$this->db->trans_start();
+		
+			foreach ($msisdn_list as $msisdn) {
+
+				if(substr($msisdn['phone'],0,1) == "0"){
+					$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
+				}
+
+				$this->db->insert('sms_transactions',array(
+					'type' => 'Schedule',
+					'contact_id' => $data['contact_type']=="Phone Book"?$msisdn['id']:0,
+					'person_id' => $data['contact_type']=="Phone Book"?0:$msisdn['id'],
+					'msisdn' => $msisdn['phone'],
+					'message' => $message,
+					'schedule' => $data['schedule'],
+					'updated_by'  => $data['updated_by']
+				));
+			}
+
+			return $this->db->trans_complete();
+
+		}else{
+			return false;
+		}
+
+	}
+
 	function form_submit()
 	{
 		$data = $this->input->post();
@@ -298,6 +464,10 @@ class Data extends CI_Controller {
 		}elseif ($data['type']=="Bulk") {
 
 			$action = $this->bulk_insert($data);
+
+		}elseif ($data['type']=="Schedule") {
+
+			$action = $this->schedule_insert($data);
 
 		}
 		

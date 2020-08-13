@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/ionicons/css/ionicons.min.css"> 
   <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/jquery-jvectormap/jquery-jvectormap-2.0.3.css">
   <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="{base_url}assets/pick/dist/vendors/jquery-datetimepicker/jquery.datetimepicker.min.css">
   <!-- END: Page CSS-->
 
   <!-- START: Custom CSS-->
@@ -55,6 +56,7 @@
   <script src="{base_url}assets/pick/dist/vendors/sweetalert2/sweetalert2.min.js"></script>
   <script src="{base_url}assets/js/jquery.cookie.js"></script>
   <script src="{base_url}assets/js/jquery.PrintArea.js"></script> 
+  <script src="{base_url}assets/pick/dist/vendors/jquery-datetimepicker/jquery.datetimepicker.full.js"></script> 
   <!-- END: APP JS-->
 
 
@@ -70,6 +72,10 @@
     $(document).ready(function() {
 
         $(".select2").select2();
+        $('.datepicker').datepicker();
+        $('.datetimepicker').datetimepicker({
+            format:'Y-m-d H:i:s'
+        });
 
         $('.sidebarCollapse').on('click', function () {
             $('body').toggleClass('compact-menu');
