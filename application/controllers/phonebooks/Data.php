@@ -46,7 +46,7 @@ class Data extends CI_Controller {
 	{
 		
 		$content_data = array(
-			'form_title'=>'New Role Form',
+			'form_title'=>'New Phone Book Form',
 			'base_url' => base_url(),
 			'page' => $this->uri->segment(1),
 			'csrf_token_name' => $this->security->get_csrf_token_name(),
@@ -56,12 +56,12 @@ class Data extends CI_Controller {
 		$fieldset = array(
 			array(
 				'name'=>'id',
-				'label'=>'Role ID',
+				'label'=>'Phone Book ID',
 				'type'=>'text',
 				'class'=>'',
 				'icon'=>'fa-hashtag',
 				'custom_attributes'=>array(
-					"placeholder"=>"Role ID",
+					"placeholder"=>"Phone Book ID",
 					"data-input_type"=>"numeric"
 				),
 			),
@@ -70,7 +70,7 @@ class Data extends CI_Controller {
 				'type'=>'text',
 				'class'=>'',
 				'icon'=>'fa-user',
-				'custom_attributes'=>array("placeholder"=>"Role Name")
+				'custom_attributes'=>array("placeholder"=>"Phone Book Name")
 			),
 			array(
 				'name'=>'Action',
@@ -107,7 +107,7 @@ class Data extends CI_Controller {
 				$this->db->insert($table,$data);
 			}else{
 				$result = false;
-				$message = 'Role ID '.$data['id'].' already exist';
+				$message = 'Phone Book ID '.$data['id'].' already exist';
 			}
 		}
 
