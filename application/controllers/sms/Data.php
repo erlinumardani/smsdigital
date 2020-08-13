@@ -357,6 +357,7 @@ class Data extends CI_Controller {
 				'icon'=>'fa-calendar',
 				'custom_attributes'=>array(
 					"placeholder"=>"Y-m-d H:i:s",
+					"autocomplete"=>"off"
 				)
 			),
 			/* array(
@@ -451,6 +452,167 @@ class Data extends CI_Controller {
 
 	}
 
+	function file()
+	{
+		
+		$content_data = array(
+			'form_title'=>'Send Bulk SMS',
+			'base_url' => base_url(),
+			'page' => $this->uri->segment(1),
+			'csrf_token_name' => $this->security->get_csrf_token_name(),
+			'csrf_hash' => $this->security->get_csrf_hash()
+		);
+
+		$sms_templates = dropdown_render($this->db->select('id,name')->get('sms_templates')->result_array(),null);
+		$phonebooks = dropdown_render($this->db->select('id,name')->get('sms_phonebooks')->result_array(),null);
+		$groups = dropdown_render($this->db->select('id,name')->get('groups')->result_array(),null);
+		unset($phonebooks[""]);
+		unset($groups[""]);
+
+		$fieldset = array(
+			array(
+				'name'=>'template',
+				'label'=>'SMS Template',
+				'type'=>'select',
+				'class'=>'',
+				'icon'=>'fa-layer-group',
+				'custom_attributes'=>array(
+				),
+				'options'=>$sms_templates,
+				'default_options'=>''
+			),
+			array(
+				'name'=>'file',
+				'label'=>'File Contacts',
+				'type'=>'file'
+			),
+			array(
+				'name'=>'schedule',
+				'label'=>'Schedule',
+				'type'=>'text',
+				'class'=>'datetimepicker',
+				'icon'=>'fa-calendar',
+				'rules'=>array("required"=>FALSE),
+				'custom_attributes'=>array(
+					"placeholder"=>"Y-m-d H:i:s (optional)",
+					"autocomplete"=>"off"
+				)
+			),
+			/* array(
+				'name'=>'msisdn',
+				'label'=>'Extra Receipents',
+				'type'=>'text',
+				'class'=>'',
+				'icon'=>'fa-users',
+				'rules'=>array("required"=>FALSE),
+				'custom_attributes'=>array(
+					"placeholder"=>"Use Comma(,) As Separator EX. 8801721900000,8801721900001",
+					'data-input_type' => 'numeric_bulk'),
+				'default_options'=>''
+			),
+			array(
+				'name'=>'Extra Message',
+				'type'=>'textarea',
+				'class'=>'',
+				'icon'=>'fa-align-left',
+				'rules'=>array("required"=>FALSE),
+				'custom_attributes'=>array("placeholder"=>"Message (max 160 character)","maxlength"=>"160")
+			), */
+			array(
+				'name'=>'type',
+				'type'=>'hidden',
+				'class'=>'',
+				'icon'=>'',
+				'custom_attributes'=>array("value"=>"File")
+			)
+		);
+
+		$content_data['form'] = form_render('initiate_form', $fieldset, FALSE);
+        page_view($this->title, 'file', $content_data);
+	}
+
+	function file_insert($data){
+
+		$config['upload_path']          = './storage/'.$this->session->userdata('user_id').'/'.'attachments';
+        //$config['allowed_types']        = 'pdf|doc|docx|xls|xlsx';
+        $config['allowed_types']        = 'xls';
+        $config['max_size']             = 20000;
+        $config['overwrite']            = TRUE;
+		$config['file_name']            = $this->session->userdata('user_id').time();
+		
+		!is_dir($config['upload_path'])?mkdir($config['upload_path'],0777,TRUE):'';
+
+		$this->load->library('upload', $config);
+		
+		if ($this->upload->do_upload('file')){
+
+			$path = 'storage/'.$this->session->userdata('user_id').'/attachments/'.$this->upload->data('file_name');
+
+			$i = 0;
+			foreach ($this->excel_reader($path) as $value) {
+				if($i>0){
+					$msisdn_list[$i-1] = $value[1];
+				}
+				$i++;
+			}
+
+			unlink($path);
+
+			if(strlen($data['schedule'])>4){
+				$schedule = $data['schedule'];
+			}else{
+				$schedule = date("Y-m-d H:i:s");
+			}
+	
+			$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
+			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
+	
+			$i = 0;
+			foreach ($msisdn_list as $msisdn) {
+	
+				if(substr($msisdn,0,1) == "0"){
+					$msisdn = substr_replace($msisdn,"62",0,1);
+				}
+	
+				$data_api['message'][$i]['content'] = $message; 
+				$data_api['message'][$i]['phone'] = $msisdn; 
+				$data_api['message'][$i]['schedule'] = $schedule; 
+				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$i++;
+				$max_id++;
+			}
+	
+			if($this->api_sendsms($data_api)->success==true){
+	
+				$this->db->trans_start();
+			
+				foreach ($msisdn_list as $msisdn) {
+	
+					if(substr($msisdn,0,1) == "0"){
+						$msisdn = substr_replace($msisdn,"62",0,1);
+					}
+	
+					$this->db->insert('sms_transactions',array(
+						'type' => 'File',
+						'msisdn' => $msisdn,
+						'message' => $message,
+						'schedule' => $schedule,
+						'updated_by'  => $data['updated_by']
+					));
+				}
+	
+				return $this->db->trans_complete();
+	
+			}else{
+				return false;
+			}
+
+		}else{
+			return false;
+		}
+
+	}
+
 	function form_submit()
 	{
 		$data = $this->input->post();
@@ -468,6 +630,10 @@ class Data extends CI_Controller {
 		}elseif ($data['type']=="Schedule") {
 
 			$action = $this->schedule_insert($data);
+
+		}elseif ($data['type']=="File") {
+
+			$action = $this->file_insert($data);
 
 		}
 		
@@ -620,13 +786,13 @@ class Data extends CI_Controller {
 		
 	}
 
-	function excel(){
+	function excel_reader($path){
 		$this->load->library('Spreadsheet_Excel_Reader');
 
 		$excel = new Spreadsheet_Excel_Reader();
-		$excel->read('assets/docs/sample.xls'); // set the excel file name here   
+		$excel->read($path); // set the excel file name here   
 
-		echo json_encode($excel->sheets[0]['cells']);
+		return $excel->sheets[0]['cells'];
 	}
 
 
@@ -663,5 +829,19 @@ class Data extends CI_Controller {
 			));
 		}
 		
+	}
+
+	function delete_attachment(){
+		
+		$id = $this->input->post('id');
+		$file = $this->db->get_where('process_flow_request_attachments',array('id'=>$id))->row()->url;
+
+		if(unlink('./'.$file) && $this->db->where('id',$id)->delete('process_flow_request_attachments')){
+			$result = array("status"=>TRUE,"message"=>"Data has been deleted");
+		}else{
+			$result = array("status"=>FALSE,"message"=>"Data failed to be deleted");
+		}
+
+		echo json_encode($result);
 	}
 }
