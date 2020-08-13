@@ -36,87 +36,99 @@ $(document).ready(function() {
     });
   
 
-    var datalist = $('#datalist').dataTable({ 
- 
+    var datalist = $('#history_data').dataTable({ 
+        dom:
+            "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        orderCellsTop: true,
+        fixedHeader: true,
+        buttons:[
+            {
+                extend:    'copyHtml5',
+                text:      '<i class="fas fa-clipboard"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Copy to Clipboard'
+            },
+            {
+                extend:    'excelHtml5',
+                text:      '<i class="fas fa-file-excel"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Export to Excel'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      '<i class="fas fa-file-csv"></i>',
+                className: 'btn btn-primary',
+                titleAttr: 'Export to CSV'
+            }
+        ],
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "processing": true, 
         "serverSide": true, 
         "scrollX": true,
         "order": [], 
         "ajax": {
-            "url": "<?=$base_url.$page?>/data/list",
+            "url": "<?=$base_url.$page?>/data/history_data",
             "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>"},
             "type": "POST"
         },
         "columnDefs": [
             { 
-                "targets": [ 0,8 ], 
+                "targets": [ 0 ], 
                 "orderable": false, 
-            },
-            {
-                "targets": [8],
-                "className": "no_view_detail"
-            },
-            {
-                "targets": [0,1,2,3,4,5,6,7],
-                "className": "view_detail"
             }
-        ],
-        "drawCallback": function(settings, json) {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('td.view_detail').on('click',function() {
-                var id = $(this).parent().data("id");
-                $(location).attr('href','<?=$base_url.$page?>/data/view/'+id);
-            });
-            $('th').removeClass('view_detail');
-            $('.delete').on('click',function() {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: '<?=$base_url.$page?>/data/delete',
-                            enctype: 'multipart/form-data',
-                            data: {"id":$(this).data('id'),"<?=$csrf_token_name?>":"<?=$csrf_hash?>"},
-                            type: 'POST',
-                            dataType: 'json',
-                        })
-                        .done(function(data) {
-                            if(data.status==true){
-                                Swal.fire(
-                                'Deleted!',
-                                data.message,
-                                'success'
-                                ).then(function(){
-                                    $('#datalist').DataTable().ajax.reload();
-                                });
-                            }else{
-                                Swal.fire(
-                                'Failed!',
-                                data.message,
-                                'error'
-                                );
-                            }    
-                        });
-                        
-                    }
-                });
-            });
+        ]
 
-            $('.update').on('click',function() {
-                $(location).attr('href','<?=$base_url.$page?>/data/update/'+$(this).data('id'));
-            });
-        },
-        createdRow: function (row, data, index) {
-            $(row).attr('data-id', data[9]);
-            $(row).attr('style','cursor:pointer;');
-        }
+    });
 
+    $('#get_report').on('click',function() {
+        datalist.fnDestroy();
+        datalist = $('#history_data').dataTable({ 
+            dom:
+                "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            orderCellsTop: true,
+            fixedHeader: true,
+            buttons:[
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fas fa-clipboard"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Copy to Clipboard'
+                },
+                {
+                    extend:    'excelHtml5',
+                    text:      '<i class="fas fa-file-excel"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Export to Excel'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      '<i class="fas fa-file-csv"></i>',
+                    className: 'btn btn-primary',
+                    titleAttr: 'Export to CSV'
+                }
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "processing": true, 
+            "serverSide": true, 
+            "scrollX": true,
+            "order": [], 
+            "ajax": {
+                "url": "<?=$base_url.$page?>/data/list",
+                "data":{"<?=$csrf_token_name?>":"<?=$csrf_hash?>","startdate":$("#startdate").val(),"enddate":$("#enddate").val()},
+                "type": "POST"
+            },
+            "columnDefs": [
+                { 
+                    "targets": [ 0 ], 
+                    "orderable": false, 
+                }
+            ]
+
+        });
     });
 
     $('.menu').removeClass('active');

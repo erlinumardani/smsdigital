@@ -72,10 +72,8 @@
     $(document).ready(function() {
 
         $(".select2").select2();
-        $('.datepicker').datepicker();
-        $('.datetimepicker').datetimepicker({
-            format:'Y-m-d H:i:s'
-        });
+        $('.datepicker').datepicker({dateFormat:'yy-mm-dd'});
+        $('.datetimepicker').datetimepicker({format:'Y-m-d H:i:s'});
 
         $('.sidebarCollapse').on('click', function () {
             $('body').toggleClass('compact-menu');
