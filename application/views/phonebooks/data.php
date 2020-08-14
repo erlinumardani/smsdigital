@@ -13,7 +13,6 @@
             <thead class="thead-dark">
             <tr>
                 <th>No</th>
-                <th>Phone Book ID</th>
                 <th>Phone Book Name</th>
                 <th>Created At</th>
                 <th>Action</th>

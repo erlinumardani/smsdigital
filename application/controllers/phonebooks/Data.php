@@ -55,17 +55,6 @@ class Data extends CI_Controller {
 
 		$fieldset = array(
 			array(
-				'name'=>'id',
-				'label'=>'Phone Book ID',
-				'type'=>'text',
-				'class'=>'',
-				'icon'=>'fa-hashtag',
-				'custom_attributes'=>array(
-					"placeholder"=>"Phone Book ID",
-					"data-input_type"=>"numeric"
-				),
-			),
-			array(
 				'name'=>'Name',
 				'type'=>'text',
 				'class'=>'',
@@ -103,12 +92,9 @@ class Data extends CI_Controller {
 		if($action == "Update"){
 			$this->db->where('id',$data['id'])->update($table,$data);
 		}else{
-			if($this->db->get_where('sms_phonebooks',array('id'=>$data['id']))->num_rows()==0){
-				$this->db->insert($table,$data);
-			}else{
-				$result = false;
-				$message = 'Phone Book ID '.$data['id'].' already exist';
-			}
+
+			$this->db->insert($table,$data);
+		
 		}
 
 		if($this->db->trans_complete() && $result){
@@ -123,8 +109,8 @@ class Data extends CI_Controller {
 	function list()
     {
 		$table = 'sms_phonebooks'; //nama tabel dari database
-		$column_order = array(null,'id', 'name','created_at'); //field yang ada di table user
-		$column_search = array('id','name','created_at'); //field yang diizin untuk pencarian 
+		$column_order = array(null,'name','created_at'); //field yang ada di table user
+		$column_search = array('name','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'desc'); // default order 
 		
 		$this->load->model('datatable_model');
@@ -137,7 +123,6 @@ class Data extends CI_Controller {
             $no++;
             $row = array();
             $row[] = $no;
-            $row[] = $field->id;
             $row[] = $field->name;
             $row[] = date_format(date_create($field->created_at),"Y-m-d");
 			$row[] = '

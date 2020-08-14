@@ -29,15 +29,15 @@ $(document).ready(function() {
         },
         "columnDefs": [
             { 
-                "targets": [ 0,3 ], 
+                "targets": [ 0,2 ], 
                 "orderable": false, 
             },
             {
-                "targets": [3],
+                "targets": [2],
                 "className": "no_view_detail"
             },
             {
-                "targets": [0,1,2],
+                "targets": [0,1],
                 "className": "view_detail"
             }
         ],
@@ -87,7 +87,7 @@ $(document).ready(function() {
 
         },
         createdRow: function (row, data, index) {
-            $(row).attr('data-id', data[9]);
+            $(row).attr('data-id', data[3]);
             $(row).attr('style','cursor:pointer;');
         }
 
