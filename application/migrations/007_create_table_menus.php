@@ -225,6 +225,16 @@ class Migration_create_table_menus extends CI_Migration {
 				'privileges'=> '[1, 2, 3]'
 			),
 			array(
+				'id'  		=> 16,
+				'sequence'  => 16,
+				'type'  	=> "Sub",
+				'main_id'  	=> 10,
+				'name'  	=> "SMS Otomatis",
+				'url'  		=> "sms/data/otomatis",
+				'icon'  	=> 'icon-loop',
+				'privileges'=> '[1, 2, 3]'
+			),
+			array(
 				'id'  		=> 17,
 				'sequence'  => 1,
 				'type'  	=> "Main",
