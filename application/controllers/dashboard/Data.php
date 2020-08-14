@@ -39,7 +39,13 @@ class Data extends CI_Controller {
 			$total_sms = $this->db->select('count(id) as total')->get_where('sms_transactions',array('updated_by'=>$this->session->userdata('user_id')))->row()->total;
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
-			$limit_persent = number_format($total_sms/$limit * 100);
+
+			if($total_sms>0 && $limit>0){
+				$limit_persent = number_format($total_sms/$limit * 100);
+			}else{
+				$limit_persent = 0;
+			}
+			
 		}else{
 			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
 			$total_sms = $this->db->select('count(id) as total')->get('sms_transactions')->row()->total;
