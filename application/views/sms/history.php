@@ -18,7 +18,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                             </div>
-                            <input type="text" name="startdate" id="startdate" class="form-control datepicker" placeholder="Start Date">
+                            <input autocomplete="off" type="text" name="startdate" id="startdate" class="form-control datepicker" placeholder="Start Date">
                         </div>
                     </div>
                     <a href="#" class="btn btn-primary" id="get_history"><i class="fas fa-clipboard"></i> Get Data</a>
@@ -30,7 +30,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                             </div>
-                            <input type="text" name="enddate" id="enddate" class="form-control datepicker" placeholder="End Date">
+                            <input autocomplete="off" type="text" name="enddate" id="enddate" class="form-control datepicker" placeholder="End Date">
                         </div>
                     </div>
                 </div>
