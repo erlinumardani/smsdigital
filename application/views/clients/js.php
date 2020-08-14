@@ -93,7 +93,7 @@ $(document).ready(function() {
             });
         },
         createdRow: function (row, data, index) {
-            $(row).attr('data-id', data[9]);
+            $(row).attr('data-id', data[8]);
             $(row).attr('style','cursor:pointer;');
         }
 

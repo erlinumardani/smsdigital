@@ -130,6 +130,17 @@ class Data extends CI_Controller {
 				'default_options'=>''
 			),
 			array(
+				'name'=>'sms_limit',
+				'label'=>'SMS Limit',
+				'type'=>'text',
+				'class'=>'',
+				'icon'=>'fa-not-equal',
+				'custom_attributes'=>array(
+					'data-input_type' => 'numeric',
+					"placeholder"=>"SMS Limit"
+				)
+			),
+			array(
 				'name'=>'role_id',
 				'type'=>'hidden',
 				'class'=>'',
@@ -156,7 +167,7 @@ class Data extends CI_Controller {
 		$groups = dropdown_render($this->db->select('id,name')->get('groups')->result_array(),null);
 
 		$content_data = array(
-			'form_title'=>'View User Detail',
+			'form_title'=>'View Client Detail',
 			'base_url' => base_url(),
 			'page' => $this->uri->segment(1),
 			'csrf_token_name' => $this->security->get_csrf_token_name(),
@@ -237,6 +248,19 @@ class Data extends CI_Controller {
 				)
 			),
 			array(
+				'name'=>'sms_limit',
+				'label'=>'SMS Limit',
+				'type'=>'text',
+				'class'=>'',
+				'icon'=>'fa-not-equal',
+				'custom_attributes'=>array(
+					'data-input_type' => 'numeric',
+					"placeholder"=>"SMS Limit",
+					"value"=>$view_data->sms_limit,
+					"disabled"=>true,
+				)
+			),
+			array(
 				'name'=>'group_id',
 				'label'=>'Role',
 				'type'=>'select',
@@ -268,7 +292,7 @@ class Data extends CI_Controller {
 		$groups = dropdown_render($this->db->select('id,name')->get('groups')->result_array(),null);
 
 		$content_data = array(
-			'form_title'=>'User Update Form',
+			'form_title'=>'Client Update Form',
 			'base_url' => base_url(),
 			'page' => $this->uri->segment(1),
 			'csrf_token_name' => $this->security->get_csrf_token_name(),
@@ -344,6 +368,18 @@ class Data extends CI_Controller {
 				)
 			),
 			array(
+				'name'=>'sms_limit',
+				'label'=>'SMS Limit',
+				'type'=>'text',
+				'class'=>'',
+				'icon'=>'fa-not-equal',
+				'custom_attributes'=>array(
+					'data-input_type' => 'numeric',
+					"placeholder"=>"SMS Limit",
+					"value"=>$view_data->sms_limit
+				)
+			),
+			array(
 				'name'=>'group_id',
 				'label'=>'Group',
 				'type'=>'select',
@@ -392,8 +428,12 @@ class Data extends CI_Controller {
 
 			$this->db->trans_start();
 			if($action == "Update"){
-				$this->db->where('person_id',$person_id)->update('users',array('group_id'=>$data['group_id']));
+				$this->db->where('person_id',$person_id)->update('users',array(
+					'sms_limit'=>$data['sms_limit'],
+					'group_id'=>$data['group_id']
+				));
 				unset($data['group_id']);
+				unset($data['sms_limit']);
 				$this->db->where('id',$person_id)->update('persons',$data);
 
 				if($this->db->trans_complete()){
@@ -407,7 +447,6 @@ class Data extends CI_Controller {
 						'email' => $data['email'],
 						'fullname' => $data['fullname'],
 						'gender' => $data['gender'],
-						//'bdate' => $data['bdate'],
 						'phone' => $data['phone'],
 						'updated_by' => $data['updated_by']
 					));
@@ -415,6 +454,7 @@ class Data extends CI_Controller {
 						'username' => $data['username'],
 						'password' => $data['password'],
 						'person_id' => $this->db->insert_id(),
+						'sms_limit' => $data['sms_limit'],
 						'role_id'  => $data['role_id'],
 						'group_id'  => $data['group_id'],
 						'updated_by'  => $data['updated_by']
