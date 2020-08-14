@@ -42,7 +42,7 @@ $(document).ready(function() {
             }
         ],
         "drawCallback": function(settings, json) {
-            $('[data-toggle="tooltip"]').tooltip();
+            
             
             $('th').removeClass('view_detail');
             $('.delete').on('click',function() {

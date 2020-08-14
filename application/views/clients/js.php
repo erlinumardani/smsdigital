@@ -42,7 +42,7 @@ $(document).ready(function() {
             }
         ],
         "drawCallback": function(settings, json) {
-            $('[data-toggle="tooltip"]').tooltip();
+            
             $('td.view_detail').on('click',function() {
                 var id = $(this).parent().data("id");
                 $(location).attr('href','<?=$base_url.$page?>/data/view/'+id);
