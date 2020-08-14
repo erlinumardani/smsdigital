@@ -146,7 +146,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					<div class="form-group mb-3">
 						<label for="password">Captcha</label>
-						<input class="form-control" type="text" required="" id="captcha" name="captcha" placeholder="Enter captcha">
+						<input class="form-control" type="text" required="" autocomplete="off" id="captcha" name="captcha" placeholder="Enter captcha">
 					</div>
 
 					<div class="form-group mb-3">
