@@ -29,6 +29,7 @@ class Data extends CI_Controller {
 		}
 		$this->title = 'Dashboard';
 		$this->role_id = $this->session->userdata('role_id');
+		$this->tenant_id = $this->session->userdata('tenant_id');
     }
     
 	function index()
@@ -48,8 +49,8 @@ class Data extends CI_Controller {
 			
 		}else{
 			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
-			$total_sms = $this->db->select('count(id) as total')->get('sms_transactions')->row()->total;
-			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
+			$total_sms = $this->db->select('count(id) as total')->get_where('sms_transactions',array('tenant_id'=>$this->tenant_id))->row()->total;
+			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule" and tenant_id = '.$this->tenant_id)->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
 			$limit_persent = 0;
 		}

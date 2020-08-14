@@ -49,6 +49,10 @@ class Migration_create_table_users extends CI_Migration {
 			'password'  => [
 				'type' => 'TEXT'
 			],
+			'tenant_id' => [
+				'type'   => 'INT(11)',
+				'default' => 1
+			],
 			'updated_by' => [
 				'type' => 'VARCHAR(20)',
 				'null' => TRUE,
@@ -73,18 +77,21 @@ class Migration_create_table_users extends CI_Migration {
 				'person_id'  	=> 1,
 				'username'  	=> "sadmin@yopmail.com",
 				'password'  	=> password_hash('infonusa', PASSWORD_BCRYPT, ['cost' => 10]),
+				'sms_limit'  	=> 0,
 				'role_id'  		=> 1,
 			),
 			array(
 				'person_id'  	=> 2,
 				'username'  	=> "admin@yopmail.com",
 				'password'  	=> password_hash('infonusa', PASSWORD_BCRYPT, ['cost' => 10]),
+				'sms_limit'  	=> 1000,
 				'role_id'  		=> 2,
 			),
 			array(
 				'person_id'  	=> 3,
 				'username'  	=> "client@yopmail.com",
 				'password'  	=> password_hash('infonusa', PASSWORD_BCRYPT, ['cost' => 10]),
+				'sms_limit'  	=> 100,
 				'role_id'  		=> 3,
 			)
 			
@@ -101,6 +108,7 @@ class Migration_create_table_users extends CI_Migration {
 				`b`.`role_id`,
 				`b`.`group_id`,
 				`b`.`sms_limit`,
+				`b`.`tenant_id`,
 				`c`.`name` AS `role_name`,
 				a.*
 			FROM

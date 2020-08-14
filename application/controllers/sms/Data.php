@@ -28,6 +28,9 @@ class Data extends CI_Controller {
 			redirect('auth');
 		}
 		$this->title = 'SMS';
+		$this->role_id = $this->session->userdata('role_id');
+		$this->user_id = $this->session->userdata('user_id');
+		$this->tenant_id = $this->session->userdata('tenant_id');
     }
     
 	function index()
@@ -90,40 +93,46 @@ class Data extends CI_Controller {
 		$msisdn_list = explode(",",$data['msisdn']);
 		$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
 
-		$i = 0;
-		foreach ($msisdn_list as $msisdn) {
+		if($this->limit_counter()>count($msisdn_list)){
 
-			if(substr($msisdn,0,1) == "0"){
-				$msisdn = substr_replace($msisdn,"62",0,1);
-			}
-
-			$data_api['message'][$i]['content'] = $data['message']; 
-			$data_api['message'][$i]['phone'] = $msisdn; 
-			$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
-			$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
-			$i++;
-			$max_id++;
-		}
-
-		if($this->api_sendsms($data_api)->success==true){
-
-			$this->db->trans_start();
-		
+			$i = 0;
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn,0,1) == "0"){
 					$msisdn = substr_replace($msisdn,"62",0,1);
 				}
 
-				$this->db->insert('sms_transactions',array(
-					'msisdn' => $msisdn,
-					'message' => $data['message'],
-					'updated_by'  => $data['updated_by']
-				));
+				$data_api['message'][$i]['content'] = $data['message']; 
+				$data_api['message'][$i]['phone'] = $msisdn; 
+				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
+				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$i++;
+				$max_id++;
 			}
 
-			return $this->db->trans_complete();
+			if($this->api_sendsms($data_api)->success==true){
 
+				$this->db->trans_start();
+			
+				foreach ($msisdn_list as $msisdn) {
+
+					if(substr($msisdn,0,1) == "0"){
+						$msisdn = substr_replace($msisdn,"62",0,1);
+					}
+
+					$this->db->insert('sms_transactions',array(
+						'msisdn' => $msisdn,
+						'message' => $data['message'],
+						'tenant_id' => $this->tenant_id,
+						'updated_by'  => $data['updated_by']
+					));
+				}
+
+				return $this->db->trans_complete();
+
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
@@ -239,46 +248,52 @@ class Data extends CI_Controller {
 			->get()->result_array();
 		}
 
-		$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
-		$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
+		if($this->limit_counter()>count($msisdn_list)){
 
-		$i = 0;
-		foreach ($msisdn_list as $msisdn) {
+			$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
+			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
 
-			if(substr($msisdn['phone'],0,1) == "0"){
-				$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
-			}
-
-			$data_api['message'][$i]['content'] = $message; 
-			$data_api['message'][$i]['phone'] = $msisdn['phone']; 
-			$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
-			$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
-			$i++;
-			$max_id++;
-		}
-
-		if($this->api_sendsms($data_api)->success==true){
-
-			$this->db->trans_start();
-		
+			$i = 0;
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn['phone'],0,1) == "0"){
 					$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
 				}
 
-				$this->db->insert('sms_transactions',array(
-					'type' => 'Bulk',
-					'contact_id' => $data['contact_type']=="Phone Book"?$msisdn['id']:0,
-					'person_id' => $data['contact_type']=="Phone Book"?0:$msisdn['id'],
-					'msisdn' => $msisdn['phone'],
-					'message' => $message,
-					'updated_by'  => $data['updated_by']
-				));
+				$data_api['message'][$i]['content'] = $message; 
+				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
+				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
+				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$i++;
+				$max_id++;
 			}
 
-			return $this->db->trans_complete();
+			if($this->api_sendsms($data_api)->success==true){
 
+				$this->db->trans_start();
+			
+				foreach ($msisdn_list as $msisdn) {
+
+					if(substr($msisdn['phone'],0,1) == "0"){
+						$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
+					}
+
+					$this->db->insert('sms_transactions',array(
+						'type' => 'Bulk',
+						'contact_id' => $data['contact_type']=="Phone Book"?$msisdn['id']:0,
+						'person_id' => $data['contact_type']=="Phone Book"?0:$msisdn['id'],
+						'msisdn' => $msisdn['phone'],
+						'message' => $message,
+						'tenant_id' => $this->tenant_id,
+						'updated_by'  => $data['updated_by']
+					));
+				}
+
+				return $this->db->trans_complete();
+
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
@@ -405,46 +420,53 @@ class Data extends CI_Controller {
 			->get()->result_array();
 		}
 
-		$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
-		$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
+		if($this->limit_counter()>count($msisdn_list)){
 
-		$i = 0;
-		foreach ($msisdn_list as $msisdn) {
+			$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
+			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
 
-			if(substr($msisdn['phone'],0,1) == "0"){
-				$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
-			}
-
-			$data_api['message'][$i]['content'] = $message; 
-			$data_api['message'][$i]['phone'] = $msisdn['phone']; 
-			$data_api['message'][$i]['schedule'] = $data['schedule']; 
-			$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
-			$i++;
-			$max_id++;
-		}
-
-		if($this->api_sendsms($data_api)->success==true){
-
-			$this->db->trans_start();
-		
+			$i = 0;
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn['phone'],0,1) == "0"){
 					$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
 				}
 
-				$this->db->insert('sms_transactions',array(
-					'type' => 'Schedule',
-					'contact_id' => $data['contact_type']=="Phone Book"?$msisdn['id']:0,
-					'person_id' => $data['contact_type']=="Phone Book"?0:$msisdn['id'],
-					'msisdn' => $msisdn['phone'],
-					'message' => $message,
-					'schedule' => $data['schedule'],
-					'updated_by'  => $data['updated_by']
-				));
+				$data_api['message'][$i]['content'] = $message; 
+				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
+				$data_api['message'][$i]['schedule'] = $data['schedule']; 
+				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$i++;
+				$max_id++;
 			}
 
-			return $this->db->trans_complete();
+			if($this->api_sendsms($data_api)->success==true){
+
+				$this->db->trans_start();
+			
+				foreach ($msisdn_list as $msisdn) {
+
+					if(substr($msisdn['phone'],0,1) == "0"){
+						$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
+					}
+
+					$this->db->insert('sms_transactions',array(
+						'type' => 'Schedule',
+						'contact_id' => $data['contact_type']=="Phone Book"?$msisdn['id']:0,
+						'person_id' => $data['contact_type']=="Phone Book"?0:$msisdn['id'],
+						'msisdn' => $msisdn['phone'],
+						'message' => $message,
+						'schedule' => $data['schedule'],
+						'tenant_id' => $this->tenant_id,
+						'updated_by'  => $data['updated_by']
+					));
+				}
+
+				return $this->db->trans_complete();
+
+			}else{
+				return false;
+			}
 
 		}else{
 			return false;
@@ -566,43 +588,49 @@ class Data extends CI_Controller {
 	
 			$message = $this->db->select('message')->get_where('sms_templates',array('id'=>$data["template"]))->row()->message;
 			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
+
+			if($this->limit_counter()>count($msisdn_list)){
 	
-			$i = 0;
-			foreach ($msisdn_list as $msisdn) {
-	
-				if(substr($msisdn,0,1) == "0"){
-					$msisdn = substr_replace($msisdn,"62",0,1);
-				}
-	
-				$data_api['message'][$i]['content'] = $message; 
-				$data_api['message'][$i]['phone'] = $msisdn; 
-				$data_api['message'][$i]['schedule'] = $schedule; 
-				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
-				$i++;
-				$max_id++;
-			}
-	
-			if($this->api_sendsms($data_api)->success==true){
-	
-				$this->db->trans_start();
-			
+				$i = 0;
 				foreach ($msisdn_list as $msisdn) {
-	
+		
 					if(substr($msisdn,0,1) == "0"){
 						$msisdn = substr_replace($msisdn,"62",0,1);
 					}
-	
-					$this->db->insert('sms_transactions',array(
-						'type' => 'File',
-						'msisdn' => $msisdn,
-						'message' => $message,
-						'schedule' => $schedule,
-						'updated_by'  => $data['updated_by']
-					));
+		
+					$data_api['message'][$i]['content'] = $message; 
+					$data_api['message'][$i]['phone'] = $msisdn; 
+					$data_api['message'][$i]['schedule'] = $schedule; 
+					$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+					$i++;
+					$max_id++;
 				}
-	
-				return $this->db->trans_complete();
-	
+		
+				if($this->api_sendsms($data_api)->success==true){
+		
+					$this->db->trans_start();
+				
+					foreach ($msisdn_list as $msisdn) {
+		
+						if(substr($msisdn,0,1) == "0"){
+							$msisdn = substr_replace($msisdn,"62",0,1);
+						}
+		
+						$this->db->insert('sms_transactions',array(
+							'type' => 'File',
+							'msisdn' => $msisdn,
+							'message' => $message,
+							'schedule' => $schedule,
+							'tenant_id' => $this->tenant_id,
+							'updated_by'  => $data['updated_by']
+						));
+					}
+		
+					return $this->db->trans_complete();
+		
+				}else{
+					return false;
+				}
 			}else{
 				return false;
 			}
@@ -951,5 +979,30 @@ class Data extends CI_Controller {
         );
         //output dalam format JSON
         echo json_encode($output);
+	}
+
+	function limit_counter(){
+
+		if($this->role_id==3){
+
+			$total = $this->db->select("count(id) as total")->get_where('sms_transactions',array("updated_by"=>$this->user_id))->row()->total;
+			$limit = $this->db->select("sms_limit")->get_where('users',array("id"=>$this->user_id))->row()->sms_limit;
+
+			return $limit-$total;
+
+		}elseif($this->role_id==2){
+
+			$total = $this->db->select("count(id) as total")->get_where('sms_transactions',array("tenant_id"=>$this->tenant_id))->row()->total;
+			$limit = $this->db->select("sms_limit")->get_where('users',array("id"=>$this->user_id))->row()->sms_limit;
+			$clients_limit = $this->db->select("sum(sms_limit) as sms_limit")->get_where('users','tenant_id = '.$this->tenant_id.' and id !='.$this->user_id)->row()->sms_limit;
+
+			return $limit-$total-$clients_limit;
+
+		}else{
+
+			return 0;
+
+		}
+
 	}
 }
