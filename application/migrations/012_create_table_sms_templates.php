@@ -54,6 +54,7 @@ class Migration_create_table_sms_templates extends CI_Migration {
 		$data = array(
 			array(
 				'id'  		=> 1,
+				'name'  	=> "Template Tes",
 				'from'  	=> "BPI",
 				'message'  	=> "SMS ini hanya untuk tes"
 			)
