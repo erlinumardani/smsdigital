@@ -69,6 +69,24 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table($this->table, TRUE);
 
+		//create view
+		$this->db->query(
+			"CREATE OR REPLACE VIEW `v_sms_transactions` AS 
+			SELECT
+				a.msisdn,
+				a.message,
+				a.`status`,
+				b.username as sender,
+				c.provider,
+				a.`schedule`,
+				a.created_at, 
+				a.type
+			FROM
+				sms_transactions AS a
+				LEFT JOIN users AS b ON b.id = a.updated_by
+				LEFT JOIN sms_providers AS c ON c.prefix = SUBSTRING( a.msisdn, 3, 3 )" 
+		);
+
 	}
 
 

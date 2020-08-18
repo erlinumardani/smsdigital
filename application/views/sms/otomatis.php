@@ -44,8 +44,10 @@
                 <th>No</th>
                 <th>Phone Number</th>
                 <th>Message</th>
+                <th>Sender</th>
+                <th>Provider</th>
+                <th>Status</th>
                 <th>Schedule</th>
-                <th>status</th>
                 <th>Date Created</th>
             </tr>
             </thead>

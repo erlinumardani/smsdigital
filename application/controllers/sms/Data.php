@@ -888,9 +888,9 @@ class Data extends CI_Controller {
 
 	function history_data(){
 
-		$table = 'sms_transactions'; //nama tabel dari database
-		$column_order = array(null, 'msisdn','message','schedule','status','created_at'); //field yang ada di table user
-		$column_search = array('msisdn','message','schedule','status','created_at'); //field yang diizin untuk pencarian 
+		$table = 'v_sms_transactions'; //nama tabel dari database
+		$column_order = array(null, 'msisdn','message','status','sender','provider','schedule','created_at'); //field yang ada di table user
+		$column_search = array('msisdn','message','status','sender','provider','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'asc'); // default order 
 		$filter = "month(created_at) = month(now())";
 		$data = $this->input->post();
@@ -911,8 +911,10 @@ class Data extends CI_Controller {
             $row[] = $no;
             $row[] = $field->msisdn;
             $row[] = $field->message;
-            $row[] = $field->schedule;
-            $row[] = $field->status;
+            $row[] = $field->sender;
+            $row[] = $field->provider;
+			$row[] = $field->status;
+			$row[] = $field->schedule;
             $row[] = $field->created_at;
  
             $data[] = $row;
@@ -943,9 +945,9 @@ class Data extends CI_Controller {
 
 	function otomatis_data(){
 
-		$table = 'sms_transactions'; //nama tabel dari database
-		$column_order = array(null, 'msisdn','message','schedule','status','created_at'); //field yang ada di table user
-		$column_search = array('msisdn','message','schedule','status','created_at'); //field yang diizin untuk pencarian 
+		$table = 'v_sms_transactions'; //nama tabel dari database
+		$column_order = array(null, 'msisdn','message','sender','provider','status','schedule','created_at'); //field yang ada di table user
+		$column_search = array('msisdn','message','sender','provider','status','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'asc'); // default order 
 		$filter = "schedule > now() and type = 'Schedule'";
 		$data = $this->input->post();
@@ -966,8 +968,10 @@ class Data extends CI_Controller {
             $row[] = $no;
             $row[] = $field->msisdn;
             $row[] = $field->message;
-            $row[] = $field->schedule;
-            $row[] = $field->status;
+            $row[] = $field->sender;
+            $row[] = $field->provider;
+			$row[] = $field->status;
+			$row[] = $field->schedule;
             $row[] = $field->created_at;
  
             $data[] = $row;
