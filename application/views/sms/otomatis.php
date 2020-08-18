@@ -45,6 +45,7 @@
                 <th>Phone Number</th>
                 <th>Message</th>
                 <th>Schedule</th>
+                <th>status</th>
                 <th>Date Created</th>
             </tr>
             </thead>
