@@ -98,12 +98,12 @@ class Engine extends CI_Controller {
 
 			$result = $this->curl->execute();
 
-			/* $this->db->insert('sms_curl_log',array(
+			$this->db->insert('sms_curl_log',array(
 				'uri'=>$uri,
 				'method'=>'POST',
 				'params'=>$post,
 				'response'=>$result
-			)); */
+			));
 
 			// Execute - returns responce
 			return json_decode($result);
