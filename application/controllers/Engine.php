@@ -124,7 +124,7 @@ class Engine extends CI_Controller {
 			$status = $this->api_delivery_check($value->uid);
 
 			if($status->success == true){
-				$this->db->where('id',$value->uid)->update('sms_transactions',array('status'=>$status->data->state));
+				$this->db->where('id',$value->uid)->update('sms_transactions',array('status'=>$status->data['state']));
 			}
 		}
 
