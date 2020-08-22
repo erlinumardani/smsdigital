@@ -42,6 +42,7 @@
             <thead class="thead-dark">
             <tr>
                 <th>No</th>
+                <th>Type</th>
                 <th>Phone Number</th>
                 <th>Message</th>
                 <th>Sender</th>

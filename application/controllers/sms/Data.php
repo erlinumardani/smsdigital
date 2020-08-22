@@ -889,8 +889,8 @@ class Data extends CI_Controller {
 	function history_data(){
 
 		$table = 'v_sms_transactions'; //nama tabel dari database
-		$column_order = array(null, 'msisdn','message','status','sender','provider','schedule','created_at'); //field yang ada di table user
-		$column_search = array('msisdn','message','status','sender','provider','schedule','created_at'); //field yang diizin untuk pencarian 
+		$column_order = array(null, 'type', 'msisdn','message','status','sender','provider','schedule','created_at'); //field yang ada di table user
+		$column_search = array('type', 'msisdn','message','status','sender','provider','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'asc'); // default order 
 		$filter = "month(created_at) = month(now())";
 		$data = $this->input->post();
@@ -909,6 +909,7 @@ class Data extends CI_Controller {
             $no++;
             $row = array();
             $row[] = $no;
+            $row[] = $field->type;
             $row[] = $field->msisdn;
             $row[] = $field->message;
             $row[] = $field->sender;
