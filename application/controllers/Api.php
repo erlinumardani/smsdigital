@@ -101,6 +101,7 @@ class Api extends REST_Controller
                             }
 
                             $this->db->insert('sms_transactions',array(
+                                'type' => "API",
                                 'msisdn' => $data['phone'],
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
