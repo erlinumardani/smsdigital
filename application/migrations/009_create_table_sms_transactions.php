@@ -24,7 +24,7 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				'auto_increment' => TRUE
 			],
 			'type' => [
-				'type' => 'ENUM("Quick","Bulk","Schedule","File")',
+				'type' => 'ENUM("API","Quick","Bulk","Schedule","File")',
 				'default' => "Quick"
 			],
 			'msisdn' => [
