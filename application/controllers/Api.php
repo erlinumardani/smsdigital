@@ -88,6 +88,7 @@ class Api extends REST_Controller
                         $data_api['message'][$i]['uid'] = "smsd-".$max_id; 
                         $i++;
                         $max_id++;
+                        $uid[$i] = $max_id;
                     }
 
                     if($this->api_sendsms($data_api)->success==true){
@@ -112,7 +113,7 @@ class Api extends REST_Controller
 
                         $this->db->trans_complete();
 
-                        $this->set_response(array("status"=>"success","messages"=>'Sending Messages'), REST_Controller::HTTP_OK);
+                        $this->set_response(array_merge(array("status"=>"success","messages"=>'Sending Messages'),array('uid'=>$uid)), REST_Controller::HTTP_OK);
                         return;
 
                     }else{
