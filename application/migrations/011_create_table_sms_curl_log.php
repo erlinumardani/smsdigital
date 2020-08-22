@@ -53,6 +53,24 @@ class Migration_create_table_sms_curl_log extends CI_Migration {
 		$this->dbforge->add_key('id', TRUE);
 		$this->dbforge->create_table($this->table, TRUE);
 
+		//create api logs table
+		$this->db->query(
+			"CREATE TABLE `sms_api_log` (
+				`id` INT(11) NOT NULL AUTO_INCREMENT,
+				`uri` VARCHAR(255) NOT NULL,
+				`method` VARCHAR(6) NOT NULL,
+				`params` TEXT DEFAULT NULL,
+				`api_key` VARCHAR(40) NOT NULL,
+				`ip_address` VARCHAR(45) NOT NULL,
+				`time` INT(11) NOT NULL,
+				`rtime` FLOAT DEFAULT NULL,
+				`authorized` VARCHAR(1) NOT NULL,
+				`response_code` smallint(3) DEFAULT '0',
+					  `response` TEXT DEFAULT NULL,
+				PRIMARY KEY (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;" 
+		);
+
 	}
 
 
