@@ -86,9 +86,9 @@ class Api extends REST_Controller
                         $data_api['message'][$i]['phone'] = $data['phone']; 
                         $data_api['message'][$i]['schedule'] = $data['schedule'];
                         $data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+                        $uid[$i] = $max_id;
                         $i++;
                         $max_id++;
-                        $uid[$i] = $max_id;
                     }
 
                     if($this->api_sendsms($data_api)->success==true){
