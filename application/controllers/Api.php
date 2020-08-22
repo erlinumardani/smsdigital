@@ -124,10 +124,37 @@ class Api extends REST_Controller
                     $this->set_response(array("status"=>"failed","messages"=>'Wrong Password'), REST_Controller::HTTP_OK);
                     return;
                 }
+            }else{
+                $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
             }
+        }else{
+            $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
         }
+    }
 
-        $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+    public function checksms_post()
+    {
+        $headers = $this->input->request_headers();
+        $inputdata =  json_decode(file_get_contents('php://input'),true);
+        
+        if (array_key_exists('Authorization', $headers) && !empty($headers['Authorization'])) {
+            //TODO: Change 'token_timeout' in application\config\jwt.php
+            $decodedToken = AUTHORIZATION::validateTimestamp($headers['Authorization']);
+
+            // return response if token is valid
+            if ($decodedToken != false) {
+
+                $data = $this->db->select('id as uid, status')->get_where('sms_transactions',array('id'=>$inputdata['uid']))->result_array();
+
+                $this->set_response(array("status"=>"success",array('data'=>$data)), REST_Controller::HTTP_OK);
+                return;
+
+            }else{
+                $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+            }
+        }else{
+            $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+        }
     }
     
     public function api_get_token(){
