@@ -102,32 +102,32 @@ $(document).ready(function() {
             colors: ['#1ee0ac', '#ffc107', '#17a2b8', '#f64e60', '#eb6431', '#ffd04c', '#aaaaaa'],
             series: [{
                     name: 'XL',
-                    data: [0, 0, 0, 0, 0, 20, 0, 0, 0]
+                    data: [<?=$gm_xl?>]
                 }, {
                     name: 'Three',
-                    data: [0, 0, 0, 0, 0, 30, 0, 0, 0]
+                    data: [<?=$gm_three?>]
                 }, {
                     name: 'Axis',
-                    data: [0, 0, 0, 0, 0, 40, 0, 0, 0]
+                    data: [<?=$gm_axis?>]
                 }, {
                     name: 'Telkomsel',
-                    data: [0, 0, 0, 0, 0, 1000, 0, 0, 0]
+                    data: [<?=$gm_telkomsel?>]
                 }, {
                     name: 'Smartfren',
-                    data: [0, 0, 0, 0, 0, 30, 0, 0, 0]
+                    data: [<?=$gm_smartfren?>]
                 }, {
                     name: 'Indosat',
-                    data: [0, 0, 0, 0, 0, 500, 0, 0, 0]
+                    data: [<?=$gm_indosat?>]
                 }, {
                     name: 'Other',
-                    data: [0, 0, 0, 0, 0, 20, 0, 0, 0]
+                    data: [<?=$gm_other?>]
                 }],
             xaxis: {
-                categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
             },
             yaxis: {
                 title: {
-                    text: '(thousands)'
+                    text: '(sms)'
                 }
             },
             fill: {
@@ -137,7 +137,7 @@ $(document).ready(function() {
             tooltip: {
                 y: {
                     formatter: function (val) {
-                        return val + " thousands"
+                        return val + " sms"
                     }
                 }
             }

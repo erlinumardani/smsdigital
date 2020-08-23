@@ -85,7 +85,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="5"></span>
+                                        <span class="fill" data-percentage="<?=$y_xl?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -98,7 +98,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="10"></span>
+                                        <span class="fill" data-percentage="<?=$y_three?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -111,7 +111,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="15"></span>
+                                        <span class="fill" data-percentage="<?=$y_axis?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -124,7 +124,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="50"></span>
+                                        <span class="fill" data-percentage="<?=$y_telkomsel?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -137,7 +137,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="23"></span>
+                                        <span class="fill" data-percentage="<?=$y_smartfren?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -150,7 +150,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="20"></span>
+                                        <span class="fill" data-percentage="<?=$y_indosat?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
@@ -163,7 +163,7 @@
                                                 <span class="tip-arrow"></span>
                                             </span>
                                         </div>
-                                        <span class="fill" data-percentage="10"></span>
+                                        <span class="fill" data-percentage="<?=$y_other?>"></span>
                                     </div>                                 
                                 </div> 
                             </li>
