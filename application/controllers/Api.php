@@ -85,7 +85,7 @@ class Api extends REST_Controller
                         $data_api['message'][$i]['content'] = $data['content']; 
                         $data_api['message'][$i]['phone'] = $data['phone']; 
                         $data_api['message'][$i]['schedule'] = $data['schedule'];
-                        $data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+                        $data_api['message'][$i]['uid'] = $data['guid']; 
                         $uid[$i] = $max_id;
                         $i++;
                         $max_id++;
@@ -106,6 +106,7 @@ class Api extends REST_Controller
                                 'msisdn' => $data['phone'],
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
+                                'guid' => $data['guid'],
                                 'tenant_id' => $decodedToken->data->tenant_id,
                                 'updated_by'  => $decodedToken->data->user_id
                             ));

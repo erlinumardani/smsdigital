@@ -51,6 +51,9 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				'type'   => 'INT(11)',
 				'default' => 1
 			],
+			'guid' => [
+				'type' => 'VARCHAR(200)'
+			],
 			'updated_by' => [
 				'type' => 'VARCHAR(20)',
 				'null' => TRUE,
