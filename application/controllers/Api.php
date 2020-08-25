@@ -137,6 +137,18 @@ class Api extends REST_Controller
     {
         $headers = $this->input->request_headers();
         $inputdata =  json_decode(file_get_contents('php://input'),true);
+
+        if(isset($inputdata['guid'])){
+            $guid = $inputdata['guid'];
+        }else{
+            $guid = '';
+        }
+
+        if(isset($inputdata['uid'])){
+            $uid = $inputdata['uid'];
+        }else{
+            $uid = '';
+        }
         
         if (array_key_exists('Authorization', $headers) && !empty($headers['Authorization'])) {
             //TODO: Change 'token_timeout' in application\config\jwt.php
@@ -145,7 +157,7 @@ class Api extends REST_Controller
             // return response if token is valid
             if ($decodedToken != false) {
 
-                $data = $this->db->select('id as uid, status')->get_where('sms_transactions',array('id'=>$inputdata['uid']))->result();
+                $data = $this->db->select('id as uid, status')->get_where('sms_transactions','id = "'.$uid.'" or guid = "'.$guid.'"')->result();
 
                 $this->set_response(array("status"=>"success","data"=>$data), REST_Controller::HTTP_OK);
                 return;
