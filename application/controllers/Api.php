@@ -191,8 +191,8 @@ class Api extends REST_Controller
 
 		// Post - If you do not use post, it will just run a GET request
 		$post = json_encode(array(
-			'username'=>'dukcapil',
-			'password'=>'dukc@p1LsMs'
+			'username'=>'sms-go',
+			'password'=>'infonus@!@#'
 		));
 
 		$this->curl->post($post);
