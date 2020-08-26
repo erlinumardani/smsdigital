@@ -101,11 +101,21 @@ class Data extends CI_Controller {
 				if(substr($msisdn,0,1) == "0"){
 					$msisdn = substr_replace($msisdn,"62",0,1);
 				}
+				if(strlen($msisdn) > 14){
+					//$err_des[] = 'INVALID_MSISDN';
+					return false;
+					exit;
+				}
+				if(substr($msisdn,0,3) != '628'){
+					//$err_des[] = 'PREFIX_NOT_EXIST';
+					return false;
+					exit;
+				}
 
 				$data_api['message'][$i]['content'] = $data['message']; 
 				$data_api['message'][$i]['phone'] = $msisdn; 
 				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
-				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -124,6 +134,7 @@ class Data extends CI_Controller {
 						'msisdn' => $msisdn,
 						'message' => $data['message'],
 						'tenant_id' => $this->tenant_id,
+						'guid' => "smsgo-".$max_id,
 						'updated_by'  => $data['updated_by']
 					));
 				}
@@ -259,11 +270,21 @@ class Data extends CI_Controller {
 				if(substr($msisdn['phone'],0,1) == "0"){
 					$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
 				}
+				if(strlen($msisdn['phone']) > 14){
+					//$err_des[] = 'INVALID_MSISDN';
+					return false;
+					exit;
+				}
+				if(substr($msisdn['phone'],0,3) != '628'){
+					//$err_des[] = 'PREFIX_NOT_EXIST';
+					return false;
+					exit;
+				}
 
 				$data_api['message'][$i]['content'] = $message; 
 				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
 				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
-				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -285,6 +306,7 @@ class Data extends CI_Controller {
 						'msisdn' => $msisdn['phone'],
 						'message' => $message,
 						'tenant_id' => $this->tenant_id,
+						'guid' => "smsgo-".$max_id,
 						'updated_by'  => $data['updated_by']
 					));
 				}
@@ -431,11 +453,21 @@ class Data extends CI_Controller {
 				if(substr($msisdn['phone'],0,1) == "0"){
 					$msisdn['phone'] = substr_replace($msisdn['phone'],"62",0,1);
 				}
+				if(strlen($msisdn['phone']) > 14){
+					//$err_des[] = 'INVALID_MSISDN';
+					return false;
+					exit;
+				}
+				if(substr($msisdn['phone'],0,3) != '628'){
+					//$err_des[] = 'PREFIX_NOT_EXIST';
+					return false;
+					exit;
+				}
 
 				$data_api['message'][$i]['content'] = $message; 
 				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
 				$data_api['message'][$i]['schedule'] = $data['schedule']; 
-				$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -458,6 +490,7 @@ class Data extends CI_Controller {
 						'message' => $message,
 						'schedule' => $data['schedule'],
 						'tenant_id' => $this->tenant_id,
+						'guid' => "smsgo-".$max_id,
 						'updated_by'  => $data['updated_by']
 					));
 				}
@@ -597,11 +630,21 @@ class Data extends CI_Controller {
 					if(substr($msisdn,0,1) == "0"){
 						$msisdn = substr_replace($msisdn,"62",0,1);
 					}
+					if(strlen($msisdn['phone']) > 14){
+						//$err_des[] = 'INVALID_MSISDN';
+						return false;
+						exit;
+					}
+					if(substr($msisdn['phone'],0,3) != '628'){
+						//$err_des[] = 'PREFIX_NOT_EXIST';
+						return false;
+						exit;
+					}
 		
 					$data_api['message'][$i]['content'] = $message; 
 					$data_api['message'][$i]['phone'] = $msisdn; 
 					$data_api['message'][$i]['schedule'] = $schedule; 
-					$data_api['message'][$i]['uid'] = "smsd-".$max_id; 
+					$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
 					$i++;
 					$max_id++;
 				}
@@ -622,6 +665,7 @@ class Data extends CI_Controller {
 							'message' => $message,
 							'schedule' => $schedule,
 							'tenant_id' => $this->tenant_id,
+							'guid' => "smsgo-".$max_id,
 							'updated_by'  => $data['updated_by']
 						));
 					}
@@ -666,9 +710,9 @@ class Data extends CI_Controller {
 		}
 		
 		if($action){
-			$result = array("status"=>TRUE,"message"=>"Data inserted, Sending");
+			$result = array("status"=>TRUE,"message"=>"Data Submitted, Sending");
 		}else{
-			$result = array("status"=>FALSE,"message"=>"Data failed to insert");
+			$result = array("status"=>FALSE,"message"=>"Data failed to Submit");
 		}
 		
 		echo json_encode($result);
