@@ -159,8 +159,12 @@ class Api extends REST_Controller
 
                 $data = $this->db->select('id as uid, status')->get_where('sms_transactions','id = "'.$uid.'" or guid = "'.$guid.'"')->result();
 
-                $this->set_response(array("status"=>"success","data"=>$data), REST_Controller::HTTP_OK);
-                return;
+                if(count($data)>=1){
+                    $this->set_response(array("status"=>"success","data"=>$data), REST_Controller::HTTP_OK);
+                    return;
+                }else{
+                    $this->set_response(array("status"=>"failed","messages"=>"No Data Found"), REST_Controller::HTTP_OK);
+                }
 
             }else{
                 $this->set_response(array("status"=>"failed","messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
