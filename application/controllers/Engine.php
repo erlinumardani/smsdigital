@@ -125,6 +125,8 @@ class Engine extends CI_Controller {
 
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
+			}else{
+				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'Failed'));
 			}
 		}
 
