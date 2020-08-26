@@ -96,6 +96,7 @@ class Data extends CI_Controller {
 		if($this->limit_counter()>count($msisdn_list)){
 
 			$i = 0;
+			$guid = array();
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn,0,1) == "0"){
@@ -116,6 +117,7 @@ class Data extends CI_Controller {
 				$data_api['message'][$i]['phone'] = $msisdn; 
 				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
 				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
+				$guid[$i] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -124,6 +126,7 @@ class Data extends CI_Controller {
 
 				$this->db->trans_start();
 			
+				$i = 0;
 				foreach ($msisdn_list as $msisdn) {
 
 					if(substr($msisdn,0,1) == "0"){
@@ -134,9 +137,10 @@ class Data extends CI_Controller {
 						'msisdn' => $msisdn,
 						'message' => $data['message'],
 						'tenant_id' => $this->tenant_id,
-						'guid' => "smsgo-".$max_id,
+						'guid' => "smsgo-".$guid[$i],
 						'updated_by'  => $data['updated_by']
 					));
+					$i++;
 				}
 
 				return $this->db->trans_complete();
@@ -265,6 +269,7 @@ class Data extends CI_Controller {
 			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
 
 			$i = 0;
+			$guid = array();
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn['phone'],0,1) == "0"){
@@ -285,6 +290,7 @@ class Data extends CI_Controller {
 				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
 				$data_api['message'][$i]['schedule'] = date("Y-m-d H:i:s"); 
 				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
+				$guid[$i] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -293,6 +299,7 @@ class Data extends CI_Controller {
 
 				$this->db->trans_start();
 			
+				$i = 0;
 				foreach ($msisdn_list as $msisdn) {
 
 					if(substr($msisdn['phone'],0,1) == "0"){
@@ -306,9 +313,10 @@ class Data extends CI_Controller {
 						'msisdn' => $msisdn['phone'],
 						'message' => $message,
 						'tenant_id' => $this->tenant_id,
-						'guid' => "smsgo-".$max_id,
+						'guid' => $guid[$i],
 						'updated_by'  => $data['updated_by']
 					));
+					$i++;
 				}
 
 				return $this->db->trans_complete();
@@ -448,6 +456,7 @@ class Data extends CI_Controller {
 			$max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
 
 			$i = 0;
+			$guid = array();
 			foreach ($msisdn_list as $msisdn) {
 
 				if(substr($msisdn['phone'],0,1) == "0"){
@@ -468,6 +477,7 @@ class Data extends CI_Controller {
 				$data_api['message'][$i]['phone'] = $msisdn['phone']; 
 				$data_api['message'][$i]['schedule'] = $data['schedule']; 
 				$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
+				$guid[$i] = "smsgo-".$max_id; 
 				$i++;
 				$max_id++;
 			}
@@ -476,6 +486,7 @@ class Data extends CI_Controller {
 
 				$this->db->trans_start();
 			
+				$i = 0;
 				foreach ($msisdn_list as $msisdn) {
 
 					if(substr($msisdn['phone'],0,1) == "0"){
@@ -490,9 +501,10 @@ class Data extends CI_Controller {
 						'message' => $message,
 						'schedule' => $data['schedule'],
 						'tenant_id' => $this->tenant_id,
-						'guid' => "smsgo-".$max_id,
+						'guid' => $guid[$i],
 						'updated_by'  => $data['updated_by']
 					));
+					$i++;
 				}
 
 				return $this->db->trans_complete();
@@ -625,6 +637,7 @@ class Data extends CI_Controller {
 			if($this->limit_counter()>count($msisdn_list)){
 	
 				$i = 0;
+				$guid = array();
 				foreach ($msisdn_list as $msisdn) {
 		
 					if(substr($msisdn,0,1) == "0"){
@@ -645,6 +658,7 @@ class Data extends CI_Controller {
 					$data_api['message'][$i]['phone'] = $msisdn; 
 					$data_api['message'][$i]['schedule'] = $schedule; 
 					$data_api['message'][$i]['uid'] = "smsgo-".$max_id; 
+					$guid[$i] = "smsgo-".$max_id; 
 					$i++;
 					$max_id++;
 				}
@@ -653,6 +667,7 @@ class Data extends CI_Controller {
 		
 					$this->db->trans_start();
 				
+					$i = 0;
 					foreach ($msisdn_list as $msisdn) {
 		
 						if(substr($msisdn,0,1) == "0"){
@@ -665,9 +680,10 @@ class Data extends CI_Controller {
 							'message' => $message,
 							'schedule' => $schedule,
 							'tenant_id' => $this->tenant_id,
-							'guid' => "smsgo-".$max_id,
+							'guid' => $guid[$i],
 							'updated_by'  => $data['updated_by']
 						));
+						$i++;
 					}
 		
 					return $this->db->trans_complete();
