@@ -117,6 +117,7 @@ class Engine extends CI_Controller {
 		$data = $this->db->select('id,concat("smsd-",id) as uid, guid')
 		->from('sms_transactions')
 		->where('status','SENDING')
+		->where('status','QUEING')
 		->where('schedule < now()')
 		->get()->result();
 
@@ -126,7 +127,7 @@ class Engine extends CI_Controller {
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
 			}else{
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'Failed'));
+				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
 			}
 		}
 
