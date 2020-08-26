@@ -107,6 +107,10 @@ class Api extends REST_Controller
                             $error+=1;
                             $message="content must not empty";
                         }
+                        if(strlen($data['content']) > 160){
+                            $error+=1;
+                            $message="content must less than 160";
+                        }
                         if(strlen($data['phone']) < 2){
                             $error+=1;
                             $message="phone must not empty";
