@@ -80,42 +80,40 @@ class Api extends REST_Controller
                     $message='Messages Send Failed';
                     foreach ($inputdata['message'] as $data) {
 
-                        $data['phone'] = preg_replace("/[^0-9]/", "", $data['phone']);
-
                         if(substr($data['phone'],0,1) == "0"){
                             $data['phone'] = substr_replace($data['phone'],"62",0,1);
                         }
                         if(strlen($data['phone']) > 14){
                             $error+=1;
-                            $message="invalid msisdn";
+                            $message="INVALID_MSISDN";
                         }
                         if(substr($data['phone'],0,3) != '628'){
                             $error+=1;
-                            $message="prefix not exist";
+                            $message="PREFIX_NOT_EXIST";
                         }
-                        if(is_numeric($data['phone']) ==false){
+                        if(preg_match ("/[^0-9]/", $data['phone'])){
                             $error+=1;
-                            $message="phone must be number";
+                            $message="PHONE_MUST_BE_NUMBER";
                         }
                         if(strlen($data['schedule']) < 2){
                             $error+=1;
-                            $message="schedule must not empty";
+                            $message="SCHEDULE_MUST_NOT_EMPTY";
                         }
                         if(strlen($data['guid']) < 2){
                             $error+=1;
-                            $message="guid must not empty";
+                            $message="GUID_MUST_NOT_EMPTY";
                         }
                         if(strlen($data['content']) < 2){
                             $error+=1;
-                            $message="content must not empty";
+                            $message="CONTENT_MUST_NOT_EMPTY";
                         }
                         if(strlen($data['content']) > 160){
                             $error+=1;
-                            $message="content must less than 160";
+                            $message="CONTENT_MUST_LESS_THAN_160";
                         }
                         if(strlen($data['phone']) < 2){
                             $error+=1;
-                            $message="phone must not empty";
+                            $message="PHONE_MUST_NOT_EMPTY";
                         }
 
                         $data_api['message'][$i]['content'] = $data['content']; 
