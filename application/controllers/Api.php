@@ -76,10 +76,36 @@ class Api extends REST_Controller
                 if($this->limit_counter($decodedToken->data->role_id,$decodedToken->data->user_id)>count($inputdata['message'])){
 
                     $i = 0;
+                    $error = 0;
+                    $message='Messages Send Failed';
                     foreach ($inputdata['message'] as $data) {
 
                         if(substr($data['phone'],0,1) == "0"){
                             $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                        }
+                        if(strlen($data['phone']) > 14){
+                            $error+=1;
+                            $message="invalid msisdn";
+                        }
+                        if(substr($data['phone'],0,3) != '628'){
+                            $error+=1;
+                            $message="prefix not exist";
+                        }
+                        if(strlen($data['schedule']) < 2){
+                            $error+=1;
+                            $message="schedule must not empty";
+                        }
+                        if(strlen($data['guid']) < 2){
+                            $error+=1;
+                            $message="guid must not empty";
+                        }
+                        if(strlen($data['content']) < 2){
+                            $error+=1;
+                            $message="content must not empty";
+                        }
+                        if(strlen($data['phone']) < 2){
+                            $error+=1;
+                            $message="phone must not empty";
                         }
 
                         $data_api['message'][$i]['content'] = $data['content']; 
@@ -91,7 +117,7 @@ class Api extends REST_Controller
                         $max_id++;
                     }
 
-                    if($this->api_sendsms($data_api)->success==true){
+                    if($this->api_sendsms($data_api)->success==true && $error==0){
 
                         $this->db->trans_start();
                     
@@ -118,7 +144,7 @@ class Api extends REST_Controller
                         return;
 
                     }else{
-                        $this->set_response(array("status"=>"failed","messages"=>'Messages Send Failed'), REST_Controller::HTTP_OK);
+                        $this->set_response(array("status"=>"failed","messages"=>$message), REST_Controller::HTTP_OK);
                         return;
                     }
                 }else{
