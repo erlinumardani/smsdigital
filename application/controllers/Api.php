@@ -157,7 +157,7 @@ class Api extends REST_Controller
             // return response if token is valid
             if ($decodedToken != false) {
 
-                $data = $this->db->select('id as uid, status')->get_where('sms_transactions','id = "'.$uid.'" or guid = "'.$guid.'"')->result();
+                $data = $this->db->select('id as uid, guid, status')->get_where('sms_transactions','id = "'.$uid.'" or guid = "'.$guid.'"')->result();
 
                 if(count($data)>=1){
                     $this->set_response(array("status"=>"success","data"=>$data), REST_Controller::HTTP_OK);
