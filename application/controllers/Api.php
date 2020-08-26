@@ -122,7 +122,7 @@ class Api extends REST_Controller
                         return;
                     }
                 }else{
-                    $this->set_response(array("status"=>"failed","messages"=>'Wrong Password'), REST_Controller::HTTP_OK);
+                    $this->set_response(array("status"=>"failed","messages"=>'Limit Exceeded'), REST_Controller::HTTP_OK);
                     return;
                 }
             }else{
