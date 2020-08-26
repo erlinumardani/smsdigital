@@ -114,14 +114,14 @@ class Engine extends CI_Controller {
 	}
 
 	public function get_status(){
-		$data = $this->db->select('id,concat("smsd-",id) as uid')
+		$data = $this->db->select('id,concat("smsd-",id) as uid, guid')
 		->from('sms_transactions')
 		->where('status','SENDING')
 		->where('schedule < now()')
 		->get()->result();
 
 		foreach ($data as $value) {
-			$status = $this->api_delivery_check($value->uid);
+			$status = $this->api_delivery_check($value->guid);
 
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
