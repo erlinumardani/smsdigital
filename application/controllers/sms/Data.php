@@ -137,7 +137,7 @@ class Data extends CI_Controller {
 						'msisdn' => $msisdn,
 						'message' => $data['message'],
 						'tenant_id' => $this->tenant_id,
-						'guid' => "smsgo-".$guid[$i],
+						'guid' => $guid[$i],
 						'updated_by'  => $data['updated_by']
 					));
 					$i++;
