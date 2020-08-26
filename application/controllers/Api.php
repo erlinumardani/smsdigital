@@ -80,6 +80,8 @@ class Api extends REST_Controller
                     $message='Messages Send Failed';
                     foreach ($inputdata['message'] as $data) {
 
+                        $data['phone'] = preg_replace("/[^0-9]/", "", $data['phone']);
+
                         if(substr($data['phone'],0,1) == "0"){
                             $data['phone'] = substr_replace($data['phone'],"62",0,1);
                         }
