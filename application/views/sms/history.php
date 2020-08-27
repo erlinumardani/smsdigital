@@ -48,6 +48,7 @@
                 <th>Sender</th>
                 <th>Provider</th>
                 <th>Status</th>
+                <th>Reason</th>
                 <th>Schedule</th>
                 <th>Date Created</th>
             </tr>
