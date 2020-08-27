@@ -172,7 +172,7 @@ class Engine extends CI_Controller {
 				if($status2->success == true){
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
 				}else{
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$status2->error[0]));
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$status2->error));
 				}
 			}
 		}
