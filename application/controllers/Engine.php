@@ -117,7 +117,7 @@ class Engine extends CI_Controller {
 		$data = $this->db->select('id,concat("smsd-",id) as uid, guid')
 		->from('sms_transactions')
 		->where('status','SENDING')
-		->where('status','QUEING')
+		->or_where('status','QUEING')
 		->where('schedule < now()')
 		->get()->result();
 
