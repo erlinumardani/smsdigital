@@ -91,9 +91,10 @@ class Api extends REST_Controller
                             $error+=1;
                             $message="PREFIX_NOT_EXIST";
                         }
-                        if(preg_match ("/[^0-9]/", $data['phone'])){
+                        if(preg_match ("/[^0-9+]/", $data['phone'])){
                             $error+=1;
                             $message="PHONE_MUST_BE_NUMBER";
+                            $data['phone'] = str_replace("+","",$data['phone']);
                         }
                         if(strlen($data['schedule']) < 2){
                             $error+=1;
@@ -127,31 +128,36 @@ class Api extends REST_Controller
 
                     if($error==0){
 
-                        $this->api_sendsms($data_api);
+                        if($this->api_sendsms($data_api)->success==true){
 
-                        $this->db->trans_start();
+                            $this->db->trans_start();
                     
-                        foreach ($inputdata['message'] as $data) {
+                            foreach ($inputdata['message'] as $data) {
 
-                            if(substr($data['phone'],0,1) == "0"){
-                                $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                if(substr($data['phone'],0,1) == "0"){
+                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                }
+
+                                $this->db->insert('sms_transactions',array(
+                                    'type' => "API",
+                                    'msisdn' => $data['phone'],
+                                    'message' => $data['content'],
+                                    'schedule' => $data['schedule'],
+                                    'guid' => $data['guid'],
+                                    'tenant_id' => $decodedToken->data->tenant_id,
+                                    'updated_by'  => $decodedToken->data->user_id
+                                ));
                             }
 
-                            $this->db->insert('sms_transactions',array(
-                                'type' => "API",
-                                'msisdn' => $data['phone'],
-                                'message' => $data['content'],
-                                'schedule' => $data['schedule'],
-                                'guid' => $data['guid'],
-                                'tenant_id' => $decodedToken->data->tenant_id,
-                                'updated_by'  => $decodedToken->data->user_id
-                            ));
-                        }
+                            $this->db->trans_complete();
 
-                        $this->db->trans_complete();
-
-                        $this->set_response(array_merge(array("status"=>"success","messages"=>'Sending Messages'),array('uid'=>$uid)), REST_Controller::HTTP_OK);
-                        return;
+                            $this->set_response(array_merge(array("status"=>"success","messages"=>'Sending Messages'),array('uid'=>$uid)), REST_Controller::HTTP_OK);
+                            return;
+                            
+                        }else{
+                            $this->set_response(array("status"=>"failed","messages"=>"Failed"), REST_Controller::HTTP_OK);
+                            return;
+                        }     
 
                     }else{
                         $this->set_response(array("status"=>"failed","messages"=>$message), REST_Controller::HTTP_OK);
@@ -342,9 +348,10 @@ class Api extends REST_Controller
                             $error+=1;
                             array_push($message,"PREFIX_NOT_EXIST");
                         }
-                        if(preg_match ("/[^0-9]/", $data['phone'])){
+                        if(preg_match ("/[^0-9+]/", $data['phone'])){
                             $error+=1;
                             array_push($message,"PHONE_MUST_BE_NUMBER");
+                            $data['phone'] = str_replace("+","",$data['phone']);
                         }
                         if(strlen($data['schedule']) < 2){
                             $error+=1;
@@ -375,28 +382,35 @@ class Api extends REST_Controller
 
                     if($error==0){
 
-                        $this->api_sendsms($data_api);
+                        if($this->api_sendsms($data_api)->success==true){
 
-                        $this->db->trans_start();
+                            $this->db->trans_start();
 
-                            if(substr($data['phone'],0,1) == "0"){
-                                $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                            }
+                                if(substr($data['phone'],0,1) == "0"){
+                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                }
 
-                            $this->db->insert('sms_transactions',array(
-                                'type' => "API",
-                                'msisdn' => $data['phone'],
-                                'message' => $data['content'],
-                                'schedule' => $data['schedule'],
-                                'guid' => $data['msgid'],
-                                'tenant_id' => $decodedToken->data->tenant_id,
-                                'updated_by'  => $decodedToken->data->user_id
-                            ));
+                                $this->db->insert('sms_transactions',array(
+                                    'type' => "API",
+                                    'msisdn' => $data['phone'],
+                                    'message' => $data['content'],
+                                    'schedule' => $data['schedule'],
+                                    'guid' => $data['msgid'],
+                                    'tenant_id' => $decodedToken->data->tenant_id,
+                                    'updated_by'  => $decodedToken->data->user_id
+                                ));
 
-                        $this->db->trans_complete();
+                            $this->db->trans_complete();
 
-                        $this->set_response(array_merge(array("code"=>true,"status"=>'SENDING'),array('msgid'=>$uid)), REST_Controller::HTTP_OK);
-                        return;
+                            $this->set_response(array_merge(array("code"=>true,"status"=>'SENDING'),array('msgid'=>$uid)), REST_Controller::HTTP_OK);
+                            return;
+
+                        }else{
+
+                            $this->set_response(array("code"=>false,"err_desc"=>$message), REST_Controller::HTTP_OK);
+                            return;
+
+                        }
 
                     }else{
                         $this->set_response(array("code"=>false,"err_desc"=>$message), REST_Controller::HTTP_OK);
@@ -444,9 +458,10 @@ class Api extends REST_Controller
                             $error+=1;
                             $message = "PREFIX_NOT_EXIST ";
                         }
-                        if(preg_match ("/[^0-9]/", $data['phone'])){
+                        if(preg_match ("/[^0-9+]/", $data['phone'])){
                             $error+=1;
                             $message = "PHONE_MUST_BE_NUMBER ";
+                            $data['phone'] = str_replace("+","",$data['phone']);
                         }
                         if(strlen($data['schedule']) < 2){
                             $error+=1;
@@ -477,28 +492,32 @@ class Api extends REST_Controller
 
                     if($error==0){
 
-                        $this->api_sendsms($data_api);
+                        if($this->api_sendsms($data_api)->success==true){
 
-                        $this->db->trans_start();
+                            $this->db->trans_start();
 
-                            if(substr($data['phone'],0,1) == "0"){
-                                $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                            }
+                                if(substr($data['phone'],0,1) == "0"){
+                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                }
 
-                            $this->db->insert('sms_transactions',array(
-                                'type' => "API",
-                                'msisdn' => $data['phone'],
-                                'message' => $data['content'],
-                                'schedule' => $data['schedule'],
-                                'guid' => $data['msgid'],
-                                'tenant_id' => $decodedToken->data->tenant_id,
-                                'updated_by'  => $decodedToken->data->user_id
-                            ));
+                                $this->db->insert('sms_transactions',array(
+                                    'type' => "API",
+                                    'msisdn' => $data['phone'],
+                                    'message' => $data['content'],
+                                    'schedule' => $data['schedule'],
+                                    'guid' => $data['msgid'],
+                                    'tenant_id' => $decodedToken->data->tenant_id,
+                                    'updated_by'  => $decodedToken->data->user_id
+                                ));
 
-                        $this->db->trans_complete();
+                            $this->db->trans_complete();
 
-                        echo "SUCCESS|SENDING|".$uid;
-                        return;
+                            echo "SUCCESS|SENDING|".$uid;
+                            return;
+                        }else{
+                            echo "FAILED|".$message;
+                            return;
+                        }
 
                     }else{
                         echo "FAILED|".$message;
