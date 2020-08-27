@@ -87,7 +87,7 @@ class Api extends REST_Controller
                             $error+=1;
                             $message="INVALID_MSISDN";
                         }
-                        if(substr($data['phone'],0,3) != '628' || substr($data['phone'],0,4) != '+628'){
+                        if(substr($data['phone'],0,3) == '628' || substr($data['phone'],0,4) == '+628'){
                             $error+=1;
                             $message="PREFIX_NOT_EXIST";
                         }
@@ -344,7 +344,7 @@ class Api extends REST_Controller
                             $error+=1;
                             array_push($message,"INVALID_MSISDN");
                         }
-                        if(substr($data['phone'],0,3) != '628' || substr($data['phone'],0,4) != '+628'){
+                        if(substr($data['phone'],0,3) == '628' || substr($data['phone'],0,4) == '+628'){
                             $error+=1;
                             array_push($message,"PREFIX_NOT_EXIST");
                         }
@@ -454,7 +454,7 @@ class Api extends REST_Controller
                             $error+=1;
                             $message = "INVALID_MSISDN ";
                         }
-                        if(substr($data['phone'],0,3) != '628' || substr($data['phone'],0,4) != '+628'){
+                        if(substr($data['phone'],0,3) == '628' || substr($data['phone'],0,4) == '+628'){
                             $error+=1;
                             $message = "PREFIX_NOT_EXIST ";
                         }
