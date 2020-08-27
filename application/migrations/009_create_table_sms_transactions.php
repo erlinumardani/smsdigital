@@ -82,6 +82,7 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				a.msisdn,
 				a.message,
 				a.`status`,
+				a.`reason`,
 				b.username as sender,
 				c.provider,
 				a.`schedule`,
