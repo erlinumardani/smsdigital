@@ -163,14 +163,15 @@ class Engine extends CI_Controller {
 		->get()->result();
 
 		foreach ($data as $value) {
-			$status = $this->api_delivery_check($value->guid);
+			$guid = $value->guid;
+			$status = $this->api_delivery_check($guid);
 
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
 			}else{
-				$status2 = $this->api_send_check($value->guid);
+				$status2 = $this->api_send_check($guid);
 				if($status2->success == true){
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data->$guid->state));
 				}else{
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$status2->error));
 				}
