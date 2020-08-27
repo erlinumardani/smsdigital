@@ -90,6 +90,7 @@ class Api extends REST_Controller
                         if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
                             $error+=1;
                             $message="PREFIX_NOT_EXIST";
+                            $data['phone'] = str_replace("+","",$data['phone']);
                         }
                         if(preg_match ("/[^0-9+]/", $data['phone'])){
                             $error+=1;
@@ -347,6 +348,7 @@ class Api extends REST_Controller
                     if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
                         $error+=1;
                         array_push($message,"PREFIX_NOT_EXIST");
+                        $data['phone'] = str_replace("+","",$data['phone']);
                     }
                     if(preg_match ("/[^0-9+]/", $data['phone'])){
                         $error+=1;
@@ -458,6 +460,7 @@ class Api extends REST_Controller
                     if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
                         $error+=1;
                         array_push($message,"PREFIX_NOT_EXIST");
+                        $data['phone'] = str_replace("+","",$data['phone']);
                     }
                     if(preg_match ("/[^0-9+]/", $data['phone'])){
                         $error+=1;
