@@ -155,7 +155,7 @@ class Engine extends CI_Controller {
 	}
 
 	public function get_status(){
-		$data = $this->db->select('id,concat("smsd-",id) as uid, guid')
+		$data = $this->db->select('id,concat("smsd-",id) as uid, guid, status')
 		->from('sms_transactions')
 		->where('status','SENDING')
 		->or_where('status','QUEING')
@@ -164,16 +164,31 @@ class Engine extends CI_Controller {
 
 		foreach ($data as $value) {
 			$guid = $value->guid;
-			$status = $this->api_delivery_check($guid);
+			$state = $value->status;
+			$status = $this->api_send_check($guid);
+			$status2 = $this->api_delivery_check($guid);
 
 			if($status->success == true){
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
+				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data->$guid->state));
 			}else{
-				$status2 = $this->api_send_check($guid);
 				if($status2->success == true){
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data->$guid->state));
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
 				}else{
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$status2->error));
+					switch ($status2->error[0]) {
+						case '007001':
+							$reason = "invalid schedule datetime format";
+							break;
+						case '007002':
+							$reason = "invalid phone format";
+							break;
+						case '007003':
+							$reason = "no credit available";
+							break;
+						default:
+							$reason = $status2->error[0];
+							break;
+					}
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
 				}
 			}
 		}
