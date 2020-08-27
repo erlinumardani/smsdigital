@@ -169,10 +169,10 @@ class Engine extends CI_Controller {
 			$status2 = $this->api_delivery_check($guid);
 
 			if($status->success == true){
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data->$guid->state));
+				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data->$guid->state));
 			}else{
 				if($status2->success == true){
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data[0]->state));
 				}else{
 					switch ($status2->error[0]) {
 						case '007001':
