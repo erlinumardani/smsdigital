@@ -314,7 +314,7 @@ class Data extends CI_Controller {
 			->row()->total;
 		}
 
-		return $data/$total * 100;
+		return round($data/$total * 100);
 	}
 	
 }
