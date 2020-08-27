@@ -384,7 +384,7 @@ class Api extends REST_Controller
                                 'msisdn' => $data['phone'],
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
-                                'guid' => $data['guid'],
+                                'guid' => $data['msgid'],
                                 'tenant_id' => $decodedToken->data->tenant_id,
                                 'updated_by'  => $decodedToken->data->user_id
                             ));
@@ -484,7 +484,7 @@ class Api extends REST_Controller
                                 'msisdn' => $data['phone'],
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
-                                'guid' => $data['guid'],
+                                'guid' => $data['msgid'],
                                 'tenant_id' => $decodedToken->data->tenant_id,
                                 'updated_by'  => $decodedToken->data->user_id
                             ));
