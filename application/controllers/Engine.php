@@ -133,7 +133,7 @@ class Engine extends CI_Controller {
 
 			// Post - If you do not use post, it will just run a GET request
 			$post = json_encode(array(
-				array('uid'=>$uid)
+				'uid'=>array($uid)
 			));
 			$this->curl->post($post);
 
