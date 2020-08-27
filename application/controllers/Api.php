@@ -125,7 +125,9 @@ class Api extends REST_Controller
                         $max_id++;
                     }
 
-                    if($this->api_sendsms($data_api)->success==true && $error==0){
+                    if($error==0){
+
+                        $this->api_sendsms($data_api);
 
                         $this->db->trans_start();
                     
@@ -371,7 +373,9 @@ class Api extends REST_Controller
                         $data_api['message'][0]['uid'] = $data['msgid']; 
                         $uid = $data['msgid'];
 
-                    if($this->api_sendsms($data_api)->success==true && $error==0){
+                    if($error==0){
+
+                        $this->api_sendsms($data_api);
 
                         $this->db->trans_start();
 
@@ -471,7 +475,9 @@ class Api extends REST_Controller
                         $data_api['message'][0]['uid'] = $data['msgid']; 
                         $uid = $data['msgid'];
 
-                    if($this->api_sendsms($data_api)->success==true && $error==0){
+                    if($error==0){
+
+                        $this->api_sendsms($data_api);
 
                         $this->db->trans_start();
 
