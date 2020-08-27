@@ -113,6 +113,47 @@ class Engine extends CI_Controller {
 		
 	}
 
+	public function api_send_check($uid){
+
+		$token = $this->api_get_token();
+		$this->load->library('curl');
+
+		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Message/restCheckSend';
+
+		// Start session (also wipes existing/previous sessions)
+		$this->curl->create($uri);
+
+		// More human looking options
+		$this->curl->option('buffersize', 10);
+
+		if($token->success==true){
+			// Header
+			$this->curl->http_header('Authorization', 'Bearer '.$token->data->token);
+			$this->curl->http_header('Content-Type', 'application/json');
+
+			// Post - If you do not use post, it will just run a GET request
+			$post = json_encode(array(
+				array('uid'=>$uid)
+			));
+			$this->curl->post($post);
+
+			$result = $this->curl->execute();
+
+			/* $this->db->insert('sms_curl_log',array(
+				'uri'=>$uri,
+				'method'=>'POST',
+				'params'=>$post,
+				'response'=>$result
+			)); */
+
+			// Execute - returns responce
+			return json_decode($result);
+		}else{
+			return json_decode(array("success"=>false));
+		}
+		
+	}
+
 	public function get_status(){
 		$data = $this->db->select('id,concat("smsd-",id) as uid, guid')
 		->from('sms_transactions')
@@ -127,7 +168,11 @@ class Engine extends CI_Controller {
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
 			}else{
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
+				if($this->api_send_check($value->guid)->success == true){
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
+				}else{
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED'));
+				}
 			}
 		}
 
