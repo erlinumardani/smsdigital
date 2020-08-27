@@ -169,8 +169,6 @@ class Engine extends CI_Controller {
 			$status2 = $this->api_delivery_check($guid);
 
 			if($status->success == true){
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data->$guid->state));
-			}else{
 				if($status2->success == true){
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data[0]->state));
 				}else{
@@ -190,6 +188,22 @@ class Engine extends CI_Controller {
 					}
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
 				}
+			}else{
+				switch ($status->error[0]) {
+					case '007001':
+						$reason = "invalid schedule datetime format";
+						break;
+					case '007002':
+						$reason = "invalid phone format";
+						break;
+					case '007003':
+						$reason = "no credit available";
+						break;
+					default:
+						$reason = $status->error[0];
+						break;
+				}
+				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
 			}
 		}
 
