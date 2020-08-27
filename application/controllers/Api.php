@@ -337,48 +337,48 @@ class Api extends REST_Controller
                     $error = 0;
                     $message=array();
 
-                        if(substr($data['phone'],0,1) == "0"){
-                            $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                        }
-                        if(strlen($data['phone']) > 14){
-                            $error+=1;
-                            array_push($message,"INVALID_MSISDN");
-                        }
-                        if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
-                            $error+=1;
-                            array_push($message,"PREFIX_NOT_EXIST");
-                        }
-                        if(preg_match ("/[^0-9+]/", $data['phone'])){
-                            $error+=1;
-                            array_push($message,"PHONE_MUST_BE_NUMBER");
-                            $data['phone'] = str_replace("+","",$data['phone']);
-                        }
-                        if(strlen($data['schedule']) < 2){
-                            $error+=1;
-                            array_push($message,"SCHEDULE_MUST_NOT_EMPTY");
-                        }
-                        if(strlen($data['msgid']) < 2){
-                            $error+=1;
-                            array_push($message,"MSGID_MUST_NOT_EMPTY");
-                        }
-                        if(strlen($data['content']) < 2){
-                            $error+=1;
-                            array_push($message,"CONTENT_MUST_NOT_EMPTY");
-                        }
-                        if(strlen($data['content']) > 160){
-                            $error+=1;
-                            array_push($message,"CONTENT_MUST_LESS_THAN_160");
-                        }
-                        if(strlen($data['phone']) < 2){
-                            $error+=1;
-                            array_push($message,"PHONE_MUST_NOT_EMPTY");
-                        }
+                    if(substr($data['phone'],0,1) == "0"){
+                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                    }
+                    if(strlen($data['phone']) > 14){
+                        $error+=1;
+                        array_push($message,"INVALID_MSISDN");
+                    }
+                    if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
+                        $error+=1;
+                        array_push($message,"PREFIX_NOT_EXIST");
+                    }
+                    if(preg_match ("/[^0-9+]/", $data['phone'])){
+                        $error+=1;
+                        array_push($message,"PHONE_MUST_BE_NUMBER");
+                        $data['phone'] = str_replace("+","",$data['phone']);
+                    }
+                    if(strlen($data['schedule']) < 2){
+                        $error+=1;
+                        array_push($message,"SCHEDULE_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['msgid']) < 2){
+                        $error+=1;
+                        array_push($message,"MSGID_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['content']) < 2){
+                        $error+=1;
+                        array_push($message,"CONTENT_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['content']) > 160){
+                        $error+=1;
+                        array_push($message,"CONTENT_MUST_LESS_THAN_160");
+                    }
+                    if(strlen($data['phone']) < 2){
+                        $error+=1;
+                        array_push($message,"PHONE_MUST_NOT_EMPTY");
+                    }
 
-                        $data_api['message'][0]['content'] = $data['content']; 
-                        $data_api['message'][0]['phone'] = $data['phone']; 
-                        $data_api['message'][0]['schedule'] = $data['schedule'];
-                        $data_api['message'][0]['uid'] = $data['msgid']; 
-                        $uid = $data['msgid'];
+                    $data_api['message'][0]['content'] = $data['content']; 
+                    $data_api['message'][0]['phone'] = $data['phone']; 
+                    $data_api['message'][0]['schedule'] = $data['schedule'];
+                    $data_api['message'][0]['uid'] = $data['msgid']; 
+                    $uid = $data['msgid'];
 
                     if($error==0){
 
@@ -446,49 +446,50 @@ class Api extends REST_Controller
 
                     $i = 0;
                     $error = 0;
+                    $message=array();
 
-                        if(substr($data['phone'],0,1) == "0"){
-                            $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                        }
-                        if(strlen($data['phone']) > 14){
-                            $error+=1;
-                            $message = "INVALID_MSISDN ";
-                        }
-                        if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
-                            $error+=1;
-                            $message = "PREFIX_NOT_EXIST ";
-                        }
-                        if(preg_match ("/[^0-9+]/", $data['phone'])){
-                            $error+=1;
-                            $message = "PHONE_MUST_BE_NUMBER ";
-                            $data['phone'] = str_replace("+","",$data['phone']);
-                        }
-                        if(strlen($data['schedule']) < 2){
-                            $error+=1;
-                            $message = "SCHEDULE_MUST_NOT_EMPTY ";
-                        }
-                        if(strlen($data['msgid']) < 2){
-                            $error+=1;
-                            $message = "MSGID_MUST_NOT_EMPTY ";
-                        }
-                        if(strlen($data['content']) < 2){
-                            $error+=1;
-                            $message = "CONTENT_MUST_NOT_EMPTY ";
-                        }
-                        if(strlen($data['content']) > 160){
-                            $error+=1;
-                            $message = "CONTENT_MUST_LESS_THAN_160 ";
-                        }
-                        if(strlen($data['phone']) < 2){
-                            $error+=1;
-                            $message = "PHONE_MUST_NOT_EMPTY ";
-                        }
+                    if(substr($data['phone'],0,1) == "0"){
+                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                    }
+                    if(strlen($data['phone']) > 14){
+                        $error+=1;
+                        array_push($message,"INVALID_MSISDN");
+                    }
+                    if(substr($data['phone'],0,3) != '628' && substr($data['phone'],0,4) != '+628'){
+                        $error+=1;
+                        array_push($message,"PREFIX_NOT_EXIST");
+                    }
+                    if(preg_match ("/[^0-9+]/", $data['phone'])){
+                        $error+=1;
+                        array_push($message,"PHONE_MUST_BE_NUMBER");
+                        $data['phone'] = str_replace("+","",$data['phone']);
+                    }
+                    if(strlen($data['schedule']) < 2){
+                        $error+=1;
+                        array_push($message,"SCHEDULE_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['msgid']) < 2){
+                        $error+=1;
+                        array_push($message,"MSGID_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['content']) < 2){
+                        $error+=1;
+                        array_push($message,"CONTENT_MUST_NOT_EMPTY");
+                    }
+                    if(strlen($data['content']) > 160){
+                        $error+=1;
+                        array_push($message,"CONTENT_MUST_LESS_THAN_160");
+                    }
+                    if(strlen($data['phone']) < 2){
+                        $error+=1;
+                        array_push($message,"PHONE_MUST_NOT_EMPTY");
+                    }
 
-                        $data_api['message'][0]['content'] = $data['content']; 
-                        $data_api['message'][0]['phone'] = $data['phone']; 
-                        $data_api['message'][0]['schedule'] = $data['schedule'];
-                        $data_api['message'][0]['uid'] = $data['msgid']; 
-                        $uid = $data['msgid'];
+                    $data_api['message'][0]['content'] = $data['content']; 
+                    $data_api['message'][0]['phone'] = $data['phone']; 
+                    $data_api['message'][0]['schedule'] = $data['schedule'];
+                    $data_api['message'][0]['uid'] = $data['msgid']; 
+                    $uid = $data['msgid'];
 
                     if($error==0){
 
@@ -515,12 +516,12 @@ class Api extends REST_Controller
                             echo "SUCCESS|SENDING|".$uid;
                             return;
                         }else{
-                            echo "FAILED|".$message;
+                            echo "FAILED|".json_encode($message);
                             return;
                         }
 
                     }else{
-                        echo "FAILED|".$message;
+                        echo "FAILED|".json_encode($message);
                         return;
                     }
                 }else{
