@@ -168,10 +168,11 @@ class Engine extends CI_Controller {
 			if($status->success == true){
 				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status->data[0]->state));
 			}else{
-				if($this->api_send_check($value->guid)->success == true){
+				$status2 = $this->api_send_check($value->guid);
+				if($status2->success == true){
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING'));
 				}else{
-					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED'));
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>json_decode($status2->error)));
 				}
 			}
 		}

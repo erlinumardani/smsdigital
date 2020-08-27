@@ -47,6 +47,9 @@ class Migration_create_table_sms_transactions extends CI_Migration {
 				'type' => 'VARCHAR(50)',
 				'default' => "SENDING"
 			],
+			'reason' => [
+				'type' => 'VARCHAR(200)'
+			],
 			'tenant_id' => [
 				'type'   => 'INT(11)',
 				'default' => 1
