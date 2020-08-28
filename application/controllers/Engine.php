@@ -210,19 +210,22 @@ class Engine extends CI_Controller {
 			}else{
 				switch ($status->error[0]) {
 					case '007001':
-						$reason = "invalid schedule datetime format";
+						$reason = "uid not found";
 						break;
 					case '007002':
-						$reason = "invalid phone format";
-						break;
-					case '007003':
-						$reason = "no credit available";
+						$reason = "in queue";
 						break;
 					default:
 						$reason = $status->error[0];
 						break;
 				}
-				$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
+
+				if($status->error[0] == "007002"){
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING','reason'=>$reason));
+				}else{
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
+				}
+				
 			}
 		}
 
