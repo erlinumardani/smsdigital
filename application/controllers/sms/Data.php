@@ -794,9 +794,13 @@ class Data extends CI_Controller {
 		$this->curl->http_header('Content-Type', 'application/json');
 
 		// Post - If you do not use post, it will just run a GET request
-		$post = json_encode(array(
+		/* $post = json_encode(array(
 			'username'=>'dukcapil',
 			'password'=>'dukc@p1LsMs'
+		)); */
+		$post = json_encode(array(
+			'username'=>'sms-go',
+			'password'=>'infonus@!@#'
 		));
 
 		$this->curl->post($post);
