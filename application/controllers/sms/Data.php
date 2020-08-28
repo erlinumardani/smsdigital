@@ -951,8 +951,8 @@ class Data extends CI_Controller {
 		$table = 'v_sms_transactions'; //nama tabel dari database
 		$column_order = array(null, 'type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang ada di table user
 		$column_search = array('type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang diizin untuk pencarian 
-		$order = array('created_at' => 'asc'); // default order 
-		$filter = "month(created_at) = month(now())";
+		$order = array('created_at' => 'desc'); // default order 
+		$filter = "month(created_at) = month(now()) limit 100";
 		$data = $this->input->post();
 		
 		$this->load->model('datatable_model');
