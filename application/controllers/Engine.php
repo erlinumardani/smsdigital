@@ -173,22 +173,39 @@ class Engine extends CI_Controller {
 					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>$status2->data[0]->state));
 				}else{
 					switch ($status2->error[0]) {
+						case '006001':
+							$reason = "TOKEN EMPTY";
+							break;
+						case '006002':
+							$reason = "FALSE TOKEN";
+							break;
+						case '006003':
+							$reason = "TOKEN DATA EMPTY";
+							break;
 						case '007001':
-							$reason = "uid not found";
+							$reason = "EMPTY TOKEN";
 							break;
 						case '007002':
-							$reason = "in queue";
+							$reason = "UID NOT FOUND";
+							break;
+						case '007003':
+							$reason = "UID NOT FOUND";
+							break;
+						case '007004':
+							$reason = "GATEWAY NOT FOUND";
+							break;
+						case '007005':
+							$reason = "GATEWAY DATA EMPTY";
+							break;
+						case '008005':
+							$reason = "FALSE GET DATA FROM GATEWAY";
 							break;
 						default:
 							$reason = $status2->error[0];
 							break;
 					}
 
-					if($status2->error[0]=='007002'){
-						$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'QUEING','reason'=>$reason));
-					}else{
-						$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
-					}
+					$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
 				}
 			}else{
 				switch ($status->error[0]) {
