@@ -205,7 +205,7 @@ class Engine extends CI_Controller {
 							break;
 					}
 
-					if($status->error[0] == "007002"){
+					if($status2->error[0] == "007002"){
 						$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'SENDING','reason'=>''));
 					}else{
 						$this->db->where('id',$value->id)->update('sms_transactions',array('status'=>'FAILED','reason'=>$reason));
