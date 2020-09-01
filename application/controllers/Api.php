@@ -538,4 +538,46 @@ class Api extends REST_Controller
             echo "FAILED|UNAUTHORISED";
         }
     }
+
+    public function sendinglist_post()
+    {
+        $headers = $this->input->request_headers();
+        $inputdata =  json_decode(file_get_contents('php://input'),true);
+        
+        if (array_key_exists('Authorization', $headers) && !empty($headers['Authorization'])) {
+            //TODO: Change 'token_timeout' in application\config\jwt.php
+            $decodedToken = AUTHORIZATION::validateTimestamp($headers['Authorization']);
+
+            // return response if token is valid
+            if ($decodedToken != false) {
+
+                if(isset($inputdata['limit'])){
+                    $limit = $inputdata['limit'];
+                }else{
+                    $limit = 0;
+                }
+
+                $result = array();
+
+                $data = $this->db->select('guid as uid')
+                ->from('sms_transactions')
+                ->where('status','SENDING')
+                ->or_where('status','QUEING')
+                ->where('schedule < now()')
+                ->limit($limit)
+                ->get()->result();
+
+                foreach ($data as $value) {
+                    array_push($result,$value->uid);
+                }
+
+                $this->set_response(array("success"=>true,"data"=>array("uid"=>$result)), REST_Controller::HTTP_OK);
+                    
+            }else{
+                $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+            }
+        }else{
+            $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+        }
+    }
 }
