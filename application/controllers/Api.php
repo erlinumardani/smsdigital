@@ -580,4 +580,61 @@ class Api extends REST_Controller
             $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
         }
     }
+
+    public function updatestatus_post()
+    {
+        $headers = $this->input->request_headers();
+        $inputdata =  json_decode(file_get_contents('php://input'),true);
+        $result = array();
+        
+        if (array_key_exists('Authorization', $headers) && !empty($headers['Authorization'])) {
+            //TODO: Change 'token_timeout' in application\config\jwt.php
+            $decodedToken = AUTHORIZATION::validateTimestamp($headers['Authorization']);
+
+            // return response if token is valid
+            if ($decodedToken != false) {
+
+                if(isset($inputdata['data'])){
+                    foreach ($inputdata['data'] as $input) {
+
+                        if($this->db->select('count(*) as total')->get_where('sms_transactions',array("guid"=>$input["uid"]))->row()->total > 0){
+                            if($input["status"]=="RECEIVED"){
+                                $this->db->where('guid',$input["uid"])->update('sms_transactions',array('status'=>'RECEIVED'));
+                                array_push($result,array("uid"=>$input["uid"],"status"=>"RECEIVED"));
+                            }else{
+                                $this->db->where('guid',$input["uid"])->update('sms_transactions',array('status'=>$input["status"],'reason'=>$input["reason"]));
+                                array_push($result,array("uid"=>$input["uid"],"status"=>$input["status"]));
+                            }
+                        }else{
+                            array_push($result,array("uid"=>$input["uid"],"status"=>"UID NOT FOUND"));
+                        }
+                        //array_push($result,$input["uid"]);
+                    }
+                }else{
+                    $result = array();
+                }
+
+               /*  $result = array();
+
+                $data = $this->db->select('guid as uid')
+                ->from('sms_transactions')
+                ->where('status','SENDING')
+                ->or_where('status','QUEING')
+                ->where('schedule < now()')
+                ->limit($limit)
+                ->get()->result();
+
+                foreach ($data as $value) {
+                    array_push($result,$value->uid);
+                } */
+
+                $this->set_response(array("success"=>true,"data"=>$result), REST_Controller::HTTP_OK);
+                    
+            }else{
+                $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+            }
+        }else{
+            $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
+        }
+    }
 }

@@ -457,7 +457,7 @@ $config['csrf_token_name'] = 'app_token';
 $config['csrf_cookie_name'] = 'app_cookie';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = FALSE;
-$config['csrf_exclude_uris'] = array('api/auth','api/sendsms','api/checksms','api/sendsms_json','api/sendsms_txt','api/sendinglist');
+$config['csrf_exclude_uris'] = array('api/auth','api/sendsms','api/checksms','api/sendsms_json','api/sendsms_txt','api/sendinglist','api/updatestatus');
 
 /*
 |--------------------------------------------------------------------------
