@@ -31,6 +31,7 @@ class Data extends CI_Controller {
 		$this->role_id = $this->session->userdata('role_id');
 		$this->user_id = $this->session->userdata('user_id');
 		$this->tenant_id = $this->session->userdata('tenant_id');
+		$this->username = $this->session->userdata('username');
     }
     
 	function index()
@@ -956,13 +957,13 @@ class Data extends CI_Controller {
 		$column_order = array(null, 'type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang ada di table user
 		$column_search = array('type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'desc'); // default order 
-		$filter = "date(created_at) = CURDATE()";
+		$filter = "date(created_at) = CURDATE() and sender = '".$this->username."'";
 		$data = $this->input->post();
 		
 		$this->load->model('datatable_model');
 
 		if(isset($data['startdate']) && isset($data['enddate'])){
-			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59'";
+			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and sender = '".$this->username."'";
 		}
 
         $list = $this->datatable_model->get_datatables($table, $column_order, $column_search, $order, $filter);
@@ -1016,13 +1017,13 @@ class Data extends CI_Controller {
 		$column_order = array(null, 'msisdn','message','sender','provider','status','schedule','created_at'); //field yang ada di table user
 		$column_search = array('msisdn','message','sender','provider','status','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'asc'); // default order 
-		$filter = "schedule > now() and type = 'Schedule'";
+		$filter = "schedule > now() and type = 'Schedule' and sender = '".$this->username."'";
 		$data = $this->input->post();
 		
 		$this->load->model('datatable_model');
 
 		if(isset($data['startdate']) && isset($data['enddate'])){
-			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and schedule > now() and type = 'Schedule'";
+			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and schedule > now() and type = 'Schedule' and sender = '".$this->username."'";
 		}
 
         $list = $this->datatable_model->get_datatables($table, $column_order, $column_search, $order, $filter);
