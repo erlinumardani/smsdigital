@@ -190,10 +190,10 @@ class Engine extends CI_Controller {
 							$reason = "EMPTY TOKEN";
 							break;
 						case '007002':
-							$reason = "UID NOT FOUND";
+							$reason = "MSGID NOT FOUND";
 							break;
 						case '007003':
-							$reason = "UID NOT FOUND";
+							$reason = "MSGID NOT FOUND";
 							break;
 						case '007004':
 							$reason = "GATEWAY NOT FOUND";
@@ -218,10 +218,10 @@ class Engine extends CI_Controller {
 			}else{
 				switch ($status->error[0]) {
 					case '007001':
-						$reason = "uid not found";
+						$reason = "MSGID NOT FOUND";
 						break;
 					case '007002':
-						$reason = "in queue";
+						$reason = "IN QUEUE";
 						break;
 					default:
 						$reason = $status->error[0];
