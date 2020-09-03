@@ -54,7 +54,12 @@ class Data extends CI_Controller {
 			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule" and tenant_id = '.$this->tenant_id)->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
-			$limit_persent = 0;
+			
+			if($total_sms>0 && $limit>0){
+				$limit_persent = number_format($total_sms/$limit * 100);
+			}else{
+				$limit_persent = 0;
+			}
 		}
 
 		$gm_telkomsel = 
