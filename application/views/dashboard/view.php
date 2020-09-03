@@ -8,8 +8,8 @@
             <div class="card">
                 <div class="card-body p-0">
                     <div class='p-4 align-self-center'>
-                        <h2><i class="icon-envelope"></i> <b><?=$total_sms?></b> / <?=$limit?></h2>
-                        <h6 class="card-liner-subtitle">Total SMS</h6>  
+                        <h4><i class="icon-envelope"></i> <b><?=$total_sms?></b> / <?=$limit?></h4>
+                        <h6 class="card-liner-subtitle">Monthly Summary</h6>  
                     </div>
                     <div  class="barfiller" data-color="#1e3d73">
                         <div class="tipWrap">
