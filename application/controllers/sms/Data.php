@@ -957,7 +957,14 @@ class Data extends CI_Controller {
 		$column_order = array(null, 'type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang ada di table user
 		$column_search = array('type', 'msisdn','message','sender','provider','status','reason','guid','schedule','created_at'); //field yang diizin untuk pencarian 
 		$order = array('created_at' => 'desc'); // default order 
-		$filter = "date(created_at) = CURDATE() and sender = '".$this->username."'";
+
+		if($this->role_id==3){
+			$filter = "date(created_at) = CURDATE() and sender = '".$this->username."'";
+		}else{
+			$filter = "date(created_at) = CURDATE() and tenant_id = '".$this->tenant_id."'";
+		}
+
+		
 		$data = $this->input->post();
 		
 		$this->load->model('datatable_model');
@@ -1019,6 +1026,12 @@ class Data extends CI_Controller {
 		$order = array('created_at' => 'asc'); // default order 
 		$filter = "schedule > now() and type = 'Schedule' and sender = '".$this->username."'";
 		$data = $this->input->post();
+
+		if($this->role_id==3){
+			$filter = "schedule > now() and type = 'Schedule' and sender = '".$this->username."'";
+		}else{
+			$filter = "schedule > now() and type = 'Schedule' and tenant_id = '".$this->tenant_id."'";
+		}
 		
 		$this->load->model('datatable_model');
 
