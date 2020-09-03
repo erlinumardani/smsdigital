@@ -297,14 +297,14 @@ class Api extends REST_Controller
 
 		if($role_id==3){
 
-			$total = $this->db->select("count(id) as total")->get_where('sms_transactions',array("updated_by"=>$user_id))->row()->total;
+			$total = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and updated_by = "'.$user_id.'"')->row()->total;
 			$limit = $this->db->select("sms_limit")->get_where('users',array("id"=>$user_id))->row()->sms_limit;
 
 			return $limit-$total;
 
 		}elseif($role_id==2){
 
-			$total = $this->db->select("count(id) as total")->get_where('sms_transactions',array("tenant_id"=>$this->tenant_id))->row()->total;
+			$total = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and tenant_id = "'.$tenant_id.'"')->row()->total;
 			$limit = $this->db->select("sms_limit")->get_where('users',array("id"=>$user_id))->row()->sms_limit;
 			$clients_limit = $this->db->select("sum(sms_limit) as sms_limit")->get_where('users','tenant_id = '.$this->tenant_id.' and id !='.$user_id)->row()->sms_limit;
 
