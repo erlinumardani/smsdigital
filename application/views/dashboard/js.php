@@ -51,7 +51,7 @@ $(document).ready(function() {
     
     $.ajax({
         type: "GET",
-        url: "<?=$base_url?>dashboard/data/getdata",
+        url: "<?=$base_url?>dashboard/data/getdata_grafik",
         dataType: 'json',
         success: function(data)
         {
@@ -166,6 +166,18 @@ $(document).ready(function() {
                         );
                 chart.render();
             }
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "<?=$base_url?>dashboard/data/getdata_summary",
+        dataType: 'json',
+        success: function(data)
+        {
+            $('#total_sms_received').text(data.total_sms_received);
+            $('#total_sms_sending').text(data.total_sms_sending);
+            $('#total_sms_failed').text(data.total_sms_failed);
         }
     });
 

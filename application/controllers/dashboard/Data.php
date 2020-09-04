@@ -43,10 +43,6 @@ class Data extends CI_Controller {
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
 
-			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and updated_by = "'.$this->user_id.'"')->row()->total;
-			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and updated_by = "'.$this->user_id.'"')->row()->total;
-			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and updated_by = "'.$this->user_id.'"')->row()->total;
-
 			if($total_sms>0 && $limit>0){
 				$limit_persent = number_format($total_sms/$limit * 100);
 			}else{
@@ -58,11 +54,7 @@ class Data extends CI_Controller {
 			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule" and tenant_id = '.$this->tenant_id)->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
-			
-			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
-			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
-			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
-
+		
 			if($total_sms>0 && $limit>0){
 				$limit_persent = number_format($total_sms/$limit * 100);
 			}else{
@@ -83,9 +75,6 @@ class Data extends CI_Controller {
 			'page' => $this->uri->segment(1),
 			'limit' => number_format($limit),
 			'total_sms' => number_format($total_sms),
-			'total_sms_received' => number_format($total_sms_received),
-			'total_sms_sending' => number_format($total_sms_sending),
-			'total_sms_failed' => number_format($total_sms_failed),
 			'limit_persent' => $limit_persent,
 			'sms_otomatis' => $sms_otomatis,
 			'contacts' => $contacts,
@@ -221,7 +210,7 @@ class Data extends CI_Controller {
 		return round($data/$total * 100);
 	}
 
-	function getdata()
+	function getdata_grafik()
 	{
 
 		if($this->role_id=="3"){
@@ -362,14 +351,6 @@ class Data extends CI_Controller {
 			$this->getdata_monthly('12','')
 		);
 
-		$y_telkomsel = $this->getdata_yearly('Telkomsel');
-		$y_indosat = $this->getdata_yearly('Indosat');
-		$y_xl = $this->getdata_yearly('xl');
-		$y_axis = $this->getdata_yearly('AXIS');
-		$y_smartfren = $this->getdata_yearly('Smartfren');
-		$y_three = $this->getdata_yearly('Three');
-		$y_other = $this->getdata_yearly('');
-
 		$content_data = array(
 			'gm_telkomsel' => $gm_telkomsel,
 			'gm_indosat' => $gm_indosat,
@@ -378,6 +359,28 @@ class Data extends CI_Controller {
 			'gm_smartfren' => $gm_smartfren,
 			'gm_three' => $gm_three,
 			'gm_other' => $gm_other,
+		);
+		
+		echo json_encode($content_data);
+	}
+
+	function getdata_summary()
+	{
+
+		if($this->role_id=="3"){
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and updated_by = "'.$this->user_id.'"')->row()->total;
+		}else{
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+		}
+
+		$content_data = array(
+			'total_sms_received' => number_format($total_sms_received),
+			'total_sms_sending' => number_format($total_sms_sending),
+			'total_sms_failed' => number_format($total_sms_failed),
 		);
 		
 		echo json_encode($content_data);

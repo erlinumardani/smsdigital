@@ -7,7 +7,7 @@
         <div class="col-12 col-sm-6 col-xl-4 mt-3">
             <div class="card">
                 <div class="card-body text-success border-bottom border-success border-w-5">
-                    <h2 class="text-center"><?=$total_sms_received?></h2>
+                    <h2 id="total_sms_received" class="text-center"></h2>
                     <h6 class="text-center">RECEIVED</h6>       
                 </div>
             </div>
@@ -15,7 +15,7 @@
         <div class="col-12 col-sm-6 col-xl-4 mt-3">
             <div class="card">
                 <div class="card-body text-warning border-bottom border-warning border-w-5">
-                    <h2 class="text-center"><?=$total_sms_sending?></h2>
+                    <h2 class="text-center" id="total_sms_sending"></h2>
                     <h6 class="text-center">SENDING</h6>       
                 </div>
             </div>
@@ -23,7 +23,7 @@
         <div class="col-12 col-sm-6 col-xl-4 mt-3">
             <div class="card">
                 <div class="card-body text-danger border-bottom border-danger border-w-5">
-                    <h2 class="text-center"><?=$total_sms_failed?></h2>
+                    <h2 class="text-center" id ="total_sms_failed"></h2>
                     <h6 class="text-center">FAILED</h6>       
                 </div>
             </div>
