@@ -53,6 +53,9 @@ $(document).ready(function() {
         type: "GET",
         url: "<?=$base_url?>dashboard/data/getdata_grafik",
         dataType: 'json',
+        beforeSend: function(){
+            $(".se-pre-con").fadeIn("slow");
+        },
         success: function(data)
         {
             /* $('#limit').text(data.limit);
@@ -166,6 +169,7 @@ $(document).ready(function() {
                         );
                 chart.render();
             }
+            $(".se-pre-con").fadeOut("slow");
         }
     });
 
@@ -173,11 +177,15 @@ $(document).ready(function() {
         type: "GET",
         url: "<?=$base_url?>dashboard/data/getdata_summary",
         dataType: 'json',
+        beforeSend: function(){
+            $(".se-pre-con").fadeIn("slow");
+        },
         success: function(data)
         {
             $('#total_sms_received').text(data.total_sms_received);
             $('#total_sms_sending').text(data.total_sms_sending);
             $('#total_sms_failed').text(data.total_sms_failed);
+            $(".se-pre-con").fadeOut("slow");
         }
     });
 
