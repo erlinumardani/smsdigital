@@ -48,6 +48,126 @@
 
 <script>
 $(document).ready(function() {
+    
+    $.ajax({
+        type: "GET",
+        url: "<?=$base_url?>dashboard/data/getdata",
+        dataType: 'json',
+        success: function(data)
+        {
+            /* $('#limit').text(data.limit);
+            $('#total_sms').text(data.total_sms);
+            $('#total_sms_received').text(data.total_sms_received);
+            $('#total_sms_sending').text(data.total_sms_sending);
+            $('#total_sms_failed').text(data.total_sms_failed);
+            $('#limit_persent').data('percentage',data.limit_persent);
+            $('#sms_otomatis').text(data.sms_otomatis);
+            $('#contacts').text(data.contacts);
+            $('#y_telkomsel').text(data.y_telkomsel);
+            $('#y_indosat').text(data.y_indosat);
+            $('#y_xl').text(data.y_xl);
+            $('#y_axis').text(data.y_axis);
+            $('#y_smartfren').text(data.y_smartfren);
+            $('#y_three').text(data.y_three);
+            $('#y_other').text(data.y_other); */
+
+            gm_telkomsel = data.gm_telkomsel;
+            gm_indosat = data.gm_indosat; 
+            gm_xl = data.gm_xl;
+            gm_axis = data.gm_axis; 
+            gm_smartfren = data.gm_smartfren;
+            gm_three = data.gm_three;
+            gm_other = data.gm_other;
+
+            ////////// Apex Analytic Chart //////////////
+            var theme = 'light';
+            if ($("#apex_analytic_chart").length > 0)
+            {
+                options = {
+                    theme: {
+                        mode: theme
+                    },
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                    },
+                    responsive: [
+                        {
+                            breakpoint: 767,
+                            options: {
+                                chart: {
+                                    height: 220
+                                }
+                            }
+                        }
+                    ],
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '55%',
+                            endingShape: 'rounded'
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                    },
+                    colors: ['#1ee0ac', '#ffc107', '#17a2b8', '#f64e60', '#eb6431', '#ffd04c', '#aaaaaa'],
+                    series: [{
+                            name: 'XL',
+                            data: gm_xl
+                        }, {
+                            name: 'Three',
+                            data: gm_three
+                        }, {
+                            name: 'Axis',
+                            data: gm_axis
+                        }, {
+                            name: 'Telkomsel',
+                            data: gm_telkomsel
+                        }, {
+                            name: 'Smartfren',
+                            data: gm_smartfren
+                        }, {
+                            name: 'Indosat',
+                            data: gm_indosat
+                        }, {
+                            name: 'Other',
+                            data: gm_other
+                        }],
+                    xaxis: {
+                        categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
+                    },
+                    yaxis: {
+                        title: {
+                            text: '(sms)'
+                        }
+                    },
+                    fill: {
+                        opacity: 1
+
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return val + " sms"
+                            }
+                        }
+                    }
+                }
+
+                var chart = new ApexCharts(
+                        document.querySelector("#apex_analytic_chart"),
+                        options
+                        );
+                chart.render();
+            }
+        }
+    });
 
     $('.menu').removeClass('active');
     $('#<?=$this->uri->segment(1)?>').addClass('active');
@@ -62,93 +182,6 @@ $(document).ready(function() {
         });
     }
 
-    ////////// Apex Analytic Chart //////////////
-    var theme = 'light';
-    if ($("#apex_analytic_chart").length > 0)
-    {
-        options = {
-            theme: {
-                mode: theme
-            },
-            chart: {
-                height: 350,
-                type: 'bar',
-            },
-            responsive: [
-                {
-                    breakpoint: 767,
-                    options: {
-                        chart: {
-                            height: 220
-                        }
-                    }
-                }
-            ],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
-            colors: ['#1ee0ac', '#ffc107', '#17a2b8', '#f64e60', '#eb6431', '#ffd04c', '#aaaaaa'],
-            series: [{
-                    name: 'XL',
-                    data: [<?=$gm_xl?>]
-                }, {
-                    name: 'Three',
-                    data: [<?=$gm_three?>]
-                }, {
-                    name: 'Axis',
-                    data: [<?=$gm_axis?>]
-                }, {
-                    name: 'Telkomsel',
-                    data: [<?=$gm_telkomsel?>]
-                }, {
-                    name: 'Smartfren',
-                    data: [<?=$gm_smartfren?>]
-                }, {
-                    name: 'Indosat',
-                    data: [<?=$gm_indosat?>]
-                }, {
-                    name: 'Other',
-                    data: [<?=$gm_other?>]
-                }],
-            xaxis: {
-                categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
-            },
-            yaxis: {
-                title: {
-                    text: '(sms)'
-                }
-            },
-            fill: {
-                opacity: 1
-
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + " sms"
-                    }
-                }
-            }
-        }
-
-        var chart = new ApexCharts(
-                document.querySelector("#apex_analytic_chart"),
-                options
-                );
-        chart.render();
-    }
 });
 
 </script>

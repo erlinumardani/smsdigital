@@ -70,111 +70,6 @@ class Data extends CI_Controller {
 			}
 		}
 
-		$gm_telkomsel = 
-			$this->getdata_monthly('1','Telkomsel').','.
-			$this->getdata_monthly('2','Telkomsel').','.
-			$this->getdata_monthly('3','Telkomsel').','.
-			$this->getdata_monthly('4','Telkomsel').','.
-			$this->getdata_monthly('5','Telkomsel').','.
-			$this->getdata_monthly('6','Telkomsel').','.
-			$this->getdata_monthly('7','Telkomsel').','.
-			$this->getdata_monthly('8','Telkomsel').','.
-			$this->getdata_monthly('9','Telkomsel').','.
-			$this->getdata_monthly('10','Telkomsel').','.
-			$this->getdata_monthly('11','Telkomsel').','.
-			$this->getdata_monthly('12','Telkomsel')
-		;
-
-		$gm_indosat = 
-			$this->getdata_monthly('1','Indosat').','.
-			$this->getdata_monthly('2','Indosat').','.
-			$this->getdata_monthly('3','Indosat').','.
-			$this->getdata_monthly('4','Indosat').','.
-			$this->getdata_monthly('5','Indosat').','.
-			$this->getdata_monthly('6','Indosat').','.
-			$this->getdata_monthly('7','Indosat').','.
-			$this->getdata_monthly('8','Indosat').','.
-			$this->getdata_monthly('9','Indosat').','.
-			$this->getdata_monthly('10','Indosat').','.
-			$this->getdata_monthly('11','Indosat').','.
-			$this->getdata_monthly('12','Indosat')
-		;
-
-		$gm_xl = 
-			$this->getdata_monthly('1','XL').','.
-			$this->getdata_monthly('2','XL').','.
-			$this->getdata_monthly('3','XL').','.
-			$this->getdata_monthly('4','XL').','.
-			$this->getdata_monthly('5','XL').','.
-			$this->getdata_monthly('6','XL').','.
-			$this->getdata_monthly('7','XL').','.
-			$this->getdata_monthly('8','XL').','.
-			$this->getdata_monthly('9','XL').','.
-			$this->getdata_monthly('10','XL').','.
-			$this->getdata_monthly('11','XL').','.
-			$this->getdata_monthly('12','XL')
-		;
-
-		$gm_axis = 
-			$this->getdata_monthly('1','AXIS').','.
-			$this->getdata_monthly('2','AXIS').','.
-			$this->getdata_monthly('3','AXIS').','.
-			$this->getdata_monthly('4','AXIS').','.
-			$this->getdata_monthly('5','AXIS').','.
-			$this->getdata_monthly('6','AXIS').','.
-			$this->getdata_monthly('7','AXIS').','.
-			$this->getdata_monthly('8','AXIS').','.
-			$this->getdata_monthly('9','AXIS').','.
-			$this->getdata_monthly('10','AXIS').','.
-			$this->getdata_monthly('11','AXIS').','.
-			$this->getdata_monthly('12','AXIS')
-		;
-
-		$gm_smartfren = 
-			$this->getdata_monthly('1','Smartfren').','.
-			$this->getdata_monthly('2','Smartfren').','.
-			$this->getdata_monthly('3','Smartfren').','.
-			$this->getdata_monthly('4','Smartfren').','.
-			$this->getdata_monthly('5','Smartfren').','.
-			$this->getdata_monthly('6','Smartfren').','.
-			$this->getdata_monthly('7','Smartfren').','.
-			$this->getdata_monthly('8','Smartfren').','.
-			$this->getdata_monthly('9','Smartfren').','.
-			$this->getdata_monthly('10','Smartfren').','.
-			$this->getdata_monthly('11','Smartfren').','.
-			$this->getdata_monthly('12','Smartfren')
-		;
-
-		$gm_three = 
-			$this->getdata_monthly('1','Three').','.
-			$this->getdata_monthly('2','Three').','.
-			$this->getdata_monthly('3','Three').','.
-			$this->getdata_monthly('4','Three').','.
-			$this->getdata_monthly('5','Three').','.
-			$this->getdata_monthly('6','Three').','.
-			$this->getdata_monthly('7','Three').','.
-			$this->getdata_monthly('8','Three').','.
-			$this->getdata_monthly('9','Three').','.
-			$this->getdata_monthly('10','Three').','.
-			$this->getdata_monthly('11','Three').','.
-			$this->getdata_monthly('12','Three')
-		;
-
-		$gm_other = 
-			$this->getdata_monthly('1','').','.
-			$this->getdata_monthly('2','').','.
-			$this->getdata_monthly('3','').','.
-			$this->getdata_monthly('4','').','.
-			$this->getdata_monthly('5','').','.
-			$this->getdata_monthly('6','').','.
-			$this->getdata_monthly('7','').','.
-			$this->getdata_monthly('8','').','.
-			$this->getdata_monthly('9','').','.
-			$this->getdata_monthly('10','').','.
-			$this->getdata_monthly('11','').','.
-			$this->getdata_monthly('12','')
-		;
-
 		$y_telkomsel = $this->getdata_yearly('Telkomsel');
 		$y_indosat = $this->getdata_yearly('Indosat');
 		$y_xl = $this->getdata_yearly('xl');
@@ -194,13 +89,6 @@ class Data extends CI_Controller {
 			'limit_persent' => $limit_persent,
 			'sms_otomatis' => $sms_otomatis,
 			'contacts' => $contacts,
-			'gm_telkomsel' => $gm_telkomsel,
-			'gm_indosat' => $gm_indosat,
-			'gm_xl' => $gm_xl,
-			'gm_axis' => $gm_axis,
-			'gm_smartfren' => $gm_smartfren,
-			'gm_three' => $gm_three,
-			'gm_other' => $gm_other,
 			'y_telkomsel' => $y_telkomsel,
 			'y_indosat' => $y_indosat,
 			'y_xl' => $y_xl,
@@ -290,7 +178,7 @@ class Data extends CI_Controller {
 			->row()->total;
 		}else{
 			$data = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','month(created_at) = "'.$month.'" and provider = "'.$provider.'"')
+			->get_where('v_sms_transactions','month(created_at) = "'.$month.'" and provider = "'.$provider.'" and tenant_id = "'.$this->tenant_id.'"')
 			->row()->total;
 		}
 
@@ -331,6 +219,168 @@ class Data extends CI_Controller {
 		}
 
 		return round($data/$total * 100);
+	}
+
+	function getdata()
+	{
+
+		if($this->role_id=="3"){
+			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
+			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
+			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and updated_by = "'.$this->user_id.'"')->row()->total;
+
+			if($total_sms>0 && $limit>0){
+				$limit_persent = number_format($total_sms/$limit * 100);
+			}else{
+				$limit_persent = 0;
+			}
+			
+		}else{
+			$limit = $this->db->select('sms_limit')->get_where('users',array('id'=>$this->session->userdata('user_id')))->row()->sms_limit;
+			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule" and tenant_id = '.$this->tenant_id)->row()->total;
+			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+			
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+
+			if($total_sms>0 && $limit>0){
+				$limit_persent = number_format($total_sms/$limit * 100);
+			}else{
+				$limit_persent = 0;
+			}
+		}
+
+		$gm_telkomsel = array(
+			$this->getdata_monthly('1','Telkomsel'),
+			$this->getdata_monthly('2','Telkomsel'),
+			$this->getdata_monthly('3','Telkomsel'),
+			$this->getdata_monthly('4','Telkomsel'),
+			$this->getdata_monthly('5','Telkomsel'),
+			$this->getdata_monthly('6','Telkomsel'),
+			$this->getdata_monthly('7','Telkomsel'),
+			$this->getdata_monthly('8','Telkomsel'),
+			$this->getdata_monthly('9','Telkomsel'),
+			$this->getdata_monthly('10','Telkomsel'),
+			$this->getdata_monthly('11','Telkomsel'),
+			$this->getdata_monthly('12','Telkomsel')
+		);
+
+		$gm_indosat = array(
+			$this->getdata_monthly('1','Indosat'),
+			$this->getdata_monthly('2','Indosat'),
+			$this->getdata_monthly('3','Indosat'),
+			$this->getdata_monthly('4','Indosat'),
+			$this->getdata_monthly('5','Indosat'),
+			$this->getdata_monthly('6','Indosat'),
+			$this->getdata_monthly('7','Indosat'),
+			$this->getdata_monthly('8','Indosat'),
+			$this->getdata_monthly('9','Indosat'),
+			$this->getdata_monthly('10','Indosat'),
+			$this->getdata_monthly('11','Indosat'),
+			$this->getdata_monthly('12','Indosat')
+		);
+
+		$gm_xl = array(
+			$this->getdata_monthly('1','XL'),
+			$this->getdata_monthly('2','XL'),
+			$this->getdata_monthly('3','XL'),
+			$this->getdata_monthly('4','XL'),
+			$this->getdata_monthly('5','XL'),
+			$this->getdata_monthly('6','XL'),
+			$this->getdata_monthly('7','XL'),
+			$this->getdata_monthly('8','XL'),
+			$this->getdata_monthly('9','XL'),
+			$this->getdata_monthly('10','XL'),
+			$this->getdata_monthly('11','XL'),
+			$this->getdata_monthly('12','XL')
+		);
+
+		$gm_axis = array(
+			$this->getdata_monthly('1','AXIS'),
+			$this->getdata_monthly('2','AXIS'),
+			$this->getdata_monthly('3','AXIS'),
+			$this->getdata_monthly('4','AXIS'),
+			$this->getdata_monthly('5','AXIS'),
+			$this->getdata_monthly('6','AXIS'),
+			$this->getdata_monthly('7','AXIS'),
+			$this->getdata_monthly('8','AXIS'),
+			$this->getdata_monthly('9','AXIS'),
+			$this->getdata_monthly('10','AXIS'),
+			$this->getdata_monthly('11','AXIS'),
+			$this->getdata_monthly('12','AXIS')
+		);
+
+		$gm_smartfren = array(
+			$this->getdata_monthly('1','Smartfren'),
+			$this->getdata_monthly('2','Smartfren'),
+			$this->getdata_monthly('3','Smartfren'),
+			$this->getdata_monthly('4','Smartfren'),
+			$this->getdata_monthly('5','Smartfren'),
+			$this->getdata_monthly('6','Smartfren'),
+			$this->getdata_monthly('7','Smartfren'),
+			$this->getdata_monthly('8','Smartfren'),
+			$this->getdata_monthly('9','Smartfren'),
+			$this->getdata_monthly('10','Smartfren'),
+			$this->getdata_monthly('11','Smartfren'),
+			$this->getdata_monthly('12','Smartfren')
+		);
+
+		$gm_three = array(
+			$this->getdata_monthly('1','Three'),
+			$this->getdata_monthly('2','Three'),
+			$this->getdata_monthly('3','Three'),
+			$this->getdata_monthly('4','Three'),
+			$this->getdata_monthly('5','Three'),
+			$this->getdata_monthly('6','Three'),
+			$this->getdata_monthly('7','Three'),
+			$this->getdata_monthly('8','Three'),
+			$this->getdata_monthly('9','Three'),
+			$this->getdata_monthly('10','Three'),
+			$this->getdata_monthly('11','Three'),
+			$this->getdata_monthly('12','Three')
+		);
+
+		$gm_other = array(
+			$this->getdata_monthly('1',''),
+			$this->getdata_monthly('2',''),
+			$this->getdata_monthly('3',''),
+			$this->getdata_monthly('4',''),
+			$this->getdata_monthly('5',''),
+			$this->getdata_monthly('6',''),
+			$this->getdata_monthly('7',''),
+			$this->getdata_monthly('8',''),
+			$this->getdata_monthly('9',''),
+			$this->getdata_monthly('10',''),
+			$this->getdata_monthly('11',''),
+			$this->getdata_monthly('12','')
+		);
+
+		$y_telkomsel = $this->getdata_yearly('Telkomsel');
+		$y_indosat = $this->getdata_yearly('Indosat');
+		$y_xl = $this->getdata_yearly('xl');
+		$y_axis = $this->getdata_yearly('AXIS');
+		$y_smartfren = $this->getdata_yearly('Smartfren');
+		$y_three = $this->getdata_yearly('Three');
+		$y_other = $this->getdata_yearly('');
+
+		$content_data = array(
+			'gm_telkomsel' => $gm_telkomsel,
+			'gm_indosat' => $gm_indosat,
+			'gm_xl' => $gm_xl,
+			'gm_axis' => $gm_axis,
+			'gm_smartfren' => $gm_smartfren,
+			'gm_three' => $gm_three,
+			'gm_other' => $gm_other,
+		);
+		
+		echo json_encode($content_data);
 	}
 	
 }
