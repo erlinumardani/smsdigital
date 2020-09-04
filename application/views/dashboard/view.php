@@ -6,6 +6,32 @@
     <div class="row">
         <div class="col-12 col-sm-6 col-xl-4 mt-3">
             <div class="card">
+                <div class="card-body text-success border-bottom border-success border-w-5">
+                    <h2 class="text-center"><?=$total_sms_received?></h2>
+                    <h6 class="text-center">RECEIVED</h6>       
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4 mt-3">
+            <div class="card">
+                <div class="card-body text-warning border-bottom border-warning border-w-5">
+                    <h2 class="text-center"><?=$total_sms_sending?></h2>
+                    <h6 class="text-center">SENDING</h6>       
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4 mt-3">
+            <div class="card">
+                <div class="card-body text-danger border-bottom border-danger border-w-5">
+                    <h2 class="text-center"><?=$total_sms_failed?></h2>
+                    <h6 class="text-center">FAILED</h6>       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-xl-4 mt-3">
+            <div class="card">
                 <div class="card-body p-0">
                     <div class='p-4 align-self-center'>
                         <h4><i class="icon-envelope"></i> <b><?=$total_sms?></b> / <?=$limit?></h4>
