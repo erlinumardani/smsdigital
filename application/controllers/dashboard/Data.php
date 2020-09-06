@@ -208,43 +208,6 @@ class Data extends CI_Controller {
 		return $data;
 	}
 
-	function getdata_provider_yearly($provider){
-
-		if($this->role_id=="3"){
-			$data = $this->db->query("SELECT
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 1 AND provider = '".$provider."' and sender = '".$this->username."') AS '0',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 2 AND provider = '".$provider."' and sender = '".$this->username."') AS '1',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 3 AND provider = '".$provider."' and sender = '".$this->username."') AS '2',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 4 AND provider = '".$provider."' and sender = '".$this->username."') AS '3',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 5 AND provider = '".$provider."' and sender = '".$this->username."') AS '4',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 6 AND provider = '".$provider."' and sender = '".$this->username."') AS '5',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 7 AND provider = '".$provider."' and sender = '".$this->username."') AS '6',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 8 AND provider = '".$provider."' and sender = '".$this->username."') AS '7',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 9 AND provider = '".$provider."' and sender = '".$this->username."') AS '8',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 10 AND provider = '".$provider."' and sender = '".$this->username."') AS '9',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 11 AND provider = '".$provider."' and sender = '".$this->username."') AS '10',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 12 AND provider = '".$provider."' and sender = '".$this->username."') AS '11'
-			")->result_array()[0];
-		}else{
-			$data = $this->db->query("SELECT
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 1 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '0',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 2 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '1',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 3 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '2',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 4 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '3',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 5 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '4',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 6 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '5',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 7 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '6',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 8 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '7',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 9 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '8',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 10 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '9',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 11 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '10',
-				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 12 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '11'
-			")->result_array()[0];
-		}
-
-		return $data;
-	}
-
 	function getdata_provider($provider){
 
 		if($provider == null){
