@@ -245,40 +245,78 @@ class Data extends CI_Controller {
 		return $data;
 	}
 
-	function getdata_provider($month,$provider){
+	function getdata_provider($provider){
 
-		if($this->role_id=="3"){
-			$data = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','sender = "'.$this->username.'" and month(created_at) = "'.$month.'" and provider = "'.$provider.'" and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
+		if($provider == null){
+			$where = 'provider is null';
 		}else{
-			$data = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','month(created_at) = "'.$month.'" and provider = "'.$provider.'" and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
+			$where = 'provider = "'.$provider.'"';
 		}
 
-		echo $data;
-	}
-	
-	function getdata_yearly($provider){
-
 		if($this->role_id=="3"){
-			$data = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','sender = "'.$this->username.'" and year(created_at) = year(now()) and provider = "'.$provider.'" and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
-			$total = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','sender = "'.$this->username.'" and year(created_at) = year(now()) and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
+			$data = $this->db->select("month(created_at) as month, count(1) as total")
+			->from('v_sms_transactions')
+			->where('year(created_at) = year(now()) and sender = "'.$this->username.'" AND '.$where)
+			->group_by('month(created_at)')
+			->get()->result();
 		}else{
-			$data = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','year(created_at) = year(now()) and provider = "'.$provider.'" and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
-			$total = $this->db->select("count(*) as total")
-			->get_where('v_sms_transactions','year(created_at) = year(now()) and tenant_id = "'.$this->tenant_id.'"')
-			->row()->total;
+			$data = $this->db->select("month(created_at) as month, count(1) as total")
+			->from('v_sms_transactions')
+			->where('year(created_at) = year(now()) and tenant_id = "'.$this->tenant_id.'" AND '.$where)
+			->group_by('month(created_at)')
+			->get()->result();
 		}
 
-		return round($data/$total * 100);
+		$result = array(0,0,0,0,0,0,0,0,0,0,0,0);
+
+		foreach ($data as $value) {
+			
+			switch ($value->month) {
+				case '1':
+					$result[0] = $value->total;
+					break;
+				case '2':
+					$result[1] = $value->total;
+					break;
+				case '3':
+					$result[2] = $value->total;
+					break;
+				case '4':
+					$result[3] = $value->total;
+					break;
+				case '5':
+					$result[4] = $value->total;
+					break;
+				case '6':
+					$result[5] = $value->total;
+					break;
+				case '7':
+					$result[6] = $value->total;
+					break;
+				case '8':
+					$result[7] = $value->total;
+					break;
+				case '9':
+					$result[8] = $value->total;
+					break;
+				case '10':
+					$result[9] = $value->total;
+					break;
+				case '11':
+					$result[10] = $value->total;
+					break;
+				case '12':
+					$result[11] = $value->total;
+					break;
+				
+				default:
+					# code...
+					break;
+			}
+
+		}
+
+		return $result;
 	}
 
 	function getdata_all_provider(){
@@ -304,13 +342,13 @@ class Data extends CI_Controller {
 	function getdata_grafik()
 	{
 
-		$gm_telkomsel = $this->getdata_provider_yearly('Telkomsel');
-		$gm_indosat = $this->getdata_provider_yearly('Indosat');
-		$gm_xl = $this->getdata_provider_yearly('XL');
-		$gm_axis = $this->getdata_provider_yearly('AXIS');
-		$gm_smartfren = $this->getdata_provider_yearly('Smartfren');
-		$gm_three = $this->getdata_provider_yearly('Three');
-		$gm_other = $this->getdata_provider_yearly('');
+		$gm_telkomsel = $this->getdata_provider('Telkomsel');
+		$gm_indosat = $this->getdata_provider('Indosat');
+		$gm_xl = $this->getdata_provider('XL');
+		$gm_axis = $this->getdata_provider('AXIS');
+		$gm_smartfren = $this->getdata_provider('Smartfren');
+		$gm_three = $this->getdata_provider('Three');
+		$gm_other = $this->getdata_provider(null);
 
 		$content_data = array(
 			'gm_telkomsel' => $gm_telkomsel,
