@@ -51,10 +51,10 @@
 $(document).ready(function() {
    
     $('#apex_analytic_chart').block({ 
-        message: '<h2>Processing</h2>' 
+        message: '<h3>Please Wait...</h3>' 
     }); 
     $('#summary').block({ 
-        message: '<h2>Processing</h2>'
+        message: '<h3>Please Wait...</h3>'
     }); 
 
     $.ajax({
