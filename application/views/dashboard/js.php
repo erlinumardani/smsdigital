@@ -51,10 +51,10 @@
 $(document).ready(function() {
    
     $('#apex_analytic_chart').block({ 
-        message: '<h3>Please Wait...</h3>' 
+        message: '<h3>please wait...</h3>' 
     }); 
     $('#summary').block({ 
-        message: '<h3>Please Wait...</h3>'
+        message: '<h3>please wait...</h3>'
     }); 
 
     $.ajax({
@@ -187,6 +187,7 @@ $(document).ready(function() {
             $('#total_sms_received').text(data.total_sms_received);
             $('#total_sms_sending').text(data.total_sms_sending);
             $('#total_sms_failed').text(data.total_sms_failed);
+            $('#total_sms').text(parseInt(data.total_sms_received) + parseInt(data.total_sms_sending));
             $('#summary').unblock();
         }
     });
