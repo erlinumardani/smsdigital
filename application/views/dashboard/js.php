@@ -67,7 +67,7 @@ $(document).ready(function() {
             $('#total_sms_sent').text(data.total_sms_sent);
             $('#total_sms_sending').text(data.total_sms_sending);
             $('#total_sms_failed').text(data.total_sms_failed);
-            $('#total_sms').text(number_format(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, ""))));
+            $('#total_sms').text(number_format(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sent.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, ""))));
             $('#summary').unblock();
         }
     });
