@@ -334,17 +334,20 @@ class Data extends CI_Controller {
 	{
 
 		if($this->role_id=="3"){
-			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED") and updated_by = "'.$this->user_id.'"')->row()->total;
+			$total_sms_sent = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("SENT") and updated_by = "'.$this->user_id.'"')->row()->total;
 			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and updated_by = "'.$this->user_id.'"')->row()->total;
 			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and updated_by = "'.$this->user_id.'"')->row()->total;
 		}else{
-			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_received = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
+			$total_sms_sent = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("SENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 			$total_sms_sending = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("QUEING","SENDING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 			$total_sms_failed = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("FAILED","MSGID_NOT_FOUND","UNSENT") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 		}
 
 		$content_data = array(
 			'total_sms_received' => number_format($total_sms_received),
+			'total_sms_sent' => number_format($total_sms_sent),
 			'total_sms_sending' => number_format($total_sms_sending),
 			'total_sms_failed' => number_format($total_sms_failed),
 		);

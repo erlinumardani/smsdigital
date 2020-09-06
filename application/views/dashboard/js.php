@@ -64,6 +64,7 @@ $(document).ready(function() {
         success: function(data)
         {
             $('#total_sms_received').text(data.total_sms_received);
+            $('#total_sms_sent').text(data.total_sms_sent);
             $('#total_sms_sending').text(data.total_sms_sending);
             $('#total_sms_failed').text(data.total_sms_failed);
             $('#total_sms').text(number_format(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, ""))));
@@ -138,7 +139,7 @@ $(document).ready(function() {
                         width: 2,
                         colors: ['transparent']
                     },
-                    colors: ['#1ee0ac', '#ffc107', '#17a2b8', '#f64e60', '#eb6431', '#ffd04c', '#aaaaaa'],
+                    colors: ['#1ee0ac', '#7782bd', '#753c94', '#f64e60', '#eb6431', '#ffd04c', '#aaaaaa'],
                     series: [{
                             name: 'XL',
                             data: gm_xl
@@ -202,6 +203,7 @@ $(document).ready(function() {
     {
         $(".barfiller").each(function () {
             $(this).barfiller({barColor: $(this).data('color')});
+            $(this).find('.rounded').css('background',$(this).data('color'));
         });
     }
 
