@@ -59,6 +59,20 @@ $(document).ready(function() {
 
     $.ajax({
         type: "GET",
+        url: "<?=$base_url?>dashboard/data/getdata_summary",
+        dataType: 'json',
+        success: function(data)
+        {
+            $('#total_sms_received').text(data.total_sms_received);
+            $('#total_sms_sending').text(data.total_sms_sending);
+            $('#total_sms_failed').text(data.total_sms_failed);
+            $('#total_sms').text(number_format(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, ""))));
+            $('#summary').unblock();
+        }
+    });
+
+    $.ajax({
+        type: "GET",
         url: "<?=$base_url?>dashboard/data/getdata_grafik",
         dataType: 'json',
         success: function(data)
@@ -175,20 +189,6 @@ $(document).ready(function() {
                 chart.render();
             }
             $('#apex_analytic_chart').unblock();
-        }
-    });
-
-    $.ajax({
-        type: "GET",
-        url: "<?=$base_url?>dashboard/data/getdata_summary",
-        dataType: 'json',
-        success: function(data)
-        {
-            $('#total_sms_received').text(data.total_sms_received);
-            $('#total_sms_sending').text(data.total_sms_sending);
-            $('#total_sms_failed').text(data.total_sms_failed);
-            $('#total_sms').text(number_format(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, ""))));
-            $('#summary').unblock();
         }
     });
 
