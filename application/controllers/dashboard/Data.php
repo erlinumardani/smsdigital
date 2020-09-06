@@ -174,6 +174,43 @@ class Data extends CI_Controller {
 		return $data;
 	}
 
+	function getdata_provider_yearly($provider){
+
+		if($this->role_id=="3"){
+			$data = $this->db->query("SELECT
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 1 AND provider = '".$provider."' and sender = '".$this->username."') AS '0',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 2 AND provider = '".$provider."' and sender = '".$this->username."') AS '1',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 3 AND provider = '".$provider."' and sender = '".$this->username."') AS '2',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 4 AND provider = '".$provider."' and sender = '".$this->username."') AS '3',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 5 AND provider = '".$provider."' and sender = '".$this->username."') AS '4',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 6 AND provider = '".$provider."' and sender = '".$this->username."') AS '5',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 7 AND provider = '".$provider."' and sender = '".$this->username."') AS '6',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 8 AND provider = '".$provider."' and sender = '".$this->username."') AS '7',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 9 AND provider = '".$provider."' and sender = '".$this->username."') AS '8',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 10 AND provider = '".$provider."' and sender = '".$this->username."') AS '9',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 11 AND provider = '".$provider."' and sender = '".$this->username."') AS '10',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 12 AND provider = '".$provider."' and sender = '".$this->username."') AS '11'
+			")->result_array()[0];
+		}else{
+			$data = $this->db->query("SELECT
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 1 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '0',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 2 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '1',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 3 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '2',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 4 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '3',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 5 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '4',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 6 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '5',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 7 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '6',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 8 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '7',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 9 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '8',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 10 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '9',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 11 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '10',
+				(SELECT COUNT( 1 ) AS total FROM v_sms_transactions WHERE MONTH ( created_at ) = 12 AND provider = '".$provider."' and tenant_id = '".$this->tenant_id."') AS '11'
+			")->result_array()[0];
+		}
+
+		return $data;
+	}
+
 	function getdata_provider($month,$provider){
 
 		if($this->role_id=="3"){
@@ -212,110 +249,14 @@ class Data extends CI_Controller {
 
 	function getdata_grafik()
 	{
-		$gm_telkomsel = array(
-			$this->getdata_monthly('1','Telkomsel'),
-			$this->getdata_monthly('2','Telkomsel'),
-			$this->getdata_monthly('3','Telkomsel'),
-			$this->getdata_monthly('4','Telkomsel'),
-			$this->getdata_monthly('5','Telkomsel'),
-			$this->getdata_monthly('6','Telkomsel'),
-			$this->getdata_monthly('7','Telkomsel'),
-			$this->getdata_monthly('8','Telkomsel'),
-			$this->getdata_monthly('9','Telkomsel'),
-			$this->getdata_monthly('10','Telkomsel'),
-			$this->getdata_monthly('11','Telkomsel'),
-			$this->getdata_monthly('12','Telkomsel')
-		);
 
-		$gm_indosat = array(
-			$this->getdata_monthly('1','Indosat'),
-			$this->getdata_monthly('2','Indosat'),
-			$this->getdata_monthly('3','Indosat'),
-			$this->getdata_monthly('4','Indosat'),
-			$this->getdata_monthly('5','Indosat'),
-			$this->getdata_monthly('6','Indosat'),
-			$this->getdata_monthly('7','Indosat'),
-			$this->getdata_monthly('8','Indosat'),
-			$this->getdata_monthly('9','Indosat'),
-			$this->getdata_monthly('10','Indosat'),
-			$this->getdata_monthly('11','Indosat'),
-			$this->getdata_monthly('12','Indosat')
-		);
-
-		$gm_xl = array(
-			$this->getdata_monthly('1','XL'),
-			$this->getdata_monthly('2','XL'),
-			$this->getdata_monthly('3','XL'),
-			$this->getdata_monthly('4','XL'),
-			$this->getdata_monthly('5','XL'),
-			$this->getdata_monthly('6','XL'),
-			$this->getdata_monthly('7','XL'),
-			$this->getdata_monthly('8','XL'),
-			$this->getdata_monthly('9','XL'),
-			$this->getdata_monthly('10','XL'),
-			$this->getdata_monthly('11','XL'),
-			$this->getdata_monthly('12','XL')
-		);
-
-		$gm_axis = array(
-			$this->getdata_monthly('1','AXIS'),
-			$this->getdata_monthly('2','AXIS'),
-			$this->getdata_monthly('3','AXIS'),
-			$this->getdata_monthly('4','AXIS'),
-			$this->getdata_monthly('5','AXIS'),
-			$this->getdata_monthly('6','AXIS'),
-			$this->getdata_monthly('7','AXIS'),
-			$this->getdata_monthly('8','AXIS'),
-			$this->getdata_monthly('9','AXIS'),
-			$this->getdata_monthly('10','AXIS'),
-			$this->getdata_monthly('11','AXIS'),
-			$this->getdata_monthly('12','AXIS')
-		);
-
-		$gm_smartfren = array(
-			$this->getdata_monthly('1','Smartfren'),
-			$this->getdata_monthly('2','Smartfren'),
-			$this->getdata_monthly('3','Smartfren'),
-			$this->getdata_monthly('4','Smartfren'),
-			$this->getdata_monthly('5','Smartfren'),
-			$this->getdata_monthly('6','Smartfren'),
-			$this->getdata_monthly('7','Smartfren'),
-			$this->getdata_monthly('8','Smartfren'),
-			$this->getdata_monthly('9','Smartfren'),
-			$this->getdata_monthly('10','Smartfren'),
-			$this->getdata_monthly('11','Smartfren'),
-			$this->getdata_monthly('12','Smartfren')
-		);
-
-		$gm_three = array(
-			$this->getdata_monthly('1','Three'),
-			$this->getdata_monthly('2','Three'),
-			$this->getdata_monthly('3','Three'),
-			$this->getdata_monthly('4','Three'),
-			$this->getdata_monthly('5','Three'),
-			$this->getdata_monthly('6','Three'),
-			$this->getdata_monthly('7','Three'),
-			$this->getdata_monthly('8','Three'),
-			$this->getdata_monthly('9','Three'),
-			$this->getdata_monthly('10','Three'),
-			$this->getdata_monthly('11','Three'),
-			$this->getdata_monthly('12','Three')
-		);
-
-		$gm_other = array(
-			$this->getdata_monthly('1',''),
-			$this->getdata_monthly('2',''),
-			$this->getdata_monthly('3',''),
-			$this->getdata_monthly('4',''),
-			$this->getdata_monthly('5',''),
-			$this->getdata_monthly('6',''),
-			$this->getdata_monthly('7',''),
-			$this->getdata_monthly('8',''),
-			$this->getdata_monthly('9',''),
-			$this->getdata_monthly('10',''),
-			$this->getdata_monthly('11',''),
-			$this->getdata_monthly('12','')
-		);
+		$gm_telkomsel = $this->getdata_provider_yearly('Telkomsel');
+		$gm_indosat = $this->getdata_provider_yearly('Indosat');
+		$gm_xl = $this->getdata_provider_yearly('XL');
+		$gm_axis = $this->getdata_provider_yearly('AXIS');
+		$gm_smartfren = $this->getdata_provider_yearly('Smartfren');
+		$gm_three = $this->getdata_provider_yearly('Three');
+		$gm_other = $this->getdata_provider_yearly('');
 
 		$content_data = array(
 			'gm_telkomsel' => $gm_telkomsel,
