@@ -81,7 +81,7 @@ class Data extends CI_Controller {
 				case 'Indosat':
 					$y_indosat = round($value->total/$sms_all * 100);
 					break;
-				case 'xl':
+				case 'XL':
 					$y_xl = round($value->total/$sms_all * 100);
 					break;
 				case 'AXIS':
