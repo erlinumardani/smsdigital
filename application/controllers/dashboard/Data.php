@@ -42,6 +42,7 @@ class Data extends CI_Controller {
 			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and updated_by = "'.$this->user_id.'"')->row()->total;
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule"')->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+			$sms_all = $this->db->select("count(*) as total")->get_where('v_sms_transactions','year(created_at) = year(now()) and sender = "'.$this->username.'"')->row()->total;
 
 			if($total_sms>0 && $limit>0){
 				$limit_persent = number_format($total_sms/$limit * 100);
@@ -54,6 +55,7 @@ class Data extends CI_Controller {
 			$total_sms = $this->db->select("count(id) as total")->get_where('sms_transactions','month(created_at) = month(now()) and status in("RECEIVED","SENDING","SENT","QUEING") and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 			$sms_otomatis = $this->db->select('count(id) as total')->get_where('sms_transactions','schedule > now() and type = "Schedule" and tenant_id = '.$this->tenant_id)->row()->total;
 			$contacts = $this->db->select('count(id) as total')->get('sms_contacts')->row()->total;
+			$sms_all = $this->db->select("count(*) as total")->get_where('v_sms_transactions','year(created_at) = year(now()) and tenant_id = "'.$this->tenant_id.'"')->row()->total;
 		
 			if($total_sms>0 && $limit>0){
 				$limit_persent = number_format($total_sms/$limit * 100);
@@ -62,13 +64,45 @@ class Data extends CI_Controller {
 			}
 		}
 
-		$y_telkomsel = $this->getdata_yearly('Telkomsel');
-		$y_indosat = $this->getdata_yearly('Indosat');
-		$y_xl = $this->getdata_yearly('xl');
-		$y_axis = $this->getdata_yearly('AXIS');
-		$y_smartfren = $this->getdata_yearly('Smartfren');
-		$y_three = $this->getdata_yearly('Three');
-		$y_other = $this->getdata_yearly('');
+		$y_telkomsel = 0;
+		$y_indosat = 0;
+		$y_xl = 0;
+		$y_axis = 0;
+		$y_smartfren = 0;
+		$y_three = 0;
+		$y_other = 0;
+
+		foreach ($this->getdata_all_provider() as $value) {
+			
+			switch ($value->provider) {
+				case 'Telkomsel':
+					$y_telkomsel = round($value->total/$sms_all * 100);
+					break;
+				case 'Indosat':
+					$y_indosat = round($value->total/$sms_all * 100);
+					break;
+				case 'xl':
+					$y_xl = round($value->total/$sms_all * 100);
+					break;
+				case 'AXIS':
+					$y_axis = round($value->total/$sms_all * 100);
+					break;
+				case 'Smartfren':
+					$y_smartfren = round($value->total/$sms_all * 100);
+					break;
+				case 'Three':
+					$y_three = round($value->total/$sms_all * 100);
+					break;
+				case null:
+					$y_other = round($value->total/$sms_all * 100);
+					break;
+				
+				default:
+					# code...
+					break;
+			}
+
+		}
 
 		$content_data = array(
 			'base_url' => base_url(),
@@ -245,6 +279,26 @@ class Data extends CI_Controller {
 		}
 
 		return round($data/$total * 100);
+	}
+
+	function getdata_all_provider(){
+
+		if($this->role_id=="3"){
+			$data = $this->db->select("provider, count(1) as total")
+			->from('v_sms_transactions')
+			->where('year(created_at) = year(now()) and sender = "'.$this->username.'"')
+			->group_by('provider')
+			->get()->result();
+			
+		}else{
+			$data = $this->db->select("provider, count(1) as total")
+			->from('v_sms_transactions')
+			->where('year(created_at) = year(now()) and tenant_id = "'.$this->tenant_id.'"')
+			->group_by('provider')
+			->get()->result();
+		}
+
+		return $data;
 	}
 
 	function getdata_grafik()
