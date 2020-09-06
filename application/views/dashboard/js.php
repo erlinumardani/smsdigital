@@ -187,7 +187,7 @@ $(document).ready(function() {
             $('#total_sms_received').text(data.total_sms_received);
             $('#total_sms_sending').text(data.total_sms_sending);
             $('#total_sms_failed').text(data.total_sms_failed);
-            $('#total_sms').text(parseInt(data.total_sms_received) + parseInt(data.total_sms_sending));
+            $('#total_sms').text(parseInt(data.total_sms_received.replace(/,/g, "")) + parseInt(data.total_sms_sending.replace(/,/g, "")));
             $('#summary').unblock();
         }
     });
