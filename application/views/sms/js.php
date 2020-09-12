@@ -225,6 +225,30 @@ $(document).ready(function() {
         });
     });
 
+    $('#get_spreadsheet').on('click',function() {
+
+        window.open('<?=$base_url.$page?>/data/export_spreadsheet/'+$('#startdate').val()+'/'+$('#enddate').val(), '_blank');
+
+        /* $.ajax({
+            url: '{base_url}page_inc_open/printspb',
+            type: 'POST',
+            dataType: 'json',
+            data: {impact: $("#impact").val(), urgency: $("#urgency").val() },
+        })
+        .done(function(data) {
+            if(data.status==true){
+                $('#priority').val(data.priority_id).trigger('change');
+            }else{
+                $('#priority').val('').trigger('change');
+            }
+        })
+        .fail(function() {
+            $('#priority').val('').trigger('change');
+        }); */
+
+    });
+
+
     $('.menu').removeClass('active');
     $('#<?=$this->uri->segment(1).'-'.$this->uri->segment(3)?>').addClass('active');
     $('#<?=$this->uri->segment(1).'-'.$this->uri->segment(3)?>').parent().parent().parent('.has-treeview').addClass('menu-open');

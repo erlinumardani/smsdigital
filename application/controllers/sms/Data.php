@@ -970,7 +970,11 @@ class Data extends CI_Controller {
 		$this->load->model('datatable_model');
 
 		if(isset($data['startdate']) && isset($data['enddate'])){
-			$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and sender = '".$this->username."'";
+			if($this->role_id==3){
+				$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and sender = '".$this->username."'";
+			}else{
+				$filter = "created_at between '".$data['startdate']." 00:00:00' and '".$data['enddate']." 23:59:59' and tenant_id = '".$this->tenant_id."'";
+			}
 		}
 
         $list = $this->datatable_model->get_datatables($table, $column_order, $column_search, $order, $filter);
@@ -1090,6 +1094,25 @@ class Data extends CI_Controller {
 			return 0;
 
 		}
+
+	}
+
+	function export_spreadsheet($startdate,$enddate){
+
+		if(isset($startdate) && isset($enddate)){
+			if($this->role_id==3){
+				$filter = "created_at between '".$startdate." 00:00:00' and '".$enddate." 23:59:59' and sender = '".$this->username."'";
+			}else{
+				$filter = "created_at between '".$startdate." 00:00:00' and '".$enddate." 23:59:59' and tenant_id = '".$this->tenant_id."'";
+			}
+		}
+
+		$data = $this->db->select('*')
+			->from('v_sms_transactions')
+			->where($filter)
+			->get()->result_array();
+
+		return $this->parser->parse('sms/spreadsheet', array('data'=>$data));
 
 	}
 }
