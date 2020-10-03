@@ -269,7 +269,7 @@ class Api extends REST_Controller
 
 		if($token->success==true){
 			// Header
-			$this->curl->http_header('Authorization', 'Bearer '.$token->data->token);
+			$this->curl->http_header('Authorization', 'Bearer '.$token);
 			$this->curl->http_header('Content-Type', 'application/json');
 
 			// Post - If you do not use post, it will just run a GET request
