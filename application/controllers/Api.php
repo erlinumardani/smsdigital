@@ -267,7 +267,7 @@ class Api extends REST_Controller
 		// More human looking options
 		$this->curl->option('buffersize', 10);
 
-		if($token->success==true){
+		if(isset($token)){
 			// Header
 			$this->curl->http_header('Authorization', 'Bearer '.$token);
 			$this->curl->http_header('Content-Type', 'application/json');
@@ -333,7 +333,7 @@ class Api extends REST_Controller
                 $max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
                 $reason = '';
 
-                if($this->limit_counter($decodedToken->data->role_id,$decodedToken->data->user_id)>count($inputdata['message'])){
+                if($this->limit_counter($decodedToken->data->role_id,$decodedToken->data->user_id)>1){
 
                     $i = 0;
                     $error = 0;
@@ -503,7 +503,7 @@ class Api extends REST_Controller
                 $max_id = (int)$this->db->select("max(id) as id")->get('sms_transactions')->row()->id+1;
                 $reason = '';
 
-                if($this->limit_counter($decodedToken->data->role_id,$decodedToken->data->user_id)>count($inputdata['message'])){
+                if($this->limit_counter($decodedToken->data->role_id,$decodedToken->data->user_id)>1){
 
                     $i = 0;
                     $error = 0;
