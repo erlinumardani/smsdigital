@@ -39,7 +39,7 @@ class Engine extends CI_Controller {
 
 		$this->load->library('curl');
 
-		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Service/TokenRequest';
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
 
 		// Start session (also wipes existing/previous sessions)
 		$this->curl->create($uri);
@@ -81,7 +81,7 @@ class Engine extends CI_Controller {
 		$token = $this->api_get_token();
 		$this->load->library('curl');
 
-		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Message/restCheckDelivery';
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Message/restCheckDelivery';
 
 		// Start session (also wipes existing/previous sessions)
 		$this->curl->create($uri);
@@ -122,7 +122,7 @@ class Engine extends CI_Controller {
 		$token = $this->api_get_token();
 		$this->load->library('curl');
 
-		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Message/restCheckSend';
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Message/restCheckSend';
 
 		// Start session (also wipes existing/previous sessions)
 		$this->curl->create($uri);

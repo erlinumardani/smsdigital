@@ -221,7 +221,7 @@ class Api extends REST_Controller
 
 		$this->load->library('curl');
 
-		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Service/TokenRequest';
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
 
 		// Start session (also wipes existing/previous sessions)
 		$this->curl->create($uri);
@@ -259,7 +259,7 @@ class Api extends REST_Controller
 		$token = $this->api_get_token();
 		$this->load->library('curl');
 
-		$uri = 'https://smsturbo.infomedia.co.id:8106/HERMES.1/Message/restSaveSend';
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Message/restSaveSend';
 
 		// Start session (also wipes existing/previous sessions)
 		$this->curl->create($uri);
@@ -681,6 +681,7 @@ class Api extends REST_Controller
                 ->where('status','SENDING')
                 ->or_where('status','QUEING')
                 ->where('schedule < now()')
+                ->order_by('rand()')
                 ->limit($limit)
                 ->get()->result();
 
