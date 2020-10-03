@@ -256,7 +256,7 @@ class Api extends REST_Controller
 
 	public function api_sendsms($data){
 
-		$token = $this->api_get_token();
+		$token = $this->token_read();
 		$this->load->library('curl');
 
 		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Message/restSaveSend';
