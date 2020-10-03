@@ -755,4 +755,24 @@ class Api extends REST_Controller
             $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
         }
     }
+
+    function token_refresh_get(){
+
+		$token_file = fopen("assets/docs/token.txt", "w") or die("Unable to open file!");
+		$token = $this->api_get_token()->data->token;
+		fwrite($token_file, $token);
+		fclose($token_file);
+		
+		echo $token;
+	}
+	
+	function token_read(){
+
+		$token_file = fopen("assets/docs/token.txt", "r") or die("Unable to open file!");
+		$token = fread($token_file,filesize("assets/docs/token.txt"));
+		fclose($token_file);
+
+		return $token;
+		
+	}
 }
