@@ -774,5 +774,15 @@ class Api extends REST_Controller
 
 		return $token;
 		
+    }
+    
+    function token_read_get(){
+
+		$token_file = fopen("assets/docs/token.txt", "r") or die("Unable to open file!");
+		$token = fread($token_file,filesize("assets/docs/token.txt"));
+		fclose($token_file);
+
+		echo $token;
+		
 	}
 }
