@@ -248,6 +248,12 @@ $(document).ready(function() {
 
     });
 
+    $('#get_csv').on('click',function() {
+
+        window.open('<?=$base_url.$page?>/data/export_spreadsheet/'+$('#startdate').val()+'/'+$('#enddate').val()+'/csv', '_blank');
+
+    });
+
 
     $('.menu').removeClass('active');
     $('#<?=$this->uri->segment(1).'-'.$this->uri->segment(3)?>').addClass('active');

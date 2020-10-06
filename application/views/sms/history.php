@@ -23,6 +23,7 @@
                     </div>
                     <a href="#" class="btn btn-primary" id="get_history"><i class="fas fa-clipboard"></i> Get Data</a>
                     <a href="#" class="btn btn-primary" id="get_spreadsheet"><i class="fas fa-file-excel"></i> Export to Spreadsheet</a>
+                    <a href="#" class="btn btn-primary" id="get_csv"><i class="fas fa-file-csv"></i> Export to CSV</a>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">

@@ -28,7 +28,7 @@
 	</style>
  
 	<?php
-	header("Content-type: application/vnd-ms-excel");
+	header("{appconfig}");
 	header("Content-Disposition: attachment; filename=smsgo.xls");
 	?>
  

@@ -1097,7 +1097,7 @@ class Data extends CI_Controller {
 
 	}
 
-	function export_spreadsheet($startdate,$enddate){
+	function export_spreadsheet($startdate,$enddate,$appconfig='spreadsheet'){
 
 		if(isset($startdate) && isset($enddate)){
 			if($this->role_id==3){
@@ -1112,7 +1112,13 @@ class Data extends CI_Controller {
 			->where($filter)
 			->get()->result_array();
 
-		return $this->parser->parse('sms/spreadsheet', array('data'=>$data));
+		if($appconfig == 'csv'){
+			$appconfig = 'Content-Type: application/csv; charset=UTF-8';
+		}else{
+			$appconfig = 'Content-type: application/vnd-ms-excel';
+		}
+
+		return $this->parser->parse('sms/spreadsheet', array('data'=>$data,"appconfig"=>$appconfig));
 
 	}
 }
