@@ -1114,11 +1114,13 @@ class Data extends CI_Controller {
 
 		if($appconfig == 'csv'){
 			$appconfig = 'Content-Type: application/csv; charset=UTF-8';
+			$fileconfig = 'filename=smsgo.csv';
 		}else{
 			$appconfig = 'Content-type: application/vnd-ms-excel';
+			$fileconfig = 'filename=smsgo.xls';
 		}
 
-		return $this->parser->parse('sms/spreadsheet', array('data'=>$data,"appconfig"=>$appconfig));
+		return $this->parser->parse('sms/spreadsheet', array('data'=>$data,"appconfig"=>$appconfig,"fileconfig"=>$fileconfig));
 
 	}
 }
