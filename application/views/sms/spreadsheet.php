@@ -29,7 +29,7 @@
  
 	<?php
 	header("{appconfig}");
-	header("Content-Disposition: attachment; {fileconfig}");
+	header("{fileconfig}");
 	?>
  
 	<center>
