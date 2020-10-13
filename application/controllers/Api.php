@@ -385,72 +385,12 @@ class Api extends REST_Controller
 
                     if($error==0){
 
-                        $status = $this->api_sendsms($data_api);
+                        $draft = isset($data['draft'])?$data['schedule']:false;
 
-                        if($status->success==true){
+                        if($draft == true){
 
-                            if(count($status->data->fail)>0){
-
-                                if(substr($data['phone'],0,1) == "0"){
-                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                                }
-
-                                switch ($status->data->fail[0]->$data['msgid']) {
-                                    case '007001':
-                                        $reason = "INVALID_SCHEDULE_DATETIME_FORMAT";
-                                        break;
-                                    case '007002':
-                                        $reason = "INVALID_MSISDN";
-                                        break;
-                                    case '007003':
-                                        $reason = "NO_CREDIT_AVAILABLE";
-                                        break;
-                                    default:
-                                        $reason = $status->data->fail[0]->$data['msgid'];
-                                        break;
-                                }
-
-                                $this->db->insert('sms_transactions',array(
-                                    'type' => "API",
-                                    'msisdn' => $data['phone'],
-                                    'message' => $data['content'],
-                                    'schedule' => $data['schedule'],
-                                    'guid' => $data['msgid'],
-                                    'status' => 'FAILED',
-                                    'reason' => $reason,
-                                    'tenant_id' => $decodedToken->data->tenant_id,
-                                    'updated_by'  => $decodedToken->data->user_id
-                                ));
-
-                                $this->set_response(array("code"=>false,"err_desc"=>$reason), REST_Controller::HTTP_OK);
-                                return;
-
-                            }else{
-                            
-                                $this->db->trans_start();
-
-                                if(substr($data['phone'],0,1) == "0"){
-                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                                }
-
-                                $this->db->insert('sms_transactions',array(
-                                    'type' => "API",
-                                    'msisdn' => $data['phone'],
-                                    'message' => $data['content'],
-                                    'schedule' => $data['schedule'],
-                                    'guid' => $data['msgid'],
-                                    'tenant_id' => $decodedToken->data->tenant_id,
-                                    'updated_by'  => $decodedToken->data->user_id
-                                ));
-
-                                $this->db->trans_complete();
-
-                                $this->set_response(array_merge(array("code"=>true,"status"=>'SENDING'),array('msgid'=>$uid)), REST_Controller::HTTP_OK);
-                                return;
-                            }
-
-                        }else{
-
+                            $this->db->trans_start();
+    
                             if(substr($data['phone'],0,1) == "0"){
                                 $data['phone'] = substr_replace($data['phone'],"62",0,1);
                             }
@@ -461,15 +401,104 @@ class Api extends REST_Controller
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
                                 'guid' => $data['msgid'],
-                                'status' => 'FAILED',
-                                'reason' => 'INVALID_INPUT_PARAMETER',
+                                'status' => 'DRAFT',
                                 'tenant_id' => $decodedToken->data->tenant_id,
                                 'updated_by'  => $decodedToken->data->user_id
                             ));
 
-                            $this->set_response(array("code"=>false,"err_desc"=>$message), REST_Controller::HTTP_OK);
+                            $this->db->trans_complete();
+
+                            $this->set_response(array_merge(array("code"=>true,"status"=>'DRAFT'),array('msgid'=>$uid)), REST_Controller::HTTP_OK);
                             return;
 
+                        }else{
+
+                            $status = $this->api_sendsms($data_api);
+
+                            if($status->success==true){
+
+                                if(count($status->data->fail)>0){
+
+                                    if(substr($data['phone'],0,1) == "0"){
+                                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                    }
+
+                                    switch ($status->data->fail[0]->$data['msgid']) {
+                                        case '007001':
+                                            $reason = "INVALID_SCHEDULE_DATETIME_FORMAT";
+                                            break;
+                                        case '007002':
+                                            $reason = "INVALID_MSISDN";
+                                            break;
+                                        case '007003':
+                                            $reason = "NO_CREDIT_AVAILABLE";
+                                            break;
+                                        default:
+                                            $reason = $status->data->fail[0]->$data['msgid'];
+                                            break;
+                                    }
+
+                                    $this->db->insert('sms_transactions',array(
+                                        'type' => "API",
+                                        'msisdn' => $data['phone'],
+                                        'message' => $data['content'],
+                                        'schedule' => $data['schedule'],
+                                        'guid' => $data['msgid'],
+                                        'status' => 'FAILED',
+                                        'reason' => $reason,
+                                        'tenant_id' => $decodedToken->data->tenant_id,
+                                        'updated_by'  => $decodedToken->data->user_id
+                                    ));
+
+                                    $this->set_response(array("code"=>false,"err_desc"=>$reason), REST_Controller::HTTP_OK);
+                                    return;
+
+                                }else{
+                                
+                                    $this->db->trans_start();
+
+                                    if(substr($data['phone'],0,1) == "0"){
+                                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                    }
+
+                                    $this->db->insert('sms_transactions',array(
+                                        'type' => "API",
+                                        'msisdn' => $data['phone'],
+                                        'message' => $data['content'],
+                                        'schedule' => $data['schedule'],
+                                        'guid' => $data['msgid'],
+                                        'tenant_id' => $decodedToken->data->tenant_id,
+                                        'updated_by'  => $decodedToken->data->user_id
+                                    ));
+
+                                    $this->db->trans_complete();
+
+                                    $this->set_response(array_merge(array("code"=>true,"status"=>'SENDING'),array('msgid'=>$uid)), REST_Controller::HTTP_OK);
+                                    return;
+                                }
+
+                            }else{
+
+                                if(substr($data['phone'],0,1) == "0"){
+                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                }
+
+                                $this->db->insert('sms_transactions',array(
+                                    'type' => "API",
+                                    'msisdn' => $data['phone'],
+                                    'message' => $data['content'],
+                                    'schedule' => $data['schedule'],
+                                    'guid' => $data['msgid'],
+                                    'status' => 'FAILED',
+                                    'reason' => 'INVALID_INPUT_PARAMETER',
+                                    'tenant_id' => $decodedToken->data->tenant_id,
+                                    'updated_by'  => $decodedToken->data->user_id
+                                ));
+
+                                $this->set_response(array("code"=>false,"err_desc"=>$message), REST_Controller::HTTP_OK);
+                                return;
+
+                            }
                         }
 
                     }else{
@@ -555,71 +584,12 @@ class Api extends REST_Controller
 
                     if($error==0){
 
-                        $status = $this->api_sendsms($data_api);
+                        $draft = isset($data['draft'])?$data['schedule']:false;
 
-                        if($status->success==true){
+                        if($draft == true){
 
-                            if(count($status->data->fail)>0){
-
-                                if(substr($data['phone'],0,1) == "0"){
-                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                                }
-
-                                switch ($status->data->fail[0]->$data['msgid']) {
-                                    case '007001':
-                                        $reason = "INVALID_SCHEDULE_DATETIME_FORMAT";
-                                        break;
-                                    case '007002':
-                                        $reason = "INVALID_MSISDN";
-                                        break;
-                                    case '007003':
-                                        $reason = "NO_CREDIT_AVAILABLE";
-                                        break;
-                                    default:
-                                        $reason = $status->data->fail[0]->$data['msgid'];
-                                        break;
-                                }
-
-                                $this->db->insert('sms_transactions',array(
-                                    'type' => "API",
-                                    'msisdn' => $data['phone'],
-                                    'message' => $data['content'],
-                                    'schedule' => $data['schedule'],
-                                    'guid' => $data['msgid'],
-                                    'status' => 'FAILED',
-                                    'reason' => $reason,
-                                    'tenant_id' => $decodedToken->data->tenant_id,
-                                    'updated_by'  => $decodedToken->data->user_id
-                                ));
-
-                                echo "FAILED|".json_encode($reason);
-
-                            }else{
-                            
-                                $this->db->trans_start();
-
-                                if(substr($data['phone'],0,1) == "0"){
-                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
-                                }
-
-                                $this->db->insert('sms_transactions',array(
-                                    'type' => "API",
-                                    'msisdn' => $data['phone'],
-                                    'message' => $data['content'],
-                                    'schedule' => $data['schedule'],
-                                    'guid' => $data['msgid'],
-                                    'tenant_id' => $decodedToken->data->tenant_id,
-                                    'updated_by'  => $decodedToken->data->user_id
-                                ));
-
-                                $this->db->trans_complete();
-
-                                echo "SUCCESS|SENDING|".$uid;
-                                return;
-                            }
-
-                        }else{
-
+                            $this->db->trans_start();
+    
                             if(substr($data['phone'],0,1) == "0"){
                                 $data['phone'] = substr_replace($data['phone'],"62",0,1);
                             }
@@ -630,14 +600,103 @@ class Api extends REST_Controller
                                 'message' => $data['content'],
                                 'schedule' => $data['schedule'],
                                 'guid' => $data['msgid'],
-                                'status' => 'FAILED',
-                                'reason' => 'INVALID_INPUT_PARAMETER',
+                                'status' => 'DRAFT',
                                 'tenant_id' => $decodedToken->data->tenant_id,
                                 'updated_by'  => $decodedToken->data->user_id
                             ));
 
-                            echo "FAILED|".json_encode($message);
+                            $this->db->trans_complete();
+
+                            echo "SUCCESS|DRAFT|".$uid;
                             return;
+
+                        }else{
+
+                            $status = $this->api_sendsms($data_api);
+
+                            if($status->success==true){
+
+                                if(count($status->data->fail)>0){
+    
+                                    if(substr($data['phone'],0,1) == "0"){
+                                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                    }
+    
+                                    switch ($status->data->fail[0]->$data['msgid']) {
+                                        case '007001':
+                                            $reason = "INVALID_SCHEDULE_DATETIME_FORMAT";
+                                            break;
+                                        case '007002':
+                                            $reason = "INVALID_MSISDN";
+                                            break;
+                                        case '007003':
+                                            $reason = "NO_CREDIT_AVAILABLE";
+                                            break;
+                                        default:
+                                            $reason = $status->data->fail[0]->$data['msgid'];
+                                            break;
+                                    }
+    
+                                    $this->db->insert('sms_transactions',array(
+                                        'type' => "API",
+                                        'msisdn' => $data['phone'],
+                                        'message' => $data['content'],
+                                        'schedule' => $data['schedule'],
+                                        'guid' => $data['msgid'],
+                                        'status' => 'FAILED',
+                                        'reason' => $reason,
+                                        'tenant_id' => $decodedToken->data->tenant_id,
+                                        'updated_by'  => $decodedToken->data->user_id
+                                    ));
+    
+                                    echo "FAILED|".json_encode($reason);
+    
+                                }else{
+                                
+                                    $this->db->trans_start();
+    
+                                    if(substr($data['phone'],0,1) == "0"){
+                                        $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                    }
+    
+                                    $this->db->insert('sms_transactions',array(
+                                        'type' => "API",
+                                        'msisdn' => $data['phone'],
+                                        'message' => $data['content'],
+                                        'schedule' => $data['schedule'],
+                                        'guid' => $data['msgid'],
+                                        'tenant_id' => $decodedToken->data->tenant_id,
+                                        'updated_by'  => $decodedToken->data->user_id
+                                    ));
+    
+                                    $this->db->trans_complete();
+    
+                                    echo "SUCCESS|SENDING|".$uid;
+                                    return;
+                                }
+    
+                            }else{
+    
+                                if(substr($data['phone'],0,1) == "0"){
+                                    $data['phone'] = substr_replace($data['phone'],"62",0,1);
+                                }
+    
+                                $this->db->insert('sms_transactions',array(
+                                    'type' => "API",
+                                    'msisdn' => $data['phone'],
+                                    'message' => $data['content'],
+                                    'schedule' => $data['schedule'],
+                                    'guid' => $data['msgid'],
+                                    'status' => 'FAILED',
+                                    'reason' => 'INVALID_INPUT_PARAMETER',
+                                    'tenant_id' => $decodedToken->data->tenant_id,
+                                    'updated_by'  => $decodedToken->data->user_id
+                                ));
+    
+                                echo "FAILED|".json_encode($message);
+                                return;
+                            }
+
                         }
 
                     }else{
@@ -676,14 +735,24 @@ class Api extends REST_Controller
 
                 $result = array();
 
-                $data = $this->db->select('guid as uid')
-                ->from('sms_transactions')
-                ->where('status','SENDING')
-                ->or_where('status','QUEING')
-                ->where('schedule < now()')
-                ->order_by('rand()')
-                ->limit($limit)
-                ->get()->result();
+                if(isset($inputdata['status'])){
+                    $data = $this->db->select('guid as uid')
+                    ->from('sms_transactions')
+                    ->where('status',$inputdata['status'])
+                    ->where('schedule < now()')
+                    ->order_by('rand()')
+                    ->limit($limit)
+                    ->get()->result();
+                }else{
+                    $data = $this->db->select('guid as uid')
+                    ->from('sms_transactions')
+                    ->where('status','SENDING')
+                    ->or_where('status','QUEING')
+                    ->where('schedule < now()')
+                    ->order_by('rand()')
+                    ->limit($limit)
+                    ->get()->result();
+                }
 
                 foreach ($data as $value) {
                     array_push($result,$value->uid);
