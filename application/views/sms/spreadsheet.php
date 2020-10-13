@@ -28,8 +28,8 @@
 	</style>
  
 	<?php
-	header("{appconfig}");
-	header("{fileconfig}");
+	header($appconfig);
+	header($fileconfig);
 	?>
  
 	<center>
