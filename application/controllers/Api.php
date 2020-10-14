@@ -736,7 +736,7 @@ class Api extends REST_Controller
                 $result = array();
 
                 if(isset($inputdata['status'])){
-                    $data = $this->db->select('guid as uid, msisdn, message')
+                    $data = $this->db->select('guid as uid, msisdn, message, schedule')
                     ->from('sms_transactions')
                     ->where('status',$inputdata['status'])
                     ->where('schedule < now()')
@@ -744,7 +744,7 @@ class Api extends REST_Controller
                     ->limit($limit)
                     ->get()->result();
                 }else{
-                    $data = $this->db->select('guid as uid, msisdn, message')
+                    $data = $this->db->select('guid as uid, msisdn, message, schedule')
                     ->from('sms_transactions')
                     ->where('status','SENDING')
                     ->or_where('status','QUEING')
