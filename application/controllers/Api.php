@@ -740,7 +740,7 @@ class Api extends REST_Controller
                     ->from('sms_transactions')
                     ->where('status',$inputdata['status'])
                     ->where('schedule < now()')
-                    ->order_by('rand()')
+                    ->order_by('schedule','asc')
                     ->limit($limit)
                     ->get()->result();
                 }else{
