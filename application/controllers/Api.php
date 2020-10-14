@@ -758,7 +758,7 @@ class Api extends REST_Controller
                     array_push($result,$value->uid);
                 }
 
-                $this->set_response(array("success"=>true,"data"=>array("uid"=>$result)), REST_Controller::HTTP_OK);
+                $this->set_response(array("success"=>true,"data"=>array("uid"=>$result,"detail"=>$data)), REST_Controller::HTTP_OK);
                     
             }else{
                 $this->set_response(array("success"=>false,"messages"=>"Unauthorised"), REST_Controller::HTTP_UNAUTHORIZED);
