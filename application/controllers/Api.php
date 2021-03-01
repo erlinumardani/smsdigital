@@ -39,9 +39,10 @@ class Api extends REST_Controller
         ->result_array();
 
         if(isset($user_data[0]['username'])){
-            if (password_verify($inputdata['password'], $user_data[0]['password'])) {
+            if (password_verify($inputdata['password'], $user_data[0]['password_api'])) {
                 $user_data[0]['logged_in'] = TRUE;
                 $user_data[0]['password'] = NULL;
+                $user_data[0]['password_api'] = NULL;
                 //$this->session->set_userdata($user_data[0]);
                 $tokenData['timestamp'] = time();
                 $tokenData['data'] = $user_data[0];
