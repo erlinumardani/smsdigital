@@ -14,7 +14,7 @@ class Migrate extends CI_Controller
                 }
         }
 
-        public function reset()
+        /* public function reset()
         {
                 $this->load->library('migration');
 
@@ -24,6 +24,6 @@ class Migrate extends CI_Controller
                 {
                         show_error($this->migration->error_string());
                 }
-        }
+        } */
 
 }
