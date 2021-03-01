@@ -260,6 +260,8 @@ class Curl {
 		{
 			$this->option(CURLOPT_HTTPHEADER, $this->headers);
 		}
+		//Hardcoded for skip ssl verify
+		$this->option(CURLOPT_SSL_VERIFYPEER, FALSE);
 		$this->options();
 		// Execute the request & and hide all output
 		$this->response = curl_exec($this->session);

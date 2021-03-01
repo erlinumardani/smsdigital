@@ -855,38 +855,4 @@ class Api extends REST_Controller
 		
 	}
 
-    public function test_token(){
-
-		$url = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
-
-		$post = json_encode(array(
-			'username'=>'sms-go',
-			'password'=>'infonus@!@#'
-		));
-
-		$ch = curl_init();
-        curl_setopt_array($ch, array(
-            CURLOPT_URL => $url,
-            CURLOPT_POST => TRUE,
-            CURLOPT_POSTFIELDS => http_build_query($post),
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HEADER => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE
-        ));
-
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if($code === 200){
-             echo curl_exec($ch);   
-        }
-        else
-        {
-             echo curl_error($ch);
-        }
-
-		curl_close($ch);
-
-		echo "tes";
-
-	}
 }
