@@ -1135,6 +1135,7 @@ class Data extends CI_Controller {
 
 		// More human looking options
 		$this->curl->option('buffersize', 10);
+		$this->curl->option('CURLOPT_RETURNTRANSFER', true);
 
 		// Header
 		$this->curl->http_header('Content-Type', 'application/json');
