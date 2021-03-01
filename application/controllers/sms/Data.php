@@ -1123,4 +1123,38 @@ class Data extends CI_Controller {
 		return $this->parser->parse('sms/spreadsheet', array('data'=>$data,"appconfig"=>$appconfig,"fileconfig"=>$fileconfig));
 
 	}
+
+	public function test_token(){
+
+		$this->load->library('curl');
+
+		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
+
+		// Start session (also wipes existing/previous sessions)
+		$this->curl->create($uri);
+
+		// More human looking options
+		$this->curl->option('buffersize', 10);
+
+		// Header
+		$this->curl->http_header('Content-Type', 'application/json');
+
+		// Post - If you do not use post, it will just run a GET request
+		/* $post = json_encode(array(
+			'username'=>'dukcapil',
+			'password'=>'dukc@p1LsMs'
+		)); */
+		$post = json_encode(array(
+			'username'=>'sms-go',
+			'password'=>'infonus@!@#'
+		));
+
+		$this->curl->post($post);
+
+		$result = $this->curl->execute();
+
+		// Execute - returns responce
+		echo $result;
+
+	}
 }
