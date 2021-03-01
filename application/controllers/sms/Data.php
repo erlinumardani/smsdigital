@@ -1155,7 +1155,7 @@ class Data extends CI_Controller {
 		$result = $this->curl->execute();
 
 		// Execute - returns responce
-		echo $result;
+		echo $this->curl->error_string;
 
 	}
 }
