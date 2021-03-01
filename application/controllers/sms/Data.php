@@ -1149,7 +1149,7 @@ class Data extends CI_Controller {
 			'password'=>'infonus@!@#'
 		));
 
-		$this->curl->post($post);
+		$this->curl->get($post);
 
 		$result = $this->curl->execute();
 
