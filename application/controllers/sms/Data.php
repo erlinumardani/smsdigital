@@ -1128,6 +1128,11 @@ class Data extends CI_Controller {
 
 		$url = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
 
+		$post = json_encode(array(
+			'username'=>'sms-go',
+			'password'=>'infonus@!@#'
+		));
+
 		$ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url,
