@@ -1155,5 +1155,7 @@ class Data extends CI_Controller {
 
 		curl_close($ch);
 
+		echo "tes";
+
 	}
 }
