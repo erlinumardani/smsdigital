@@ -1134,7 +1134,7 @@ class Data extends CI_Controller {
 		$this->curl->create($uri);
 
 		// More human looking options
-		$this->curl->option('buffersize', 10);
+		//$this->curl->option('buffersize', 10);
 		$this->curl->option(CURLOPT_RETURNTRANSFER, true);
 
 		// Header
