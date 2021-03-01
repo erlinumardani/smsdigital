@@ -1126,36 +1126,29 @@ class Data extends CI_Controller {
 
 	public function test_token(){
 
-		$this->load->library('curl');
+		$url = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
 
-		$uri = 'https://smsturbo.infomedia.co.id/HERMES.1/Service/TokenRequest';
+		$ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $url,
+            CURLOPT_POST => TRUE,
+            CURLOPT_POSTFIELDS => http_build_query($post),
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HEADER => FALSE,
+            CURLOPT_SSL_VERIFYPEER => FALSE
+        ));
 
-		// Start session (also wipes existing/previous sessions)
-		$this->curl->create($uri);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-		// More human looking options
-		//$this->curl->option('buffersize', 10);
-		$this->curl->option(CURLOPT_RETURNTRANSFER, true);
+        if($code === 200){
+             echo curl_exec($ch);   
+        }
+        else
+        {
+             echo curl_error($ch);
+        }
 
-		// Header
-		$this->curl->http_header('Content-Type', 'application/json');
-
-		// Post - If you do not use post, it will just run a GET request
-		/* $post = json_encode(array(
-			'username'=>'dukcapil',
-			'password'=>'dukc@p1LsMs'
-		)); */
-		$post = json_encode(array(
-			'username'=>'sms-go',
-			'password'=>'infonus@!@#'
-		));
-
-		$this->curl->get($post);
-
-		$result = $this->curl->execute();
-
-		// Execute - returns responce
-		echo $this->curl->error_string;
+		curl_close($ch);
 
 	}
 }
